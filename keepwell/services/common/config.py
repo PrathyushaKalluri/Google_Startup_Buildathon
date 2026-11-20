@@ -85,5 +85,10 @@ class Settings(BaseSettings):
     def dataset_dir(self) -> Path:
         return KEEPWELL_ROOT / "input" / "dataset"
 
+    def model_post_init(self, __context: object) -> None:
+        # Keep Part A DB isolated from legacy prototype keepwell.db
+        if self.database_url.strip() in ("sqlite:///./keepwell.db", "sqlite:///keepwell.db"):
+            self.database_url = f"sqlite:///{KEEPWELL_ROOT / 'db' / 'keepwell_part_a.db'}"
+
 
 settings = Settings()

@@ -23,7 +23,7 @@ from services.common.db import get_rls_session
 from services.worker.projections import projection_store
 
 router = APIRouter(prefix="/mcp", tags=["MCP Tool Server"])
-otp_service = OTPService(provider=settings.otp_provider)
+otp_service = OTPService(mode="sandbox" if settings.otp_provider == "sandbox" else "live")
 
 
 class MCPToolCallRequest(BaseModel):
