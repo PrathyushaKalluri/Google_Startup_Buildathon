@@ -1,0 +1,11 @@
+{
+  "name": "Keepwell Brand & Retailer Portal",
+  "short_name": "Keepwell Brand",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0B57D0",
+  "description": "Keepwell Brand & Retailer Portal for forwarded warranty requests, retailer installation handovers, and service quality analytics.",
+  "orientation": "any",
+  "prefer_related_applications": false
+}

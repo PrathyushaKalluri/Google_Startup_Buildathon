@@ -1,0 +1,11 @@
+{
+  "name": "Keepwell Centre Console",
+  "short_name": "Keepwell Console",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f8f9fc",
+  "theme_color": "#0b57d0",
+  "description": "Keepwell Centre Console and Live Stage View for home appliance service operations.",
+  "orientation": "landscape-primary",
+  "prefer_related_applications": false
+}
