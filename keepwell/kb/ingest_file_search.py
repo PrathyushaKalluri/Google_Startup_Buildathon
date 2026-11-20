@@ -113,7 +113,7 @@ LOCAL_MANUAL_INDEX: List[Dict[str, Any]] = [
 
 
 def upload_kb_to_file_search(dry_run: bool = True) -> List[Dict[str, Any]]:
-    """Upload the 21 KB PDFs in input/dataset/kb/ to Gemini File Search stores."""
+    """Upload the 21 KB PDFs in input/dataset/kb/ to GCS and Gemini Files / File Search."""
     kb_dir = settings.dataset_dir / "kb"
     pdfs = sorted(kb_dir.glob("*.pdf"))
     results: List[Dict[str, Any]] = []
@@ -126,20 +126,32 @@ def upload_kb_to_file_search(dry_run: bool = True) -> List[Dict[str, Any]]:
                 "store": store,
                 "storage_uri": f"gs://{settings.gcs_bucket_kb}/{p.name}",
                 "status": "indexed_local_dry_run",
+                "backend": "local_dry_run",
             })
         return results
 
     from google import genai  # type: ignore
+    from services.common.storage import storage_adapter
 
     client = genai.Client(api_key=settings.gemini_api_key)
     for p in pdfs:
+        gcs_res = storage_adapter.put_bytes(
+            p.name,
+            p.read_bytes(),
+            content_type="application/pdf",
+            bucket=settings.gcs_bucket_kb,
+            retain_hours=24 * 365,
+        )
         uploaded = client.files.upload(file=str(p))
         results.append({
             "file": p.name,
             "store": f"{settings.file_search_store_prefix}-global",
             "file_search_doc": getattr(uploaded, "name", p.name),
-            "storage_uri": f"gs://{settings.gcs_bucket_kb}/{p.name}",
+            "file_uri": getattr(uploaded, "uri", None),
+            "storage_uri": gcs_res["storage_uri"],
+            "gcs_backend": gcs_res.get("backend", "unknown"),
             "status": "uploaded",
+            "backend": "real_gemini_files_and_gcs",
         })
     return results
 

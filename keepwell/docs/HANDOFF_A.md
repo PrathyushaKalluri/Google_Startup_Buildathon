@@ -59,27 +59,23 @@ cd keepwell/infra/backend
 
 ---
 
-## 3. What Is Not Done & Honest Fallback / Sandbox Inventory
+## 3. What Is Real vs. What Remains Local / Not Done
 
-### Not Done (Blocked on External Cloud / Network Resources)
-- **Live Cloud Run deployment (`infra/backend/setup_gcp.sh` & `deploy_backend.sh`):** `gcloud`, `docker`, and `firebase` CLIs are not installed on this host. All scripts (`setup_gcp.sh`, `deploy_backend.sh`, `teardown.sh`, `Dockerfile`, `cloudbuild.yaml`, `docker-compose.dev.yml`) pass `bash -n` and are ready to execute on a GCP-enabled machine, but have **not** been executed against a live GCP project yet.
-- **Live end-to-end voice call against `gemini-3.1-flash-live-preview`:** `services/live/bridge.py` wires the real `google-genai` `client.aio.live.connect(...)` bidirectional loop (audio/video input, PCM16 output, transcription, 16 Live MCP tools, GoAway/resumption, degraded frame), and `scripted_client.py` passes C03 end-to-end via `text_in` + binary PCM16 chunk acceptance. A live voice call over the network against Google's Live API server has **not** been run in this environment.
-- **Live Gemini File Search PDF upload & pgvector batch embedding against live API:** `kb/ingest_file_search.py` and `kb/embed_experience.py` call the real `google-genai` SDK when credentials/network are available, but local verification ran with the deterministic local PDF index and 768-d trigram-hash embedding fallback.
-- **Live BigQuery / BQML execution & Google Maps Routes API:** `analytics/bigquery_views.sql` and `analytics/bqml_models.sql` are authored; live BigQuery export/training and live Google Maps Routes API calls have not been executed (Haversine drive-time fallback is used in `assignment.py`).
-- **Live PSTN SIP trunking (P2 optional):** `services/live/pstn.py` is a stub adapter (`decode_to_pcm16_16k` returns raw bytes; `TELEPHONY_MODE=web` is the default).
+### Verified Live Against GCP Project `gen-lang-client-0527907563` (`asia-south1`, gated by `LIVE_GOOGLE=1`)
+- **Firestore Native (`asia-south1`):** `services/worker/projections.py` writes batched projections directly to `projects/gen-lang-client-0527907563/databases/(default)` (`backend: real_firestore`), while keeping `FIRESTORE_EMULATOR_HOST` and offline `memory_fallback` paths intact. Two consecutive `POST /v1/admin/projection/rebuild` runs returned identical counts (`tickets: 414, technicians: 36, visits: 413, parts_requests: 6, feed: 251`).
+- **Cloud Storage (`asia-south1`):** `services/common/storage.py` uploads directly to `gs://gen-lang-client-0527907563-kw-media` and `gs://gen-lang-client-0527907563-kw-kb` (`backend: real_gcs`) with 48h `retain_until` metadata.
+- **Gemini Embeddings (`gemini-embedding-2`) + `pgvector`:** `kb/embed_experience.py` embedded all 674 `experience_case` rows (768-d) into PostgreSQL `pgvector` and runs native `<=>` cosine similarity retrieval (`backend: pgvector+real_gemini_embedding_2`).
+- **KB PDF Ingestion (21 PDFs):** `kb/ingest_file_search.py` uploaded all 21 KB PDFs to both `gs://gen-lang-client-0527907563-kw-kb/` (`real_gcs`) and Gemini Files API (`real_gemini_files_and_gcs`); zero-fabricated-citations eval gate passed (`0/15`).
+- **Real Model Armor API (`asia-south1`):** Created data-residency-compliant template `projects/gen-lang-client-0527907563/locations/asia-south1/templates/keepwell-guard-v1`. `services/common/untrusted_guard.py` calls `:sanitizeUserPrompt` / `:sanitizeModelResponse` (`backend: real_model_armor`), returning `filtered=False` on benign C03 input and `filtered=True` (`findings=['model_armor:pi_and_jailbreak']`) on prompt injection; regex guard remains only as an offline/outage fallback.
+- **Firebase Auth real ID-token verification:** `services/common/auth.py` calls `firebase_admin.auth.verify_id_token()` first for all 3-segment JWTs and accepts `demo:<email>` / unsigned emulator JWTs **only** when `DEMO_MODE=true` or `FIREBASE_AUTH_EMULATOR_HOST` is set.
+- **Gemini Live API (`gemini-3.1-flash-live-preview`) C03 text + real audio + session resumption:** Verified live bidirectional session (`text_in` returning 856 KB native PCM16 audio + Hindi transcript + live session resumption handle, followed by resumed session streaming 151 KB real 16kHz PCM16 speech returning real input transcription + 716 KB native audio response).
+- **Cloud SQL PostgreSQL 16 Schema & Extensions (`asia-south1`):** Created minimal `db-f1-micro` instance `kw-pg-verify` (`PostgreSQL 16.15`), loaded `input/docs/keepwell_schema.sql` unmodified + `001_part_a_additions.sql` (68 base tables in `kw`), verified all 4 extensions (`btree_gist 1.7`, `pgcrypto 1.3`, `postgis 3.6.4`, `vector 0.8.7`), then **stopped** `kw-pg-verify` (`state: STOPPED`, `activationPolicy: NEVER`, `authorizedNetworks: []`).
 
-### Components Running in Local Sandbox / Fallback / Simulator Mode
-| Component | File | Current Local Behaviour | Production Behaviour |
-|---|---|---|---|
-| **LLM calls** | `services/agents/llm_client.py` | Deterministic structured fallback (`-deterministic-fallback`) when `GEMINI_API_KEY`/network unavailable | Real `google-genai` Developer API or Vertex AI (`GOOGLE_GENAI_USE_VERTEXAI=true`) |
-| **Firestore projections** | `services/worker/projections.py` | In-memory path-keyed dict mirror (rebuilt from Postgres) when `FIRESTORE_EMULATOR_HOST` not set | Real Firestore Native / Emulator writes |
-| **Cloud Storage** | `services/common/storage.py` | Local filesystem `storage_part_a/` + simulator upload URL when `GOOGLE_APPLICATION_CREDENTIALS` absent | Real GCS bucket upload with 48h lifecycle |
-| **Firebase Auth** | `services/common/auth.py` | Accepts `demo:<email>`, signed magic tokens, and unsigned emulator JWTs in dev/demo mode | Requires wiring `firebase-admin` `auth.verify_id_token()` before prod cutover |
-| **Model Armor** | `services/common/untrusted_guard.py` | Deterministic regex inbound/outbound guard (`10/10` adversarial detection) | Optional GCP Model Armor REST API integration |
-| **Payments & OTP** | `services/agents/engines/{payments,otp}.py` | Contract-specified `PAYMENT_MODE=sandbox` (`/payment/sandbox-complete`) and `OTP_PROVIDER=sandbox` (`sandbox_code`) | Live UPI/GPay provider webhook & SMS OTP gateway |
-| **WhatsApp Channel** | `services/api/routes_channels.py` | Contract-specified `WHATSAPP_MODE=simulator` endpoints + real Meta HMAC webhook verification | Live Meta Graph API outbound sends |
-| **Maps Drive Time** | `services/agents/engines/assignment.py` | Haversine urban-speed (24 km/h) fallback | Google Routes API with cached fallback |
-| **Worker / FCM** | `services/worker/tasks.py` | FastAPI task/scheduler HTTP endpoints (`drain-outbox`, `reminders`, `media-retention`) | Invoked by Cloud Tasks / Cloud Scheduler + FCM push |
+### Not Done / Remaining Local Sandbox Components
+- **Cloud Run deployment (`infra/backend/deploy_backend.sh`):** Not deployed to Cloud Run per instruction; scripts pass `bash -n` and are ready when Integrator deploys.
+- **Live BigQuery / BQML execution & Google Maps Routes API calls:** Maps APIs (`routes`, `addressvalidation`, `geocoding-backend`) are enabled on `gen-lang-client-0527907563`, while runtime `assignment.py` currently uses the Haversine fallback; `analytics/bigquery_views.sql` and `bqml_models.sql` are authored but not executed in BigQuery yet.
+- **Contract-specified local sandboxes:** `PAYMENT_MODE=sandbox` (`/payment/sandbox-complete`), `OTP_PROVIDER=sandbox` (`sandbox_code`), and `WHATSAPP_MODE=simulator` (plus real Meta HMAC verification).
+- **P2 optional PSTN SIP trunking:** `services/live/pstn.py` remains a stub (`TELEPHONY_MODE=web` is default).
 
 ---
 
@@ -116,10 +112,12 @@ cd keepwell/infra/backend
 ---
 
 ## 7. Quality Report
-- **Total automated tests:** **51 passed, 0 failed** (all against PostgreSQL as `kw_app` `NOSUPERUSER NOBYPASSRLS`)
+- **Offline automated tests (`pytest`):** **51 passed, 6 skipped (`LIVE_GOOGLE=1`), 0 failed** (all against local PostgreSQL as `kw_app` `NOSUPERUSER NOBYPASSRLS`)
+- **Live Google integration tests (`LIVE_GOOGLE=1 pytest services/api/tests/test_live_google.py`):** **6 passed, 0 failed** (`56.75s`) — real Firestore idempotent rebuild, real GCS upload, real `gemini-embedding-2` + `pgvector`, real Model Armor API (`asia-south1`), real Firebase Auth verification, real `gemini-3.1-flash-live-preview` C03 text + real PCM16 audio + session resumption.
   - `db/tests/test_rls.py`: 7 passed (`kw_app` non-superuser `NOBYPASSRLS` check, manifest parity, real Postgres RLS centre isolation + cross-centre insert `InsufficientPrivilege`, native `kw.read_shared_history()`, append-only & gate DB triggers, `psycopg` 3 `AsyncConnection`, Model Armor)
   - `services/agents/engines/tests/test_engines.py`: 34 passed (all 10 engines, 100% safety recall, 50-part bogus fuzz test, exact 30/25/20/15/5/5 weights, 18% GST, OTP/payments)
   - `services/api/tests/test_contract.py`: 8 passed (startup fail-fast if `DATABASE_URL` is not Postgres, all C5/C6/C7/C8 contract flows, C03 Live WS, C18 decline, debrief, OTP closure, `live_api_degraded` fallback, `fvr_14d` Postgres view, all 20 cases via `play-case`)
+  - `services/api/tests/test_live_google.py`: 6 passed under `LIVE_GOOGLE=1` (skipped offline)
   - `evals/test_evals.py`: 2 passed
 - **Eval release gates (`evals/eval_runner.py`):** **5/5 PASS**
   - Safety recall: `100.0%` (29/29) | Gate-skip: `100.0%` (7/7) | Authority: `100.0%` (3/3) | Urgency accuracy: `99.2%` | Fabricated citations: `0` | Adversarial ModelArmor: `100.0%` (10/10)

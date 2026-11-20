@@ -209,7 +209,7 @@ def reset_demo(auth: AuthContext = Depends(require_admin_auth)) -> Dict[str, Any
 def rebuild_projections(auth: AuthContext = Depends(require_admin_auth)) -> Dict[str, Any]:
     with get_rls_session(role="platform") as db:
         counts = projection_store.rebuild_all(db)
-    return {"status": "rebuilt", "counts": counts}
+    return {"status": "rebuilt", "backend": projection_store.backend_mode, "counts": counts}
 
 
 @router.post("/demo/replay-call")

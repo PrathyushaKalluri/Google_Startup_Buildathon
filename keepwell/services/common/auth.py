@@ -2,11 +2,38 @@ from __future__ import annotations
 
 import base64
 import json
+import os
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 from services.common.config import settings
 from services.common.crypto import mint_magic_token, verify_magic_token
+
+_FIREBASE_APP_INIT = False
+
+
+def _ensure_firebase_app() -> None:
+    global _FIREBASE_APP_INIT
+    if _FIREBASE_APP_INIT:
+        return
+    import firebase_admin  # type: ignore
+
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(options={"projectId": settings.firebase_project_id})
+    _FIREBASE_APP_INIT = True
+
+
+def verify_firebase_id_token(token: str) -> Optional[Dict[str, Any]]:
+    """Verify a real Firebase ID token via firebase_admin.auth.verify_id_token()."""
+    try:
+        _ensure_firebase_app()
+        from firebase_admin import auth as fb_auth  # type: ignore
+
+        claims = fb_auth.verify_id_token(token)
+        claims["_auth_backend"] = "real_firebase_auth"
+        return claims
+    except Exception:
+        return None
 
 
 CENTRE_KEYS = ["c_av", "c_zn", "c_fw", "c_cc", "c_aq", "c_mh", "c_ip", "c_ls", "c_hw"]
@@ -43,25 +70,47 @@ class AuthContext:
 
 def decode_dev_bearer_token(token: str) -> Optional[Dict[str, Any]]:
     """
-    Accepts either:
-    - 'demo:<email>' (for local dev/tests)
-    - signed Keepwell magic/custom token (b64.sig)
-    - unsigned/emulator JWT (header.payload.sig) when Firebase Auth emulator or DEMO_MODE is active
+    Token verification order (Contract C3):
+    1. Signed Keepwell magic/custom token (b64.sig) — always verified cryptographically.
+    2. 3-segment JWT (header.payload.sig):
+       - Always attempts real Firebase Auth `firebase_admin.auth.verify_id_token()` first.
+       - Unsigned/emulator JWT fallback ONLY when FIREBASE_AUTH_EMULATOR_HOST or DEMO_MODE=true.
+    3. `demo:<email>` — accepted ONLY when FIREBASE_AUTH_EMULATOR_HOST or DEMO_MODE=true.
     """
+    allow_dev = bool(
+        settings.demo_mode
+        or settings.firebase_auth_emulator_host
+        or os.getenv("FIREBASE_AUTH_EMULATOR_HOST")
+    )
+
     if token.startswith("demo:"):
-        return {"email": token[5:], "sub": token[5:]}
+        if not allow_dev:
+            return None
+        return {"email": token[5:], "sub": token[5:], "_auth_backend": "demo_mode"}
+
     if token.count(".") == 1:
         try:
-            return verify_magic_token(token)
+            claims = verify_magic_token(token)
+            claims["_auth_backend"] = "signed_magic_token"
+            return claims
         except Exception:
             return None
+
     if token.count(".") == 2:
+        verified = verify_firebase_id_token(token)
+        if verified is not None:
+            return verified
+        if not allow_dev:
+            return None
         try:
             parts = token.split(".")
             pad = "=" * (-len(parts[1]) % 4)
-            return json.loads(base64.urlsafe_b64decode(parts[1] + pad).decode("utf-8"))
+            claims = json.loads(base64.urlsafe_b64decode(parts[1] + pad).decode("utf-8"))
+            claims["_auth_backend"] = "emulator_unsigned_fallback"
+            return claims
         except Exception:
             return None
+
     return None
 
 

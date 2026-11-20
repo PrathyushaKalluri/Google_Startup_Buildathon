@@ -1,41 +1,97 @@
 from __future__ import annotations
 
 import json
+import os
 import uuid
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from decimal import Decimal
 from typing import Any, Dict, List, Optional
 
 from services.common.config import settings
 from services.common.db import RLSSession, parse_pg_bool, parse_pg_json
 
 
+def _fs_safe(val: Any) -> Any:
+    if isinstance(val, (datetime, date)):
+        return val.isoformat()
+    if isinstance(val, (uuid.UUID, Decimal)):
+        return str(val)
+    if isinstance(val, dict):
+        return {str(k): _fs_safe(v) for k, v in val.items()}
+    if isinstance(val, list):
+        return [_fs_safe(v) for v in val]
+    return val
+
+
 class FirestoreProjectionStore:
     """
     Projects committed PostgreSQL state into Firestore paths defined in Contract C6 & C8.
-    When FIRESTORE_EMULATOR_HOST or real GCP credentials are configured, mirrors writes to
-    Firestore; always maintains an in-memory path-keyed store for zero-latency inspection
-    and contract verification.
+    - When FIRESTORE_EMULATOR_HOST is set: writes to the Firestore Emulator (`emulator`).
+    - When LIVE_GOOGLE=1 (or USE_LIVE_FIRESTORE=1) with ADC/GCP project: writes to real
+      Firestore Native (`real_firestore`).
+    - Otherwise (offline tests): maintains an in-memory path-keyed store (`memory_fallback`).
     """
 
     def __init__(self) -> None:
         self.docs: Dict[str, Dict[str, Any]] = {}
         self._fs_client: Any = None
-        if settings.firestore_emulator_host:
+        self.backend_mode: str = "memory_fallback"
+        self.refresh_client()
+
+    def refresh_client(self) -> str:
+        """Initialise or refresh the Firestore client based on current env."""
+        emu = os.getenv("FIRESTORE_EMULATOR_HOST") or settings.firestore_emulator_host
+        use_live = os.getenv("LIVE_GOOGLE") == "1" or os.getenv("USE_LIVE_FIRESTORE") == "1"
+        if emu:
             try:
                 from google.cloud import firestore  # type: ignore
 
                 self._fs_client = firestore.Client(project=settings.firebase_project_id)
+                self.backend_mode = "emulator"
+                return self.backend_mode
             except Exception:
                 self._fs_client = None
-
-    def set_doc(self, path: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        self.docs[path] = data
-        if self._fs_client is not None:
+                self.backend_mode = "memory_fallback"
+                return self.backend_mode
+        if use_live and settings.gcp_project_id and settings.gcp_project_id != "keepwell-dev":
             try:
-                self._fs_client.document(path).set(data, merge=True)
+                from google.cloud import firestore  # type: ignore
+
+                self._fs_client = firestore.Client(project=settings.gcp_project_id)
+                self.backend_mode = "real_firestore"
+                return self.backend_mode
+            except Exception:
+                self._fs_client = None
+                self.backend_mode = "memory_fallback"
+                return self.backend_mode
+        self._fs_client = None
+        self.backend_mode = "memory_fallback"
+        return self.backend_mode
+
+    def set_doc(self, path: str, data: Dict[str, Any], *, defer_remote: bool = False) -> Dict[str, Any]:
+        safe = _fs_safe(data)
+        self.docs[path] = safe
+        if self._fs_client is not None and not defer_remote:
+            try:
+                self._fs_client.document(path).set(safe, merge=True)
             except Exception:
                 pass
-        return data
+        return safe
+
+    def flush_all_remote(self) -> int:
+        """Batch-write all in-memory docs to Firestore (400 docs/batch) for fast idempotent rebuilds."""
+        if self._fs_client is None:
+            return 0
+        items = list(self.docs.items())
+        written = 0
+        chunk_size = 400
+        for i in range(0, len(items), chunk_size):
+            batch = self._fs_client.batch()
+            for path, data in items[i : i + chunk_size]:
+                batch.set(self._fs_client.document(path), data, merge=True)
+                written += 1
+            batch.commit()
+        return written
 
     def get_doc(self, path: str) -> Optional[Dict[str, Any]]:
         return self.docs.get(path)
@@ -137,6 +193,7 @@ class FirestoreProjectionStore:
 
     def rebuild_all(self, db: RLSSession) -> Dict[str, int]:
         """Idempotently rebuild all Firestore projections from PostgreSQL 16."""
+        self.refresh_client()
         self.clear()
         counts = {"tickets": 0, "technicians": 0, "visits": 0, "parts_requests": 0, "feed": 0}
 
@@ -159,13 +216,13 @@ class FirestoreProjectionStore:
                     "next_action": _derive_next_action(t["status"]),
                     "payment_status": "none",
                 },
+                defer_remote=True,
             )
             counts["tickets"] += 1
 
         for te in db.raw_query("SELECT * FROM technician WHERE active = TRUE"):
-            self.project_technician(
-                te["centre_id"],
-                te["id"],
+            self.set_doc(
+                f"centres/{te['centre_id']}/technicians/{te['id']}",
                 {
                     "name": te["name"],
                     "status": "available",
@@ -173,13 +230,13 @@ class FirestoreProjectionStore:
                     "last_location": None,
                     "last_ping_at": te["updated_at"],
                 },
+                defer_remote=True,
             )
             counts["technicians"] += 1
 
         for v in db.raw_query("SELECT * FROM visit"):
-            self.project_visit(
-                v["centre_id"],
-                v["id"],
+            self.set_doc(
+                f"centres/{v['centre_id']}/visits/{v['id']}",
                 {
                     "ticket_id": v["ticket_id"],
                     "technician_id": v["technician_id"],
@@ -189,13 +246,13 @@ class FirestoreProjectionStore:
                     "brief": {},
                     "address_released": True,
                 },
+                defer_remote=True,
             )
             counts["visits"] += 1
 
         for r in db.raw_query("SELECT * FROM reservation"):
-            self.project_parts_request(
-                r["centre_id"],
-                r["id"],
+            self.set_doc(
+                f"centres/{r['centre_id']}/parts_requests/{r['id']}",
                 {
                     "visit_id": r["visit_id"],
                     "part_no": r["part_id"],
@@ -203,6 +260,7 @@ class FirestoreProjectionStore:
                     "status": r["status"],
                     "parts_centre_id": r["holder_id"] if r["holder_type"] == "parts_centre" else None,
                 },
+                defer_remote=True,
             )
             counts["parts_requests"] += 1
 
@@ -223,10 +281,19 @@ class FirestoreProjectionStore:
                         "detail": ev["detail"],
                         "payload": parse_pg_json(ev["payload"], {}),
                     },
+                    defer_remote=True,
                 )
                 counts["feed"] += 1
 
-        self.set_demo_meta(None)
+        self.set_doc(
+            "meta/demo",
+            {
+                "active_case_id": None,
+                "reset_at": datetime.now(timezone.utc).isoformat(),
+            },
+            defer_remote=True,
+        )
+        self.flush_all_remote()
         return counts
 
 

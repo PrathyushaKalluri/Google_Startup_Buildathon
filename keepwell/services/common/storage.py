@@ -26,7 +26,12 @@ class StorageAdapter:
         target_bucket = bucket or settings.gcs_bucket_media
         retain_until = (datetime.now(timezone.utc) + timedelta(hours=retain_hours)).date().isoformat()
 
-        if os.getenv("GOOGLE_APPLICATION_CREDENTIALS") and not settings.demo_mode:
+        use_live = (
+            os.getenv("LIVE_GOOGLE") == "1"
+            or os.getenv("USE_LIVE_GCS") == "1"
+            or (bool(os.getenv("GOOGLE_APPLICATION_CREDENTIALS")) and not settings.demo_mode)
+        )
+        if use_live and settings.gcp_project_id and settings.gcp_project_id != "keepwell-dev":
             try:
                 from google.cloud import storage  # type: ignore
 
@@ -37,6 +42,7 @@ class StorageAdapter:
                 return {
                     "storage_uri": f"gs://{target_bucket}/{object_path}",
                     "retain_until": retain_until,
+                    "backend": "real_gcs",
                 }
             except Exception:
                 pass
@@ -47,6 +53,7 @@ class StorageAdapter:
         return {
             "storage_uri": f"file://{dest}",
             "retain_until": retain_until,
+            "backend": "local_fallback",
         }
 
     def generate_signed_upload_url(self, object_path: str, content_type: str = "audio/ogg") -> Dict[str, str]:
