@@ -25,6 +25,13 @@ BRAND_AV = {"Authorization": "Bearer demo:brand.aerovane@keepwell.demo"}
 PLATFORM_AUTH = {"Authorization": "Bearer demo:platform@keepwell.demo"}
 
 
+def test_api_fails_at_startup_when_database_url_not_postgres(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(settings, "database_url", "mysql://localhost/wrong")
+    with pytest.raises(RuntimeError, match="requires PostgreSQL 16"):
+        with TestClient(app):
+            pass
+
+
 def test_system_health_ready_version_openapi_and_mcp() -> None:
     r = client.get("/healthz")
     assert r.status_code == 200
@@ -221,7 +228,7 @@ def test_technician_flow_payment_sandbox_debrief_and_otp_close() -> None:
     assert brief_r.status_code == 200
     assert brief_r.json()["address_released"] is True
     with get_rls_session(role="platform") as db:
-        logs = db.raw_query("SELECT * FROM access_log WHERE record_table = 'visit' AND record_id = ?", (visit_id,))
+        logs = db.raw_query("SELECT * FROM access_log WHERE record_table = 'visit' AND record_id = %s", (visit_id,))
         assert len(logs) >= 1
 
     # Check-in, upload-url, outcome

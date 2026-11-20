@@ -24,7 +24,6 @@ from __future__ import annotations
 import json
 import os
 import sys
-import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -33,7 +32,7 @@ KEEPWELL_ROOT = Path(__file__).resolve().parent.parent
 if str(KEEPWELL_ROOT) not in sys.path:
     sys.path.insert(0, str(KEEPWELL_ROOT))
 
-from db.seed.load_seed import load_seed_sqlite, verify_seed_counts
+from db.seed.load_seed import load_seed_postgres, verify_seed_counts
 from kb.ingest_file_search import LOCAL_MANUAL_INDEX
 from services.agents.engines.urgency import assess_urgency
 from services.agents.orchestrator import process_inbound_case
@@ -148,7 +147,7 @@ def _resolve_centre_id(db: Any, case: Dict[str, Any]) -> str:
     to_number = case.get("to_number")
     if to_number:
         rows = db.raw_query(
-            "SELECT centre_id FROM centre_channel WHERE number_ref = ? LIMIT 1",
+            "SELECT centre_id FROM centre_channel WHERE number_ref = %s LIMIT 1",
             (to_number,),
         )
         if rows:
@@ -200,11 +199,8 @@ def run_all_evals(write_report: bool = True) -> Dict[str, Any]:
     # Sort inbox cases C01..C20 for deterministic reporting
     inbox_cases.sort(key=lambda c: c["case_id"])
 
-    # Use an isolated temporary SQLite DB seeded from the 55 CSVs so evals are
-    # 100% reproducible and never mutate workspace state.
-    orig_db_url = settings.database_url
-    tmp_dir = tempfile.TemporaryDirectory(prefix="keepwell_eval_")
-    tmp_db_path = Path(tmp_dir.name) / "keepwell_eval.db"
+    # Reset PostgreSQL 16 seed from the 55 CSVs so evals are 100% reproducible.
+    settings.require_postgres()
 
     real_results: List[Dict[str, Any]] = []
     synthetic_results: List[Dict[str, Any]] = []
@@ -236,9 +232,8 @@ def run_all_evals(write_report: bool = True) -> Dict[str, Any]:
     adversarial_failures: List[str] = []
 
     try:
-        counts = load_seed_sqlite(db_path=tmp_db_path, force_rebuild=True)
+        counts = load_seed_postgres()
         verify_seed_counts(counts)
-        settings.database_url = f"sqlite:///{tmp_db_path}"
 
         with get_rls_session(role="platform") as meta_db:
             valid_citation_pairs, valid_doc_titles = _build_valid_citation_index(meta_db)
@@ -460,8 +455,7 @@ def run_all_evals(write_report: bool = True) -> Dict[str, Any]:
                 }
             )
     finally:
-        settings.database_url = orig_db_url
-        tmp_dir.cleanup()
+        pass
 
     # Compute gate metrics
     safety_recall_pct = (safety_passed / safety_total * 100.0) if safety_total else 0.0

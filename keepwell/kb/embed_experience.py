@@ -66,13 +66,13 @@ def find_similar_experience_cases(
     top_k: int = 5,
 ) -> List[Dict[str, Any]]:
     """Mirrors Q19: filter by brand_id and category_code, rank by cosine similarity."""
-    clauses = ["verified_by_technician = 't'"]
+    clauses = ["verified_by_technician = TRUE"]
     params: List[Any] = []
     if brand_id:
-        clauses.append("brand_id = ?")
+        clauses.append("brand_id = %s")
         params.append(brand_id)
     if category_code:
-        clauses.append("category_code = ?")
+        clauses.append("category_code = %s")
         params.append(category_code)
 
     rows = db.raw_query(

@@ -60,13 +60,13 @@ def list_tickets(
         clauses: List[str] = []
         params: List[Any] = []
         if status:
-            clauses.append("status = ?")
+            clauses.append("status = %s")
             params.append(status)
         if urgency_class:
-            clauses.append("urgency_class = ?")
+            clauses.append("urgency_class = %s")
             params.append(urgency_class)
         if trigger:
-            clauses.append("trigger = ?")
+            clauses.append("trigger = %s")
             params.append(trigger)
 
         where_sql = " AND ".join(clauses) if clauses else None
@@ -103,8 +103,12 @@ def get_ticket_detail(
     ticket_id: str,
     auth: AuthContext = Depends(require_console_auth),
 ) -> Dict[str, Any]:
+    try:
+        uuid.UUID(ticket_id)
+    except ValueError:
+        raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        row = db.select_one("ticket", "id = ?", (ticket_id,))
+        row = db.select_one("ticket", "id = %s", (ticket_id,))
         if not row:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
         return serialize_ticket_detail(db, row)
@@ -121,7 +125,7 @@ def reclassify_urgency(
 
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        row = db.select_one("ticket", "id = ?", (ticket_id,))
+        row = db.select_one("ticket", "id = %s", (ticket_id,))
         if not row:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
 
@@ -150,7 +154,7 @@ def reclassify_urgency(
                 "safety_reason": body.reason if is_safety else row.get("safety_reason"),
                 "updated_at": now_iso,
             },
-            "id = ?",
+            "id = %s",
             (ticket_id,),
         )
         projection_store.emit_event(
@@ -163,7 +167,7 @@ def reclassify_urgency(
             ticket_id=ticket_id,
             payload={"class": body.urgency_class, "assessed_by": "centre_console", "reason": body.reason},
         )
-        updated = db.select_one("ticket", "id = ?", (ticket_id,))
+        updated = db.select_one("ticket", "id = %s", (ticket_id,))
         assert updated is not None
         projection_store.project_ticket(cid, serialize_ticket_card(db, updated))
         return serialize_ticket_detail(db, updated)
@@ -177,22 +181,22 @@ def reassign_ticket(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        row = db.select_one("ticket", "id = ?", (ticket_id,))
+        row = db.select_one("ticket", "id = %s", (ticket_id,))
         if not row:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
         cid = row["centre_id"]
 
-        tech = db.select_one("technician", "id = ?", (body.technician_id,))
+        tech = db.select_one("technician", "id = %s", (body.technician_id,))
         if not tech:
             raise APIError("technician_not_found", f"Technician {body.technician_id} not found in centre", status_code=404, field="technician_id")
 
-        prev_visits = db.select("visit", "ticket_id = ?", (ticket_id,), order_by="created_at DESC", limit=1)
+        prev_visits = db.select("visit", "ticket_id = %s", (ticket_id,), order_by="created_at DESC", limit=1)
         prev_tech_id = prev_visits[0]["technician_id"] if prev_visits else None
 
         # Mark prior chosen candidates as not_chosen
-        db.update("assignment_candidate", {"outcome": "not_chosen"}, "ticket_id = ? AND outcome = 'chosen'", (ticket_id,))
+        db.update("assignment_candidate", {"outcome": "not_chosen"}, "ticket_id = %s AND outcome = 'chosen'", (ticket_id,))
 
-        vp = db.select_one("visit_plan", "ticket_id = ?", (ticket_id,), order_by="created_at DESC")
+        vp = db.select_one("visit_plan", "ticket_id = %s", (ticket_id,), order_by="created_at DESC")
         db.insert(
             "assignment_candidate",
             {
@@ -230,7 +234,7 @@ def reassign_ticket(
                     "planned_end": body.slot_end,
                     "updated_at": now_iso,
                 },
-                "id = ?",
+                "id = %s",
                 (visit_id,),
             )
         else:
@@ -251,7 +255,7 @@ def reassign_ticket(
                 },
             )
 
-        db.update("ticket", {"status": "scheduled", "updated_at": now_iso}, "id = ?", (ticket_id,))
+        db.update("ticket", {"status": "scheduled", "updated_at": now_iso}, "id = %s", (ticket_id,))
         projection_store.emit_event(
             db,
             cid,
@@ -275,7 +279,7 @@ def reassign_ticket(
                 "address_released": True,
             },
         )
-        updated = db.select_one("ticket", "id = ?", (ticket_id,))
+        updated = db.select_one("ticket", "id = %s", (ticket_id,))
         assert updated is not None
         projection_store.project_ticket(
             cid,
@@ -292,7 +296,7 @@ def rerun_diagnosis(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        row = db.select_one("ticket", "id = ?", (ticket_id,))
+        row = db.select_one("ticket", "id = %s", (ticket_id,))
         if not row:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
         cid = row["centre_id"]
@@ -302,15 +306,15 @@ def rerun_diagnosis(
         brand_name = ""
         cat_code = "ac"
         if row.get("appliance_id"):
-            app_rows = db.raw_query("SELECT * FROM appliance WHERE id = ? LIMIT 1", (row["appliance_id"],))
+            app_rows = db.raw_query("SELECT * FROM appliance WHERE id = %s LIMIT 1", (row["appliance_id"],))
             if app_rows:
                 brand_id = app_rows[0].get("brand_id")
                 cat_code = app_rows[0].get("category_code") or "ac"
                 if brand_id:
-                    b_rows = db.raw_query("SELECT name FROM brand WHERE id = ? LIMIT 1", (brand_id,))
+                    b_rows = db.raw_query("SELECT name FROM brand WHERE id = %s LIMIT 1", (brand_id,))
                     brand_name = b_rows[0]["name"] if b_rows else ""
 
-        existing_plans = db.select("visit_plan", "ticket_id = ?", (ticket_id,), order_by="CAST(version AS INTEGER) DESC", limit=1)
+        existing_plans = db.select("visit_plan", "ticket_id = %s", (ticket_id,), order_by="CAST(version AS INTEGER) DESC", limit=1)
         next_ver = int(existing_plans[0]["version"]) + 1 if existing_plans else 1
 
         diag = run_diagnostic_agent(
@@ -321,7 +325,7 @@ def rerun_diagnosis(
             category_code=cat_code,
             error_codes=cc.get("error_codes") or [],
             already_tried=cc.get("what_was_tried") or [],
-            rerun_of=existing_plans[0]["id"] if existing_plans else "console_rerun",
+            rerun_of=existing_plans[0]["id"] if existing_plans else "new_info",
         )
         top_hyp = diag["hypotheses"][0] if diag["hypotheses"] else None
 
@@ -333,7 +337,7 @@ def rerun_diagnosis(
                 "centre_id": cid,
                 "ticket_id": ticket_id,
                 "version": next_ver,
-                "trigger_reason": "console_rerun",
+                "trigger_reason": "new_info",
                 "already_tried": cc.get("what_was_tried") or [],
                 "required_skills": [cat_code],
                 "est_duration_p50_min": 55,
@@ -373,8 +377,8 @@ def rerun_diagnosis(
                 "evidence": top_hyp["evidence"] if top_hyp else [],
             },
         )
-        db.update("ticket", {"updated_at": now_iso}, "id = ?", (ticket_id,))
-        updated = db.select_one("ticket", "id = ?", (ticket_id,))
+        db.update("ticket", {"updated_at": now_iso}, "id = %s", (ticket_id,))
+        updated = db.select_one("ticket", "id = %s", (ticket_id,))
         assert updated is not None
         return serialize_ticket_detail(db, updated)
 
@@ -387,7 +391,7 @@ def return_to_brand(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        row = db.select_one("ticket", "id = ?", (ticket_id,))
+        row = db.select_one("ticket", "id = %s", (ticket_id,))
         if not row:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
         cid = row["centre_id"]
@@ -395,11 +399,11 @@ def return_to_brand(
         db.update(
             "ticket",
             {"status": "cancelled", "resolution": "returned_to_brand", "updated_at": now_iso},
-            "id = ?",
+            "id = %s",
             (ticket_id,),
         )
         if row.get("brand_referral_id"):
-            db.update("brand_referral", {"status": "declined"}, "id = ?", (row["brand_referral_id"],))
+            db.update("brand_referral", {"status": "declined"}, "id = %s", (row["brand_referral_id"],))
 
         projection_store.emit_event(
             db,
@@ -411,7 +415,7 @@ def return_to_brand(
             ticket_id=ticket_id,
             payload={"reason": body.reason},
         )
-        updated = db.select_one("ticket", "id = ?", (ticket_id,))
+        updated = db.select_one("ticket", "id = %s", (ticket_id,))
         assert updated is not None
         return serialize_ticket_detail(db, updated)
 
@@ -424,17 +428,17 @@ def send_ticket_message(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        row = db.select_one("ticket", "id = ?", (ticket_id,))
+        row = db.select_one("ticket", "id = %s", (ticket_id,))
         if not row:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
         cid = row["centre_id"]
         hid = row["household_id"]
 
         msg_id = str(uuid.uuid4())
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO whatsapp_message (id, household_id, centre_id, ticket_id, direction, type, text, media_url, template, at, status)
-            VALUES (?, ?, ?, ?, 'out', 'text', ?, NULL, NULL, ?, 'sent')
+            VALUES (%s, %s, %s, %s, 'out', 'text', %s, NULL, NULL, %s, 'sent')
             """,
             (msg_id, hid, cid, ticket_id, body.text, now_iso),
         )
@@ -481,7 +485,7 @@ def centre_overview(auth: AuthContext = Depends(require_console_auth)) -> Dict[s
         fix_attempts = db.select("fix_attempt")
         urgencies = db.select("urgency_assessment")
         candidates = db.select("assignment_candidate")
-        techs = db.select("technician", "active = 't'")
+        techs = db.select("technician", "active = TRUE")
 
         open_statuses = {"new", "triage", "clarifying", "self_fix", "diagnosed", "awaiting_slot", "booked", "scheduled", "in_progress", "needs_part", "completed", "escalated"}
         open_by_class = {"safety": 0, "urgent": 0, "standard": 0, "planned": 0}
@@ -596,7 +600,7 @@ def centre_calendar(
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
         if date:
-            visits = db.select("visit", "planned_start LIKE ?", (f"{date}%",), order_by="planned_start")
+            visits = db.select("visit", "planned_start LIKE %s", (f"{date}%",), order_by="planned_start")
         else:
             visits = db.select("visit", order_by="planned_start DESC", limit=100)
         items = [
@@ -696,7 +700,7 @@ def appliance_timeline(
         if not cid:
             # Platform fallback: use first linked centre or read directly
             links = db.raw_query(
-                "SELECT l.centre_id FROM household_centre_link l JOIN appliance a ON a.household_id = l.household_id WHERE a.id = ? LIMIT 1",
+                "SELECT l.centre_id FROM household_centre_link l JOIN appliance a ON a.household_id = l.household_id WHERE a.id = %s LIMIT 1",
                 (appliance_id,),
             )
             cid = links[0]["centre_id"] if links else ""
@@ -720,7 +724,7 @@ def appliance_timeline(
 
 
 def _serialize_safefix(db: Any, row: Dict[str, Any]) -> Dict[str, Any]:
-    attempts = db.raw_query("SELECT outcome FROM fix_attempt WHERE catalogue_id = ?", (row["id"],))
+    attempts = db.raw_query("SELECT outcome FROM fix_attempt WHERE catalogue_id = %s", (row["id"],))
     total = len(attempts)
     worked = sum(1 for a in attempts if a.get("outcome") == "worked")
     return {
@@ -757,7 +761,7 @@ def list_safefix(auth: AuthContext = Depends(require_console_auth)) -> Dict[str,
 @router.get("/safefix/{code}")
 def get_safefix(code: str, auth: AuthContext = Depends(require_console_auth)) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        rows = db.raw_query("SELECT * FROM safe_fix_catalogue WHERE code = ? LIMIT 1", (code,))
+        rows = db.raw_query("SELECT * FROM safe_fix_catalogue WHERE code = %s LIMIT 1", (code,))
         if not rows:
             raise APIError("safefix_not_found", f"Safe fix {code} not found", status_code=404)
         return _serialize_safefix(db, rows[0])

@@ -5,6 +5,8 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
+from psycopg.types.json import Jsonb
+
 from services.agents.diagnostic_agent import run_diagnostic_agent
 from services.agents.engines import (
     AssignmentRequirements,
@@ -78,16 +80,16 @@ def _load_db_safefix_catalogue(db: RLSSession) -> List[SafeFixEntry]:
 
 
 def _load_centre_technicians(db: RLSSession, centre_id: str, category_code: str = "ac") -> List[TechnicianProfile]:
-    techs = db.raw_query("SELECT * FROM technician WHERE centre_id = ? AND active = 't'", (centre_id,))
+    techs = db.raw_query("SELECT * FROM technician WHERE centre_id = %s AND active = TRUE", (centre_id,))
     profiles: List[TechnicianProfile] = []
     for t in techs:
-        skills_rows = db.raw_query("SELECT * FROM technician_skill WHERE technician_id = ?", (t["id"],))
+        skills_rows = db.raw_query("SELECT * FROM technician_skill WHERE technician_id = %s", (t["id"],))
         cat_level = 1
         for s in skills_rows:
             if s["category_code"] == category_code:
                 cat_level = max(cat_level, int(s.get("level") or 1))
         m_rows = db.raw_query(
-            "SELECT * FROM technician_metrics WHERE technician_id = ? AND category_code = 'ALL' ORDER BY period_end DESC LIMIT 1",
+            "SELECT * FROM technician_metrics WHERE technician_id = %s AND category_code = 'ALL' ORDER BY period_end DESC LIMIT 1",
             (t["id"],),
         )
         ftf = float(m_rows[0]["first_time_fix_rate"]) if m_rows and m_rows[0].get("first_time_fix_rate") else 0.72
@@ -239,8 +241,8 @@ def process_inbound_case(
 
     if auth_res.decision == "return_to_brand":
         if brand_referral_id:
-            db.conn.execute(
-                "UPDATE brand_referral SET authority_checked = ?, status = 'declined' WHERE id = ?",
+            db.execute(
+                "UPDATE brand_referral SET authority_checked = %s, status = 'declined' WHERE id = %s",
                 (auth_res.level, brand_referral_id),
             )
         events.append(
@@ -261,7 +263,7 @@ def process_inbound_case(
         }
 
     # 4. Service area check (Q4)
-    centre_row = db.raw_query("SELECT * FROM service_centre WHERE id = ?", (centre_id,))[0]
+    centre_row = db.raw_query("SELECT * FROM service_centre WHERE id = %s", (centre_id,))[0]
     service_pincodes = parse_pg_array(centre_row.get("service_pincodes"))
     hh_pin = pincode or intake["facts"].get("mentioned_pincode") or hh.get("pincode")
     out_of_area = bool(hh_pin and service_pincodes and hh_pin not in service_pincodes)
@@ -270,7 +272,7 @@ def process_inbound_case(
     prior_repairs = db.raw_query(
         """
         SELECT created_at FROM ticket
-        WHERE centre_id = ? AND appliance_id = ? AND job_type = 'repair' AND status IN ('closed', 'completed')
+        WHERE centre_id = %s AND appliance_id = %s AND job_type = 'repair' AND status IN ('closed', 'completed')
         ORDER BY created_at DESC LIMIT 1
         """,
         (centre_id, app["id"]),
@@ -288,7 +290,41 @@ def process_inbound_case(
         repeat_within_days=repeat_days,
     )
 
-    # 7. Create ticket
+    # 7. Create ticket (satisfy schema CHECKs for brand_forward / retailer_handover FKs)
+    if trigger == "brand_forward" and not brand_referral_id:
+        brand_referral_id = str(uuid.uuid4())
+        db.insert(
+            "brand_referral",
+            {
+                "id": brand_referral_id,
+                "centre_id": centre_id,
+                "brand_id": app["brand_id"],
+                "brand_request_ref": f"BR-{uuid.uuid4().hex[:10]}",
+                "received_at": now_iso,
+                "payload": {"text": intake["sanitized_text"]},
+                "claimed_entitlement": entitlement if entitlement in ("brand_warranty", "extended_warranty", "amc") else "none",
+                "authority_checked": auth_res.level,
+                "status": "case_opened",
+            },
+        )
+    if trigger == "retailer_handover" and not retailer_handover_id:
+        retailer_handover_id = str(uuid.uuid4())
+        r_rows = db.raw_query("SELECT id FROM retailer LIMIT 1")
+        ret_id = r_rows[0]["id"] if r_rows else str(uuid.uuid4())
+        db.insert(
+            "retailer_handover",
+            {
+                "id": retailer_handover_id,
+                "centre_id": centre_id,
+                "retailer_id": ret_id,
+                "order_ref": f"ORD-{uuid.uuid4().hex[:10]}",
+                "requested_job": "installation",
+                "payload": {"text": intake["sanitized_text"]},
+                "received_at": now_iso,
+                "status": "case_opened",
+            },
+        )
+
     ticket_id = str(uuid.uuid4())
     initial_status = "escalated" if urg.safety_flag else ("cancelled" if out_of_area else "triage")
     case_card = {
@@ -599,14 +635,14 @@ def process_inbound_case(
             "ticket_id": ticket_id,
             "version": 1,
             "trigger_reason": plan.trigger_reason,
-            "already_tried": already_tried,
-            "required_skills": plan.required_skills,
+            "already_tried": Jsonb(already_tried),
+            "required_skills": Jsonb(plan.required_skills),
             "est_duration_p50_min": plan.est_duration_p50_min,
             "est_duration_p80_min": plan.est_duration_p80_min,
-            "tools_needed": "{" + ",".join(plan.tools_needed) + "}",
-            "requires_safety_cert": "{" + ",".join(plan.requires_safety_cert) + "}",
+            "tools_needed": list(plan.tools_needed),
+            "requires_safety_cert": list(plan.requires_safety_cert),
             "access_notes": plan.access_notes,
-            "confidence": str(plan.confidence),
+            "confidence": float(plan.confidence),
             "model_version": diag["model_version"],
             "created_at": now_iso,
         },
@@ -620,8 +656,8 @@ def process_inbound_case(
                 "visit_plan_id": plan_id,
                 "rank": idx,
                 "cause": h["label"],
-                "probability": str(h["probability"]),
-                "evidence": h.get("evidence", []),
+                "probability": float(h["probability"]),
+                "evidence": Jsonb(h.get("evidence", [])),
             },
         )
     events.append(
@@ -687,7 +723,7 @@ def process_inbound_case(
 
     # Estimate quote from centre price book
     pb_rows = db.raw_query(
-        "SELECT * FROM centre_price WHERE centre_id = ? AND category_code = ? AND job_type = ? LIMIT 1",
+        "SELECT * FROM centre_price WHERE centre_id = %s AND category_code = %s AND job_type = %s LIMIT 1",
         (centre_id, category, job_type),
     )
     pb = PriceBookEntry(
@@ -741,7 +777,7 @@ def process_inbound_case(
                 "planned_start": slot_start.isoformat(),
                 "planned_end": slot_end.isoformat(),
                 "is_return_visit": False,
-                "checklist": [],
+                "checklist": Jsonb([]),
                 "created_at": now_iso,
                 "updated_at": now_iso,
             },
@@ -803,7 +839,7 @@ def process_inbound_case(
     )
 
     final_status = "escalated" if urg.safety_flag else "booked"
-    db.update("ticket", {"status": final_status, "case_card": {**case_card, "what_was_tried": already_tried, "sources": top_hyp["citations"] if top_hyp else []}, "updated_at": now_iso}, "id = ?", (ticket_id,))
+    db.update("ticket", {"status": final_status, "case_card": {**case_card, "what_was_tried": already_tried, "sources": top_hyp["citations"] if top_hyp else []}, "updated_at": now_iso}, "id = %s", (ticket_id,))
     projection_store.project_ticket(
         centre_id,
         {

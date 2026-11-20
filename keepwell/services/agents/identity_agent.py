@@ -9,6 +9,26 @@ from services.common.db import RLSSession
 
 SERIAL_RE = re.compile(r"\b([A-Z]{2,4}[-]?[A-Z0-9]{4,14})\b")
 
+DB_CATEGORY_MAP = {
+    "ac": "air_conditioner",
+    "air_conditioner": "air_conditioner",
+    "refrigerator": "refrigerator",
+    "fridge": "refrigerator",
+    "washing_machine": "washing_machine",
+    "washer": "washing_machine",
+    "ro_purifier": "water_purifier",
+    "water_purifier": "water_purifier",
+    "ro": "water_purifier",
+    "geyser": "water_heater",
+    "water_heater": "water_heater",
+}
+
+
+def normalise_db_category(category_code: Optional[str]) -> str:
+    if not category_code:
+        return "air_conditioner"
+    return DB_CATEGORY_MAP.get(category_code.strip().lower(), "air_conditioner")
+
 
 def normalise_serial(serial: Optional[str]) -> Optional[str]:
     if not serial:
@@ -47,12 +67,12 @@ def resolve_identity(
         pincode=pincode,
     )
     hid = hh_info["household_id"]
-    hh_row = db.raw_query("SELECT * FROM household WHERE id = ?", (hid,))[0]
+    hh_row = db.raw_query("SELECT * FROM household WHERE id = %s", (hid,))[0]
 
     # Resolve brand_id if brand_name given
     brand_id: Optional[str] = None
     if brand_name:
-        b = db.raw_query("SELECT id FROM brand WHERE lower(name) = lower(?) LIMIT 1", (brand_name,))
+        b = db.raw_query("SELECT id FROM brand WHERE lower(name) = lower(%s) LIMIT 1", (brand_name,))
         if b:
             brand_id = b[0]["id"]
 
@@ -65,12 +85,12 @@ def resolve_identity(
     if serial_norm:
         if brand_id:
             rows = db.raw_query(
-                "SELECT * FROM appliance WHERE brand_id = ? AND serial_norm = ? AND identity_status <> 'merged' LIMIT 1",
+                "SELECT * FROM appliance WHERE brand_id = %s AND serial_norm = %s AND identity_status <> 'merged' LIMIT 1",
                 (brand_id, serial_norm),
             )
         else:
             rows = db.raw_query(
-                "SELECT * FROM appliance WHERE serial_norm = ? AND identity_status <> 'merged' LIMIT 1",
+                "SELECT * FROM appliance WHERE serial_norm = %s AND identity_status <> 'merged' LIMIT 1",
                 (serial_norm,),
             )
         if rows:
@@ -81,7 +101,7 @@ def resolve_identity(
     # 2. Household's existing active appliances matching category (and brand if known)
     if appliance_row is None:
         hh_apps = db.raw_query(
-            "SELECT * FROM appliance WHERE household_id = ? AND status = 'active' ORDER BY created_at DESC",
+            "SELECT * FROM appliance WHERE household_id = %s AND status = 'active' ORDER BY created_at DESC",
             (hid,),
         )
         if category_code:
@@ -107,7 +127,7 @@ def resolve_identity(
         model_id = None
         if model_code:
             m = db.raw_query(
-                "SELECT id, brand_id FROM appliance_model WHERE lower(model_code) = lower(?) LIMIT 1",
+                "SELECT id, brand_id FROM appliance_model WHERE lower(model_code) = lower(%s) LIMIT 1",
                 (model_code,),
             )
             if m:
@@ -121,7 +141,7 @@ def resolve_identity(
         appliance_row = {
             "id": app_id,
             "household_id": hid,
-            "category_code": category_code or "ac",
+            "category_code": normalise_db_category(category_code),
             "brand_id": brand_id,
             "model_id": model_id,
             "model_text": model_code,
@@ -139,11 +159,11 @@ def resolve_identity(
         identity_source = "invoice" if verified_via == "retailer_record" else "record"
 
     # Enrich brand & model metadata
-    b_row = db.raw_query("SELECT name FROM brand WHERE id = ?", (appliance_row["brand_id"],))
+    b_row = db.raw_query("SELECT name FROM brand WHERE id = %s", (appliance_row["brand_id"],))
     brand_label = b_row[0]["name"] if b_row else (brand_name or "Unknown")
     m_code = appliance_row.get("model_text")
     if appliance_row.get("model_id"):
-        m_row = db.raw_query("SELECT model_code FROM appliance_model WHERE id = ?", (appliance_row["model_id"],))
+        m_row = db.raw_query("SELECT model_code FROM appliance_model WHERE id = %s", (appliance_row["model_id"],))
         if m_row:
             m_code = m_row[0]["model_code"]
 

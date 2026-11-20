@@ -11,6 +11,9 @@ ALTER TABLE appliance
   ADD COLUMN IF NOT EXISTS evidence_level text NOT NULL DEFAULT 'unverified'
   CHECK (evidence_level IN ('confirmed', 'probable', 'unverified'));
 
+UPDATE appliance
+SET evidence_level = CASE WHEN identity_status = 'verified' THEN 'confirmed' ELSE 'unverified' END;
+
 -- 2. Technician spoken close-out debrief
 CREATE TABLE IF NOT EXISTS visit_debrief (
   id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -68,6 +71,21 @@ CREATE TABLE IF NOT EXISTS outbox_event (
   payload         jsonb NOT NULL DEFAULT '{}',
   processed_at    timestamptz,
   created_at      timestamptz NOT NULL DEFAULT now()
+);
+
+-- 5b. WhatsApp thread messages (mirrored to Firestore households/{id}/whatsapp_thread)
+CREATE TABLE IF NOT EXISTS whatsapp_message (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  household_id    uuid NOT NULL REFERENCES household(id) ON DELETE CASCADE,
+  centre_id       uuid NOT NULL REFERENCES service_centre(id),
+  ticket_id       uuid REFERENCES ticket(id) ON DELETE SET NULL,
+  direction       text NOT NULL CHECK (direction IN ('in', 'out')),
+  type            text NOT NULL DEFAULT 'text',
+  text            text,
+  media_url       text,
+  template        text,
+  at              timestamptz NOT NULL DEFAULT now(),
+  status          text NOT NULL DEFAULT 'delivered'
 );
 
 -- 6. DB-level consent gate enforcement triggers
@@ -133,15 +151,21 @@ JOIN ticket t ON t.id = f.ticket_id;
 
 -- 8. RLS on new centre-owned tables
 ALTER TABLE visit_debrief ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS centre_isolation ON visit_debrief;
 CREATE POLICY centre_isolation ON visit_debrief
   USING (centre_id = current_centre() OR is_platform())
   WITH CHECK (centre_id = current_centre() OR is_platform());
 
 ALTER TABLE payment_intent ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS centre_isolation ON payment_intent;
 CREATE POLICY centre_isolation ON payment_intent
   USING (centre_id = current_centre() OR is_platform())
   WITH CHECK (centre_id = current_centre() OR is_platform());
 
-GRANT SELECT, INSERT, UPDATE ON visit_debrief, payment_intent, device_token, outbox_event TO kw_app;
+-- 9. Grants for non-superuser kw_app (keep appliance_event & access_log append-only)
+GRANT USAGE ON SCHEMA kw TO kw_app;
+GRANT SELECT, INSERT, UPDATE, DELETE ON visit_debrief, payment_intent, device_token, outbox_event, whatsapp_message TO kw_app;
+GRANT SELECT ON fvr_14d TO kw_app;
+GRANT DELETE ON consent_ledger, visit_plan, plan_hypothesis, plan_part, assignment_candidate, slot_proposal, diagnosis_media TO kw_app;
 
 COMMIT;

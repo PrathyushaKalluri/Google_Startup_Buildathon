@@ -45,7 +45,7 @@ def _resolve_case_centre(db: Any, case: Dict[str, Any]) -> tuple[str, str]:
     payload = case.get("payload") or {}
     if case.get("trigger") == "brand_forward":
         brand_name = str(payload.get("brand") or "")
-        b_rows = db.raw_query("SELECT id FROM brand WHERE LOWER(name) = LOWER(?) LIMIT 1", (brand_name,))
+        b_rows = db.raw_query("SELECT id FROM brand WHERE LOWER(name) = LOWER(%s) LIMIT 1", (brand_name,))
         bid = b_rows[0]["id"] if b_rows else None
         cid = _resolve_target_centre_for_brand(db, payload, bid)
         return cid, cid2key.get(cid, "c_fw")
@@ -166,19 +166,19 @@ def list_demo_households(
                 """
                 SELECT h.* FROM household h
                 JOIN household_centre_link l ON l.household_id = h.id
-                WHERE l.centre_id = ?
+                WHERE l.centre_id = %s
                 ORDER BY h.created_at
-                LIMIT ?
+                LIMIT %s
                 """,
                 (cid, limit),
             )
         else:
-            rows = db.raw_query("SELECT * FROM household ORDER BY created_at LIMIT ?", (limit,))
+            rows = db.raw_query("SELECT * FROM household ORDER BY created_at LIMIT %s", (limit,))
 
         items: List[Dict[str, Any]] = []
         for h in rows:
             members = db.raw_query(
-                "SELECT name FROM household_member WHERE household_id = ? ORDER BY CASE role WHEN 'owner' THEN 0 ELSE 1 END LIMIT 1",
+                "SELECT name FROM household_member WHERE household_id = %s ORDER BY CASE role WHEN 'owner' THEN 0 ELSE 1 END LIMIT 1",
                 (h["id"],),
             )
             display_name = members[0]["name"] if members else "Household"

@@ -1,4 +1,4 @@
-"""Serializers mapping Postgres/SQLite rows to exact Contract C5.1 JSON shapes."""
+"""Serializers mapping PostgreSQL 16 rows to exact Contract C5.1 JSON shapes."""
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
@@ -27,12 +27,12 @@ def _to_float(val: Any, default: float = 0.0) -> float:
 def serialize_household_ref(db: RLSSession, hh_row: Dict[str, Any]) -> Dict[str, Any]:
     hid = hh_row["id"]
     members = db.raw_query(
-        "SELECT name FROM household_member WHERE household_id = ? ORDER BY CASE role WHEN 'owner' THEN 0 ELSE 1 END, created_at LIMIT 1",
+        "SELECT name FROM household_member WHERE household_id = %s ORDER BY CASE role WHEN 'owner' THEN 0 ELSE 1 END, created_at LIMIT 1",
         (hid,),
     )
     display_name = members[0]["name"] if members else "Household"
     linked_cnt_rows = db.raw_query(
-        "SELECT COUNT(*) AS c FROM household_centre_link WHERE household_id = ?",
+        "SELECT COUNT(*) AS c FROM household_centre_link WHERE household_id = %s",
         (hid,),
     )
     linked_count = _to_int(linked_cnt_rows[0]["c"]) if linked_cnt_rows else 1
@@ -51,11 +51,11 @@ def serialize_household_ref(db: RLSSession, hh_row: Dict[str, Any]) -> Dict[str,
 
 
 def serialize_appliance_ref(db: RLSSession, app_row: Dict[str, Any]) -> Dict[str, Any]:
-    brand_rows = db.raw_query("SELECT name FROM brand WHERE id = ? LIMIT 1", (app_row.get("brand_id"),))
+    brand_rows = db.raw_query("SELECT name FROM brand WHERE id = %s LIMIT 1", (app_row.get("brand_id"),))
     brand_name = brand_rows[0]["name"] if brand_rows else "Unknown"
     model_code = app_row.get("model_text")
     if app_row.get("model_id"):
-        m_rows = db.raw_query("SELECT model_code FROM appliance_model WHERE id = ? LIMIT 1", (app_row["model_id"],))
+        m_rows = db.raw_query("SELECT model_code FROM appliance_model WHERE id = %s LIMIT 1", (app_row["model_id"],))
         if m_rows:
             model_code = m_rows[0]["model_code"]
     serial = app_row.get("serial_no") or ""
@@ -73,7 +73,7 @@ def serialize_appliance_ref(db: RLSSession, app_row: Dict[str, Any]) -> Dict[str
 
 
 def serialize_ticket_card(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[str, Any]:
-    hh_rows = db.raw_query("SELECT * FROM household WHERE id = ? LIMIT 1", (ticket_row.get("household_id"),))
+    hh_rows = db.raw_query("SELECT * FROM household WHERE id = %s LIMIT 1", (ticket_row.get("household_id"),))
     hh_ref = serialize_household_ref(db, hh_rows[0]) if hh_rows else {
         "id": ticket_row.get("household_id") or "",
         "display_name": "Unknown",
@@ -87,7 +87,7 @@ def serialize_ticket_card(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[st
 
     app_ref: Optional[Dict[str, Any]] = None
     if ticket_row.get("appliance_id"):
-        a_rows = db.raw_query("SELECT * FROM appliance WHERE id = ? LIMIT 1", (ticket_row["appliance_id"],))
+        a_rows = db.raw_query("SELECT * FROM appliance WHERE id = %s LIMIT 1", (ticket_row["appliance_id"],))
         if a_rows:
             app_ref = serialize_appliance_ref(db, a_rows[0])
 
@@ -134,7 +134,7 @@ def serialize_ticket_card(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[st
 
 
 def serialize_quote(db: RLSSession, q_row: Dict[str, Any]) -> Dict[str, Any]:
-    line_rows = db.raw_query("SELECT * FROM quote_line WHERE quote_id = ? ORDER BY id", (q_row["id"],))
+    line_rows = db.raw_query("SELECT * FROM quote_line WHERE quote_id = %s ORDER BY id", (q_row["id"],))
     lines: List[Dict[str, Any]] = []
     total = 0
     household = 0
@@ -229,7 +229,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
     }
 
     urgency_rows = db.raw_query(
-        "SELECT * FROM urgency_assessment WHERE ticket_id = ? ORDER BY created_at",
+        "SELECT * FROM urgency_assessment WHERE ticket_id = %s ORDER BY created_at",
         (tid,),
     )
     urgency = [
@@ -246,7 +246,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
     ]
 
     gate_rows = db.raw_query(
-        "SELECT * FROM consent_gate WHERE ticket_id = ? ORDER BY gate, asked_at",
+        "SELECT * FROM consent_gate WHERE ticket_id = %s ORDER BY gate, asked_at",
         (tid,),
     )
     gates = [
@@ -261,7 +261,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
     ]
 
     qa_rows = db.raw_query(
-        "SELECT * FROM clarifying_qa WHERE ticket_id = ? ORDER BY CAST(seq AS INTEGER), asked_at",
+        "SELECT * FROM clarifying_qa WHERE ticket_id = %s ORDER BY CAST(seq AS INTEGER), asked_at",
         (tid,),
     )
     clarifying_qa = [
@@ -275,12 +275,12 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
         for q in qa_rows
     ]
 
-    fa_rows = db.raw_query("SELECT * FROM fix_attempt WHERE ticket_id = ? ORDER BY offered_at", (tid,))
+    fa_rows = db.raw_query("SELECT * FROM fix_attempt WHERE ticket_id = %s ORDER BY offered_at", (tid,))
     fix_attempts: List[Dict[str, Any]] = []
     tried_summary: List[Dict[str, Any]] = []
     for fa in fa_rows:
         cat = db.raw_query(
-            "SELECT code, title, step_count FROM safe_fix_catalogue WHERE id = ? LIMIT 1",
+            "SELECT code, title, step_count FROM safe_fix_catalogue WHERE id = %s LIMIT 1",
             (fa.get("catalogue_id"),),
         )
         cat_code = cat[0]["code"] if cat else ""
@@ -310,7 +310,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
         )
 
     vp_rows = db.raw_query(
-        "SELECT * FROM visit_plan WHERE ticket_id = ? ORDER BY CAST(version AS INTEGER) DESC, created_at DESC LIMIT 1",
+        "SELECT * FROM visit_plan WHERE ticket_id = %s ORDER BY CAST(version AS INTEGER) DESC, created_at DESC LIMIT 1",
         (tid,),
     )
     visit_plan: Optional[Dict[str, Any]] = None
@@ -318,7 +318,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
     if vp_rows:
         vp = vp_rows[0]
         hyps = db.raw_query(
-            "SELECT * FROM plan_hypothesis WHERE visit_plan_id = ? ORDER BY CAST(rank AS INTEGER)",
+            "SELECT * FROM plan_hypothesis WHERE visit_plan_id = %s ORDER BY CAST(rank AS INTEGER)",
             (vp["id"],),
         )
         diagnosis = {
@@ -338,10 +338,10 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
             "model_version": vp.get("model_version") or "keepwell-diag-v1",
         }
 
-        pp_rows = db.raw_query("SELECT * FROM plan_part WHERE visit_plan_id = ?", (vp["id"],))
+        pp_rows = db.raw_query("SELECT * FROM plan_part WHERE visit_plan_id = %s", (vp["id"],))
         parts_list: List[Dict[str, Any]] = []
         for pp in pp_rows:
-            pcat = db.raw_query("SELECT part_no, name FROM part_catalogue WHERE id = ? LIMIT 1", (pp.get("part_id"),))
+            pcat = db.raw_query("SELECT part_no, name FROM part_catalogue WHERE id = %s LIMIT 1", (pp.get("part_id"),))
             parts_list.append(
                 {
                     "part_no": pcat[0]["part_no"] if pcat else (pp.get("part_id") or ""),
@@ -369,12 +369,12 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
         }
 
     cand_rows = db.raw_query(
-        "SELECT * FROM assignment_candidate WHERE ticket_id = ? ORDER BY CAST(rank AS INTEGER), created_at",
+        "SELECT * FROM assignment_candidate WHERE ticket_id = %s ORDER BY CAST(rank AS INTEGER), created_at",
         (tid,),
     )
     candidates: List[Dict[str, Any]] = []
     for c in cand_rows:
-        t_rows = db.raw_query("SELECT name FROM technician WHERE id = ? LIMIT 1", (c.get("technician_id"),))
+        t_rows = db.raw_query("SELECT name FROM technician WHERE id = %s LIMIT 1", (c.get("technician_id"),))
         t_name = t_rows[0]["name"] if t_rows else "Technician"
         bd = parse_pg_json(c.get("score_breakdown"), {})
         candidates.append(
@@ -400,7 +400,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
             }
         )
 
-    sp_rows = db.raw_query("SELECT * FROM slot_proposal WHERE ticket_id = ? ORDER BY shown_at", (tid,))
+    sp_rows = db.raw_query("SELECT * FROM slot_proposal WHERE ticket_id = %s ORDER BY shown_at", (tid,))
     slot_proposals = [
         {
             "slot_start": sp.get("slot_start"),
@@ -413,23 +413,23 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
         for sp in sp_rows
     ]
 
-    q_rows = db.raw_query("SELECT * FROM quote WHERE ticket_id = ? ORDER BY CAST(version AS INTEGER)", (tid,))
+    q_rows = db.raw_query("SELECT * FROM quote WHERE ticket_id = %s ORDER BY CAST(version AS INTEGER)", (tid,))
     quotes = [serialize_quote(db, q) for q in q_rows]
 
-    p_rows = db.raw_query("SELECT * FROM payment_intent WHERE ticket_id = ? ORDER BY created_at", (tid,))
+    p_rows = db.raw_query("SELECT * FROM payment_intent WHERE ticket_id = %s ORDER BY created_at", (tid,))
     payments = [serialize_payment_intent(p) for p in p_rows]
 
-    v_rows = db.raw_query("SELECT * FROM visit WHERE ticket_id = ? ORDER BY created_at DESC LIMIT 1", (tid,))
+    v_rows = db.raw_query("SELECT * FROM visit WHERE ticket_id = %s ORDER BY created_at DESC LIMIT 1", (tid,))
     visit = serialize_visit(v_rows[0]) if v_rows else None
 
     debrief: Optional[Dict[str, Any]] = None
     if v_rows:
-        d_rows = db.raw_query("SELECT * FROM visit_debrief WHERE visit_id = ? LIMIT 1", (v_rows[0]["id"],))
+        d_rows = db.raw_query("SELECT * FROM visit_debrief WHERE visit_id = %s LIMIT 1", (v_rows[0]["id"],))
         if d_rows:
             debrief = serialize_debrief(d_rows[0])
 
     ev_rows = db.raw_query(
-        "SELECT * FROM outbox_event WHERE ticket_id = ? ORDER BY created_at",
+        "SELECT * FROM outbox_event WHERE ticket_id = %s ORDER BY created_at",
         (tid,),
     )
     timeline = [
@@ -446,7 +446,7 @@ def serialize_ticket_detail(db: RLSSession, ticket_row: Dict[str, Any]) -> Dict[
 
     auth_level = "none"
     if ticket_row.get("appliance_id"):
-        a_rows = db.raw_query("SELECT brand_id FROM appliance WHERE id = ? LIMIT 1", (ticket_row["appliance_id"],))
+        a_rows = db.raw_query("SELECT brand_id FROM appliance WHERE id = %s LIMIT 1", (ticket_row["appliance_id"],))
         if a_rows and a_rows[0].get("brand_id"):
             auth_level = db.centre_authority(cid, a_rows[0]["brand_id"], on_date="2026-11-21")
 

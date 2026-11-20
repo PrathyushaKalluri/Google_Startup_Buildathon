@@ -62,16 +62,16 @@ def _resolve_quote_from_token(db: RLSSession, claims: Dict[str, Any]) -> Dict[st
     # Token may be scoped directly to a quote_id, ticket_id, or household_id
     if scope == "quote" or claims.get("quote_id"):
         qid = claims.get("quote_id") or sub
-        rows = db.raw_query("SELECT * FROM quote WHERE id = ? LIMIT 1", (qid,))
+        rows = db.raw_query("SELECT * FROM quote WHERE id = %s LIMIT 1", (qid,))
         if rows:
             return rows[0]
     if scope == "ticket" or claims.get("ticket_id"):
         tid = claims.get("ticket_id") or sub
-        rows = db.raw_query("SELECT * FROM quote WHERE ticket_id = ? ORDER BY CAST(version AS INTEGER) DESC LIMIT 1", (tid,))
+        rows = db.raw_query("SELECT * FROM quote WHERE ticket_id = %s ORDER BY CAST(version AS INTEGER) DESC LIMIT 1", (tid,))
         if rows:
             return rows[0]
     # Fallback: treat sub as quote_id first, then household_id
-    rows = db.raw_query("SELECT * FROM quote WHERE id = ? LIMIT 1", (sub,))
+    rows = db.raw_query("SELECT * FROM quote WHERE id = %s LIMIT 1", (sub,))
     if rows:
         return rows[0]
     hh_id = claims.get("household_id") or sub
@@ -79,7 +79,7 @@ def _resolve_quote_from_token(db: RLSSession, claims: Dict[str, Any]) -> Dict[st
         """
         SELECT q.* FROM quote q
         JOIN ticket t ON t.id = q.ticket_id
-        WHERE t.household_id = ?
+        WHERE t.household_id = %s
         ORDER BY q.created_at DESC, CAST(q.version AS INTEGER) DESC
         LIMIT 1
         """,
@@ -111,18 +111,18 @@ def get_home_memory(token: str) -> Dict[str, Any]:
     claims = _verify_token_or_401(token)
     household_id = claims.get("household_id") or claims.get("sub")
     with get_rls_session(role="platform") as db:
-        hh_rows = db.raw_query("SELECT * FROM household WHERE id = ? LIMIT 1", (household_id,))
+        hh_rows = db.raw_query("SELECT * FROM household WHERE id = %s LIMIT 1", (household_id,))
         if not hh_rows:
             raise APIError("household_not_found", f"Household {household_id} not found", status_code=404)
         hh_ref = serialize_household_ref(db, hh_rows[0])
 
-        app_rows = db.raw_query("SELECT * FROM appliance WHERE household_id = ? ORDER BY created_at", (household_id,))
+        app_rows = db.raw_query("SELECT * FROM appliance WHERE household_id = %s ORDER BY created_at", (household_id,))
         appliances = [serialize_appliance_ref(db, a) for a in app_rows]
 
         app_ids = [a["id"] for a in app_rows]
         timeline: List[Dict[str, Any]] = []
         if app_ids:
-            placeholders = ", ".join("?" for _ in app_ids)
+            placeholders = ", ".join("%s" for _ in app_ids)
             ev_rows = db.raw_query(
                 f"SELECT * FROM appliance_event WHERE appliance_id IN ({placeholders}) ORDER BY occurred_at DESC LIMIT 100",
                 app_ids,
@@ -176,7 +176,7 @@ def get_public_quote(token: str) -> Dict[str, Any]:
         q_row = _resolve_quote_from_token(db, claims)
         q_out = serialize_quote(db, q_row)
         p_rows = db.raw_query(
-            "SELECT * FROM payment_intent WHERE quote_id = ? ORDER BY created_at DESC LIMIT 1",
+            "SELECT * FROM payment_intent WHERE quote_id = %s ORDER BY created_at DESC LIMIT 1",
             (q_row["id"],),
         )
         return {
@@ -191,8 +191,8 @@ def approve_public_quote(token: str) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(role="platform") as db:
         q_row = _resolve_quote_from_token(db, claims)
-        db.conn.execute(
-            "UPDATE quote SET approved_at = ?, approval_channel = 'web_link', approval_ref = ? WHERE id = ?",
+        db.execute(
+            "UPDATE quote SET approved_at = %s, approval_channel = 'app', approval_ref = %s WHERE id = %s",
             (now_iso, f"APR-{uuid.uuid4().hex[:8].upper()}", q_row["id"]),
         )
         projection_store.emit_event(
@@ -204,7 +204,7 @@ def approve_public_quote(token: str) -> Dict[str, Any]:
             ticket_id=q_row["ticket_id"],
             payload={"quote_id": q_row["id"], "approval_method": "web_link"},
         )
-        updated = db.raw_query("SELECT * FROM quote WHERE id = ? LIMIT 1", (q_row["id"],))[0]
+        updated = db.raw_query("SELECT * FROM quote WHERE id = %s LIMIT 1", (q_row["id"],))[0]
         return serialize_quote(db, updated)
 
 
@@ -217,16 +217,16 @@ def public_confirm_otp(token: str, body: PublicOtpConfirmRequest) -> Dict[str, A
 
     closed_iso = (res.closed_at or datetime.now(timezone.utc)).isoformat()
     with get_rls_session(role="platform") as db:
-        v_rows = db.raw_query("SELECT * FROM visit WHERE id = ? LIMIT 1", (res.visit_id,))
+        v_rows = db.raw_query("SELECT * FROM visit WHERE id = %s LIMIT 1", (res.visit_id,))
         if not v_rows:
             raise APIError("visit_not_found", f"Visit {res.visit_id} not found", status_code=404)
         visit = v_rows[0]
-        db.conn.execute(
-            "UPDATE visit SET closure_otp_ref = ?, closure_confirmed_at = ?, outcome = COALESCE(outcome, 'fixed'), updated_at = ? WHERE id = ?",
+        db.execute(
+            "UPDATE visit SET closure_otp_ref = %s, closure_confirmed_at = %s, outcome = COALESCE(outcome, 'fixed'), updated_at = %s WHERE id = %s",
             (body.otp_ref, closed_iso, closed_iso, visit["id"]),
         )
-        db.conn.execute(
-            "UPDATE ticket SET status = 'closed', resolution = 'fixed_by_visit', closure_otp_ref = ?, closure_confirmed_at = ?, closed_at = ?, updated_at = ? WHERE id = ?",
+        db.execute(
+            "UPDATE ticket SET status = 'closed', resolution = 'visit', closure_otp_ref = %s, closure_confirmed_at = %s, closed_at = %s, updated_at = %s WHERE id = %s",
             (body.otp_ref, closed_iso, closed_iso, closed_iso, visit["ticket_id"]),
         )
         projection_store.emit_event(
@@ -236,9 +236,9 @@ def public_confirm_otp(token: str, body: PublicOtpConfirmRequest) -> Dict[str, A
             "household",
             "Job closed by household OTP",
             ticket_id=visit["ticket_id"],
-            payload={"resolution": "fixed_by_visit", "closure_confirmation_ref": res.closure_confirmation_ref},
+            payload={"resolution": "visit", "closure_confirmation_ref": res.closure_confirmation_ref},
         )
-        t_row = db.raw_query("SELECT * FROM ticket WHERE id = ? LIMIT 1", (visit["ticket_id"],))[0]
+        t_row = db.raw_query("SELECT * FROM ticket WHERE id = %s LIMIT 1", (visit["ticket_id"],))[0]
         projection_store.project_ticket(visit["centre_id"], serialize_ticket_card(db, t_row))
         return {
             "closed": True,
@@ -259,7 +259,7 @@ def create_public_pay_intent(token: str, body: PayIntentRequest) -> Dict[str, An
         if amount <= 0:
             raise APIError("zero_payable_amount", "Quote has no household payable balance", status_code=400)
 
-        c_rows = db.raw_query("SELECT name FROM service_centre WHERE id = ? LIMIT 1", (q_row["centre_id"],))
+        c_rows = db.raw_query("SELECT name FROM service_centre WHERE id = %s LIMIT 1", (q_row["centre_id"],))
         merchant_name = c_rows[0]["name"] if c_rows else "Keepwell Service Centre"
 
         intent = create_payment_intent(
@@ -275,12 +275,12 @@ def create_public_pay_intent(token: str, body: PayIntentRequest) -> Dict[str, An
         )
 
         gpay_json = json.dumps(intent.google_pay.model_dump()) if intent.google_pay else None
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO payment_intent (
               id, centre_id, quote_id, ticket_id, amount_paise, status, method,
               upi_intent_url, google_pay_json, payment_ref, created_at, expires_at, paid_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, NULL)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NULL, %s, %s, NULL)
             """,
             (
                 intent.id,
@@ -305,7 +305,7 @@ def create_public_pay_intent(token: str, body: PayIntentRequest) -> Dict[str, An
             ticket_id=q_row["ticket_id"],
             payload={"payment_id": intent.id, "method": intent.method, "amount_paise": intent.amount_paise},
         )
-        row = db.raw_query("SELECT * FROM payment_intent WHERE id = ? LIMIT 1", (intent.id,))[0]
+        row = db.raw_query("SELECT * FROM payment_intent WHERE id = %s LIMIT 1", (intent.id,))[0]
         return serialize_payment_intent(row)
 
 
@@ -315,7 +315,7 @@ def get_public_payment(token: str) -> Dict[str, Any]:
     with get_rls_session(role="platform") as db:
         q_row = _resolve_quote_from_token(db, claims)
         p_rows = db.raw_query(
-            "SELECT * FROM payment_intent WHERE quote_id = ? ORDER BY created_at DESC LIMIT 1",
+            "SELECT * FROM payment_intent WHERE quote_id = %s ORDER BY created_at DESC LIMIT 1",
             (q_row["id"],),
         )
         if not p_rows:
@@ -330,7 +330,7 @@ def sandbox_complete_public_payment(token: str, body: SandboxCompleteRequest) ->
     _verify_token_or_401(token)
 
     with get_rls_session(role="platform") as db:
-        p_rows = db.raw_query("SELECT * FROM payment_intent WHERE id = ? LIMIT 1", (body.payment_id,))
+        p_rows = db.raw_query("SELECT * FROM payment_intent WHERE id = %s LIMIT 1", (body.payment_id,))
         if not p_rows:
             raise APIError("payment_not_found", f"Payment intent {body.payment_id} not found", status_code=404)
         p_row = p_rows[0]
@@ -350,27 +350,27 @@ def sandbox_complete_public_payment(token: str, body: SandboxCompleteRequest) ->
         updated = complete_sandbox_payment(intent_model, result=body.result, payment_mode=settings.payment_mode)
         paid_iso = updated.paid_at.isoformat() if updated.paid_at else None
 
-        db.conn.execute(
-            "UPDATE payment_intent SET status = ?, payment_ref = ?, paid_at = ? WHERE id = ?",
+        db.execute(
+            "UPDATE payment_intent SET status = %s, payment_ref = %s, paid_at = %s WHERE id = %s",
             (updated.status, updated.payment_ref, paid_iso, updated.id),
         )
 
         # Update or insert household settlement_line — NEVER close the ticket!
         if updated.status == "paid":
             existing_sl = db.raw_query(
-                "SELECT id FROM settlement_line WHERE ticket_id = ? AND party_type = 'household' LIMIT 1",
+                "SELECT id FROM settlement_line WHERE ticket_id = %s AND party_type = 'household' LIMIT 1",
                 (p_row["ticket_id"],),
             )
             if existing_sl:
-                db.conn.execute(
-                    "UPDATE settlement_line SET status = 'settled', payment_ref = ?, settled_at = ? WHERE id = ?",
+                db.execute(
+                    "UPDATE settlement_line SET status = 'paid', payment_ref = %s, settled_at = %s WHERE id = %s",
                     (updated.payment_ref, paid_iso, existing_sl[0]["id"]),
                 )
             else:
-                db.conn.execute(
+                db.execute(
                     """
                     INSERT INTO settlement_line (id, ticket_id, party_type, party_id, direction, amount_paise, status, payment_ref, due_at, settled_at, centre_id)
-                    VALUES (?, ?, 'household', NULL, 'receivable', ?, 'settled', ?, ?, ?, ?)
+                    VALUES (%s, %s, 'household', NULL, 'receivable', %s, 'paid', %s, %s, %s, %s)
                     """,
                     (
                         str(uuid.uuid4()),
@@ -402,5 +402,5 @@ def sandbox_complete_public_payment(token: str, body: SandboxCompleteRequest) ->
                 payload={"payment_id": updated.id, "reason": "sandbox_failure"},
             )
 
-        refreshed = db.raw_query("SELECT * FROM payment_intent WHERE id = ? LIMIT 1", (updated.id,))[0]
+        refreshed = db.raw_query("SELECT * FROM payment_intent WHERE id = %s LIMIT 1", (updated.id,))[0]
         return serialize_payment_intent(refreshed)

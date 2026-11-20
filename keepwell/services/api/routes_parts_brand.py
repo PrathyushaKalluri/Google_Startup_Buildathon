@@ -28,7 +28,7 @@ def list_partscentre_requests(auth: AuthContext = Depends(require_parts_auth)) -
     with get_rls_session(role="platform") as db:
         if auth.parts_centre_id:
             rows = db.raw_query(
-                "SELECT * FROM reservation WHERE holder_type = 'parts_centre' AND holder_id = ? ORDER BY created_at DESC",
+                "SELECT * FROM reservation WHERE holder_type = 'parts_centre' AND holder_id = %s ORDER BY created_at DESC",
                 (auth.parts_centre_id,),
             )
             if not rows:
@@ -58,11 +58,12 @@ def list_partscentre_requests(auth: AuthContext = Depends(require_parts_auth)) -
 
 def _transition_parts_request(req_id: str, new_status: str) -> Dict[str, Any]:
     with get_rls_session(role="platform") as db:
-        rows = db.raw_query("SELECT * FROM reservation WHERE id = ? LIMIT 1", (req_id,))
+        rows = db.raw_query("SELECT * FROM reservation WHERE id = %s LIMIT 1", (req_id,))
         if not rows:
             raise APIError("parts_request_not_found", f"Parts request {req_id} not found", status_code=404)
         r = rows[0]
-        db.conn.execute("UPDATE reservation SET status = ? WHERE id = ?", (new_status, req_id))
+        db_status = {"accepted": "confirmed", "ready": "confirmed", "handed_over": "collected"}.get(new_status, new_status)
+        db.execute("UPDATE reservation SET status = %s WHERE id = %s", (db_status, req_id))
         projection_store.project_parts_request(
             r["centre_id"],
             req_id,
@@ -113,7 +114,7 @@ def update_partscentre_stock(
 
         part_id = body.part_id
         if not part_id and body.part_no:
-            found = db.raw_query("SELECT id FROM part_catalogue WHERE part_no = ? LIMIT 1", (body.part_no,))
+            found = db.raw_query("SELECT id FROM part_catalogue WHERE part_no = %s LIMIT 1", (body.part_no,))
             if not found:
                 raise APIError("unknown_part", f"Part {body.part_no} not found", status_code=404, field="part_no")
             part_id = found[0]["id"]
@@ -121,21 +122,21 @@ def update_partscentre_stock(
             raise APIError("missing_part_id", "part_id or part_no required", status_code=400)
 
         existing = db.raw_query(
-            "SELECT id FROM stock WHERE holder_type = 'parts_centre' AND holder_id = ? AND part_id = ? LIMIT 1",
+            "SELECT id FROM stock WHERE holder_type = 'parts_centre' AND holder_id = %s AND part_id = %s LIMIT 1",
             (pc_id, part_id),
         )
         if existing:
             stock_id = existing[0]["id"]
-            db.conn.execute(
-                "UPDATE stock SET quantity = ?, as_of = ? WHERE id = ?",
+            db.execute(
+                "UPDATE stock SET quantity = %s, as_of = %s WHERE id = %s",
                 (str(body.quantity), now_iso, stock_id),
             )
         else:
             stock_id = str(uuid.uuid4())
-            db.conn.execute(
+            db.execute(
                 """
                 INSERT INTO stock (id, holder_type, holder_id, centre_id, part_id, quantity, as_of, source, confidence)
-                VALUES (?, 'parts_centre', ?, NULL, ?, ?, ?, 'api', '1.0')
+                VALUES (%s, 'parts_centre', %s, NULL, %s, %s, %s, 'api', '1.0')
                 """,
                 (stock_id, pc_id, part_id, str(body.quantity), now_iso),
             )
@@ -147,7 +148,7 @@ def list_brand_requests(auth: AuthContext = Depends(require_brand_auth)) -> Dict
     with get_rls_session(role="platform") as db:
         if auth.brand_id:
             rows = db.raw_query(
-                "SELECT * FROM brand_referral WHERE brand_id = ? ORDER BY received_at DESC",
+                "SELECT * FROM brand_referral WHERE brand_id = %s ORDER BY received_at DESC",
                 (auth.brand_id,),
             )
         else:
@@ -173,9 +174,9 @@ def list_brand_requests(auth: AuthContext = Depends(require_brand_auth)) -> Dict
 def brand_analytics(auth: AuthContext = Depends(require_brand_auth)) -> Dict[str, Any]:
     with get_rls_session(role="platform") as db:
         if auth.brand_id:
-            appliances = db.raw_query("SELECT * FROM appliance WHERE brand_id = ?", (auth.brand_id,))
-            auths = db.raw_query("SELECT * FROM centre_brand_authorisation WHERE brand_id = ?", (auth.brand_id,))
-            brand_rows = db.raw_query("SELECT name FROM brand WHERE id = ? LIMIT 1", (auth.brand_id,))
+            appliances = db.raw_query("SELECT * FROM appliance WHERE brand_id = %s", (auth.brand_id,))
+            auths = db.raw_query("SELECT * FROM centre_brand_authorisation WHERE brand_id = %s", (auth.brand_id,))
+            brand_rows = db.raw_query("SELECT name FROM brand WHERE id = %s LIMIT 1", (auth.brand_id,))
             brand_name = brand_rows[0]["name"] if brand_rows else "Brand"
         else:
             appliances = db.raw_query("SELECT * FROM appliance")

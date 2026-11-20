@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -9,7 +8,7 @@ KEEPWELL_ROOT = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
-    """Frozen environment variables from Contract C4."""
+    """Frozen environment variables from Contract C4. PostgreSQL 16 is the only database."""
 
     model_config = SettingsConfigDict(
         env_file=str(KEEPWELL_ROOT / ".env"),
@@ -20,8 +19,9 @@ class Settings(BaseSettings):
     gcp_project_id: str = "keepwell-dev"
     gcp_region: str = "asia-south1"
 
-    # Database (defaults to local SQLite seed DB when Postgres URL is not provided)
-    database_url: str = f"sqlite:///{KEEPWELL_ROOT / 'db' / 'keepwell_part_a.db'}"
+    # Database (PostgreSQL 16 ONLY — connects as non-superuser kw_app with NOBYPASSRLS)
+    database_url: str = "postgresql://kw_app:kw_app_dev@localhost:5432/keepwell"
+    admin_database_url: str = "postgresql://localhost:5432/keepwell"
 
     # Firebase
     firebase_project_id: str = "keepwell-dev"
@@ -79,16 +79,25 @@ class Settings(BaseSettings):
 
     @property
     def is_postgres(self) -> bool:
-        return self.database_url.startswith("postgres")
+        return self.database_url.startswith(("postgresql://", "postgresql+psycopg://", "postgres://"))
+
+    @property
+    def psycopg_dsn(self) -> str:
+        return self.database_url.replace("postgresql+psycopg://", "postgresql://")
+
+    @property
+    def admin_psycopg_dsn(self) -> str:
+        return self.admin_database_url.replace("postgresql+psycopg://", "postgresql://")
+
+    def require_postgres(self) -> None:
+        if not self.is_postgres:
+            raise RuntimeError(
+                f"Keepwell Part A requires PostgreSQL 16 (DATABASE_URL must start with postgresql://); got: {self.database_url!r}"
+            )
 
     @property
     def dataset_dir(self) -> Path:
         return KEEPWELL_ROOT / "input" / "dataset"
-
-    def model_post_init(self, __context: object) -> None:
-        # Keep Part A DB isolated from legacy prototype keepwell.db
-        if self.database_url.strip() in ("sqlite:///./keepwell.db", "sqlite:///keepwell.db"):
-            self.database_url = f"sqlite:///{KEEPWELL_ROOT / 'db' / 'keepwell_part_a.db'}"
 
 
 settings = Settings()

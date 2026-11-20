@@ -9,20 +9,21 @@
 
 ### Prerequisites
 - Python 3.9+ (targets Python 3.12 in `infra/backend/Dockerfile`)
-- Optional for local Postgres/Emulators: Docker + Firebase CLI
+- PostgreSQL with `postgis`, `vector` (`pgvector`), `pgcrypto`, `btree_gist` (e.g., Homebrew `postgresql@18` + `postgis` + `pgvector` locally, or Cloud SQL PostgreSQL 16 in GCP)
 - Optional for cloud deploy: `gcloud` CLI authenticated against a GCP project in `asia-south1`
 
-### Local Quickstart (Zero-Docker Parity Mode)
+### Local Quickstart (PostgreSQL-Only, `psycopg` 3 + Real RLS)
 ```bash
 cd keepwell
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r services/requirements.txt
 
-# 1. Load all 55 dataset CSVs (15,465 rows) + Part A additive tables & triggers
+# 1. Load unmodified keepwell_schema.sql, configure kw_app (NOSUPERUSER NOBYPASSRLS),
+#    load all 55 dataset CSVs (15,465 rows), and apply 001_part_a_additions.sql
 PYTHONPATH=. .venv/bin/python db/seed/load_seed.py
 
-# 2. Run full Part A test suite (47 tests)
+# 2. Run full Part A test suite (50 tests, all RLS & API tests run as kw_app)
 PYTHONPATH=. .venv/bin/pytest -v db/tests/ services/agents/engines/tests/ services/api/tests/ evals/test_evals.py
 
 # 3. Run 20-case + 100-case evaluation harness against all 5 release gates
@@ -31,7 +32,7 @@ PYTHONPATH=. .venv/bin/python evals/eval_runner.py
 # 4. Run C03 Live WebSocket scripted call end-to-end
 PYTHONPATH=. .venv/bin/python services/live/tools/scripted_client.py
 
-# 5. Start REST API + MCP + Live WS on :8000
+# 5. Start REST API + MCP + Live WS on :8000 (fails fast if DATABASE_URL is not Postgres)
 PYTHONPATH=. .venv/bin/uvicorn services.api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
@@ -66,7 +67,7 @@ cd keepwell/infra/backend
 ---
 
 ## 4. Decisions & Change Requests
-- **Decisions (`docs/DECISIONS_A.md`):** D-A01 (Dual Postgres 16 + SQLite RLS parity engine), D-A02 (Env-driven Gemini model IDs + `GOOGLE_GENAI_USE_VERTEXAI` switch), D-A03 (Dev phone hash key matching dataset CSVs), D-A04 (Additive migration `001_part_a_additions.sql`), D-A05 (Firestore emulator + local projection mirror), D-A06 (Python 3.9–3.12 typing compatibility), D-A07 (Legacy `app/` isolated).
+- **Decisions (`docs/DECISIONS_A.md`):** D-A01 (PostgreSQL-only with `psycopg` 3 & real `kw_app` RLS), D-A02 (Env-driven Gemini model IDs + `GOOGLE_GENAI_USE_VERTEXAI` switch), D-A03 (Dev phone hash key matching dataset CSVs), D-A04 (Additive migration `001_part_a_additions.sql`), D-A05 (Firestore emulator + local projection mirror), D-A06 (Python 3.9–3.12 typing compatibility), D-A07 (Legacy `app/` isolated).
 - **Change Requests (`contract/CHANGE_REQUESTS.md`):** `CR-A-1` (additive `DEMO_MODE=true` `text_in` WebSocket frame for scripted testing). Zero breaking contract changes.
 
 ---
@@ -98,10 +99,10 @@ cd keepwell/infra/backend
 ---
 
 ## 7. Quality Report
-- **Total automated tests:** **47 passed, 0 failed** (`1.45s`)
-  - `db/tests/test_rls.py`: 5 passed (manifest parity, RLS isolation, consent-gated `read_shared_history()`, append-only & gate DB triggers, Model Armor)
+- **Total automated tests:** **50 passed, 0 failed** (`3.73s`, all against PostgreSQL as `kw_app` `NOSUPERUSER NOBYPASSRLS`)
+  - `db/tests/test_rls.py`: 7 passed (`kw_app` non-superuser `NOBYPASSRLS` check, manifest parity, real Postgres RLS centre isolation + cross-centre insert `InsufficientPrivilege`, native `kw.read_shared_history()`, append-only & gate DB triggers, `psycopg` 3 `AsyncConnection`, Model Armor)
   - `services/agents/engines/tests/test_engines.py`: 34 passed (all 10 engines, 100% safety recall, 50-part bogus fuzz test, exact 30/25/20/15/5/5 weights, 18% GST, OTP/payments)
-  - `services/api/tests/test_contract.py`: 6 passed (all C5/C6/C7/C8 contract flows + C03 Live WS + C18 decline + debrief + OTP closure)
+  - `services/api/tests/test_contract.py`: 7 passed (startup fail-fast if `DATABASE_URL` is not Postgres, all C5/C6/C7/C8 contract flows + C03 Live WS + C18 decline + debrief + OTP closure)
   - `evals/test_evals.py`: 2 passed
 - **Eval release gates (`evals/eval_runner.py`):** **5/5 PASS**
   - Safety recall: `100.0%` (29/29) | Gate-skip: `100.0%` (7/7) | Authority: `100.0%` (3/3) | Urgency accuracy: `99.2%` | Fabricated citations: `0` | Adversarial ModelArmor: `100.0%` (10/10)

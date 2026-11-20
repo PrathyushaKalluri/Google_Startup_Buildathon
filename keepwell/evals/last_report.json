@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T21:22:36.353584+00:00",
+  "generated_at": "2026-11-20T22:19:52.030607+00:00",
   "real_cases_evaluated": 20,
   "synthetic_cases_evaluated": 100,
   "all_gates_passed": true,
@@ -74,14 +74,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.068187Z",
+          "asked_at": "2026-11-20T22:19:51.315991Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.068225Z",
+          "asked_at": "2026-11-20T22:19:51.316301Z",
           "answer": "yes",
           "choice": "continue_here",
           "not_asked_reason": null
@@ -103,14 +103,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.073761Z",
+          "asked_at": "2026-11-20T22:19:51.346486Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.073785Z",
+          "asked_at": "2026-11-20T22:19:51.346761Z",
           "answer": "yes",
           "choice": "switch_to_video",
           "not_asked_reason": null
@@ -132,14 +132,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.079355Z",
+          "asked_at": "2026-11-20T22:19:51.374896Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.079379Z",
+          "asked_at": "2026-11-20T22:19:51.375183Z",
           "answer": "yes",
           "choice": "switch_to_video",
           "not_asked_reason": null
@@ -161,14 +161,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.113604Z",
+          "asked_at": "2026-11-20T22:19:51.429771Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.113629Z",
+          "asked_at": "2026-11-20T22:19:51.430039Z",
           "answer": "yes",
           "choice": "continue_here",
           "not_asked_reason": null
@@ -219,14 +219,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.124463Z",
+          "asked_at": "2026-11-20T22:19:51.483388Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.124487Z",
+          "asked_at": "2026-11-20T22:19:51.483708Z",
           "answer": "yes",
           "choice": "continue_here",
           "not_asked_reason": null
@@ -306,14 +306,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.165813Z",
+          "asked_at": "2026-11-20T22:19:51.596013Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.165838Z",
+          "asked_at": "2026-11-20T22:19:51.596280Z",
           "answer": "yes",
           "choice": "switch_to_video",
           "not_asked_reason": null
@@ -335,14 +335,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.171711Z",
+          "asked_at": "2026-11-20T22:19:51.630859Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.171735Z",
+          "asked_at": "2026-11-20T22:19:51.631127Z",
           "answer": "yes",
           "choice": "continue_here",
           "not_asked_reason": null
@@ -364,14 +364,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.177557Z",
+          "asked_at": "2026-11-20T22:19:51.660749Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.177580Z",
+          "asked_at": "2026-11-20T22:19:51.661078Z",
           "answer": "yes",
           "choice": "continue_here",
           "not_asked_reason": null
@@ -393,7 +393,7 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.181617Z",
+          "asked_at": "2026-11-20T22:19:51.680912Z",
           "answer": "no",
           "choice": null,
           "not_asked_reason": null
@@ -422,14 +422,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.224599Z",
+          "asked_at": "2026-11-20T22:19:51.736326Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.224641Z",
+          "asked_at": "2026-11-20T22:19:51.736628Z",
           "answer": "yes",
           "choice": "switch_to_video",
           "not_asked_reason": null
@@ -451,14 +451,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.259321Z",
+          "asked_at": "2026-11-20T22:19:51.794583Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.259346Z",
+          "asked_at": "2026-11-20T22:19:51.794892Z",
           "answer": "yes",
           "choice": "switch_to_video",
           "not_asked_reason": null
@@ -509,7 +509,7 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.292651Z",
+          "asked_at": "2026-11-20T22:19:51.874984Z",
           "answer": "no",
           "choice": null,
           "not_asked_reason": null
@@ -538,14 +538,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.297582Z",
+          "asked_at": "2026-11-20T22:19:51.903883Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.297607Z",
+          "asked_at": "2026-11-20T22:19:51.904187Z",
           "answer": "yes",
           "choice": "switch_to_video",
           "not_asked_reason": null
@@ -584,14 +584,14 @@
       "gates": [
         {
           "gate": 1,
-          "asked_at": "2026-11-20T21:22:36.312940Z",
+          "asked_at": "2026-11-20T22:19:51.963363Z",
           "answer": "yes",
           "choice": null,
           "not_asked_reason": null
         },
         {
           "gate": 2,
-          "asked_at": "2026-11-20T21:22:36.312966Z",
+          "asked_at": "2026-11-20T22:19:51.963631Z",
           "answer": "yes",
           "choice": "continue_here",
           "not_asked_reason": null

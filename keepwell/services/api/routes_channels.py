@@ -147,10 +147,10 @@ def simulator_whatsapp_inbound(body: SimulatorInboundRequest) -> Dict[str, Any]:
         hh_id = res.get("household_id")
         if hh_id:
             msg_id = str(uuid.uuid4())
-            db.conn.execute(
+            db.execute(
                 """
                 INSERT INTO whatsapp_message (id, household_id, centre_id, ticket_id, direction, type, text, media_url, template, at, status)
-                VALUES (?, ?, ?, ?, 'in', 'text', ?, NULL, NULL, ?, 'received')
+                VALUES (%s, %s, %s, %s, 'in', 'text', %s, NULL, NULL, %s, 'received')
                 """,
                 (msg_id, hh_id, centre_id, res.get("ticket_id"), text, now_iso),
             )
@@ -203,7 +203,7 @@ def _resolve_target_centre_for_brand(db: RLSSession, payload: Dict[str, Any], br
     # 3. Authorised centre for this brand
     if brand_id:
         auth_rows = db.raw_query(
-            "SELECT centre_id FROM centre_brand_authorisation WHERE brand_id = ? AND level = 'authorised_service' LIMIT 1",
+            "SELECT centre_id FROM centre_brand_authorisation WHERE brand_id = %s AND level = 'authorised_service' LIMIT 1",
             (brand_id,),
         )
         if auth_rows:
@@ -222,12 +222,12 @@ def receive_brand_request(
         brand_name_raw = str(payload.get("brand") or "")
         brand_id = auth.brand_id
         if brand_name_raw:
-            b_rows = db.raw_query("SELECT id, name FROM brand WHERE LOWER(name) = LOWER(?) LIMIT 1", (brand_name_raw,))
+            b_rows = db.raw_query("SELECT id, name FROM brand WHERE LOWER(name) = LOWER(%s) LIMIT 1", (brand_name_raw,))
             if b_rows:
                 brand_id = b_rows[0]["id"]
                 brand_name_raw = b_rows[0]["name"]
         elif brand_id:
-            b_rows = db.raw_query("SELECT name FROM brand WHERE id = ? LIMIT 1", (brand_id,))
+            b_rows = db.raw_query("SELECT name FROM brand WHERE id = %s LIMIT 1", (brand_id,))
             if b_rows:
                 brand_name_raw = b_rows[0]["name"]
 
@@ -235,10 +235,10 @@ def receive_brand_request(
         ref_id = str(uuid.uuid4())
         claimed = "brand_warranty" if str(payload.get("claimed_warranty") or "").lower() in ("in_warranty", "brand_warranty", "warranty") else "paid"
 
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO brand_referral (id, centre_id, brand_id, brand_request_ref, received_at, payload, claimed_entitlement, authority_checked, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, NULL, 'received')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, NULL, 'received')
             """,
             (
                 ref_id,
@@ -285,7 +285,7 @@ def receive_brand_request(
                 "declined_reason": res.get("declined_reason"),
             }
 
-        db.conn.execute("UPDATE brand_referral SET authority_checked = ?, status = 'accepted' WHERE id = ?", (res["authority"]["level"], ref_id))
+        db.execute("UPDATE brand_referral SET authority_checked = %s, status = 'accepted' WHERE id = %s", (res["authority"]["level"], ref_id))
         return {
             "ticket_id": res.get("ticket_id"),
             "status": "received",
@@ -314,14 +314,14 @@ def receive_retailer_handover(
             centre_id = next(iter(ck2id.values()))
 
         retailer_name = str(payload.get("retailer") or "")
-        ret_rows = db.raw_query("SELECT id FROM retailer WHERE LOWER(name) LIKE LOWER(?) LIMIT 1", (f"%{retailer_name[:12]}%",))
+        ret_rows = db.raw_query("SELECT id FROM retailer WHERE LOWER(name) LIKE LOWER(%s) LIMIT 1", (f"%{retailer_name[:12]}%",))
         retailer_id = auth.retailer_id or (ret_rows[0]["id"] if ret_rows else None)
 
         ho_id = str(uuid.uuid4())
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO retailer_handover (id, centre_id, retailer_id, order_ref, invoice_no, purchase_date, requested_job, payload, received_at, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'received')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'received')
             """,
             (
                 ho_id,
@@ -386,30 +386,30 @@ async def receive_payment_webhook(
     now_iso = datetime.now(timezone.utc).isoformat()
 
     with get_rls_session(role="platform") as db:
-        rows = db.raw_query("SELECT * FROM payment_intent WHERE id = ? LIMIT 1", (payment_id,))
+        rows = db.raw_query("SELECT * FROM payment_intent WHERE id = %s LIMIT 1", (payment_id,))
         if not rows:
             raise APIError("payment_not_found", f"Payment intent {payment_id} not found", status_code=404)
         pi = rows[0]
 
         if status == "paid":
-            db.conn.execute(
-                "UPDATE payment_intent SET status = 'paid', payment_ref = ?, paid_at = ? WHERE id = ?",
+            db.execute(
+                "UPDATE payment_intent SET status = 'paid', payment_ref = %s, paid_at = %s WHERE id = %s",
                 (payment_ref, now_iso, payment_id),
             )
             existing_sl = db.raw_query(
-                "SELECT id FROM settlement_line WHERE ticket_id = ? AND party_type = 'household' LIMIT 1",
+                "SELECT id FROM settlement_line WHERE ticket_id = %s AND party_type = 'household' LIMIT 1",
                 (pi["ticket_id"],),
             )
             if existing_sl:
-                db.conn.execute(
-                    "UPDATE settlement_line SET status = 'settled', payment_ref = ?, settled_at = ? WHERE id = ?",
+                db.execute(
+                    "UPDATE settlement_line SET status = 'paid', payment_ref = %s, settled_at = %s WHERE id = %s",
                     (payment_ref, now_iso, existing_sl[0]["id"]),
                 )
             else:
-                db.conn.execute(
+                db.execute(
                     """
                     INSERT INTO settlement_line (id, ticket_id, party_type, party_id, direction, amount_paise, status, payment_ref, due_at, settled_at, centre_id)
-                    VALUES (?, ?, 'household', NULL, 'receivable', ?, 'settled', ?, ?, ?, ?)
+                    VALUES (%s, %s, 'household', NULL, 'receivable', %s, 'paid', %s, %s, %s, %s)
                     """,
                     (
                         str(uuid.uuid4()),
@@ -431,7 +431,7 @@ async def receive_payment_webhook(
                 payload={"payment_id": payment_id, "payment_ref": payment_ref},
             )
         else:
-            db.conn.execute("UPDATE payment_intent SET status = 'failed' WHERE id = ?", (payment_id,))
+            db.execute("UPDATE payment_intent SET status = 'failed' WHERE id = %s", (payment_id,))
             projection_store.emit_event(
                 db,
                 pi["centre_id"],

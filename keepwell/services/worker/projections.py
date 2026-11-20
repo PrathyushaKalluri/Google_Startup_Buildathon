@@ -75,10 +75,10 @@ class FirestoreProjectionStore:
             "detail": detail,
             "payload": payload or {},
         }
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO outbox_event (id, centre_id, ticket_id, conversation_id, event_type, actor, title, detail, payload, processed_at, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (
                 eid,
@@ -136,7 +136,7 @@ class FirestoreProjectionStore:
         )
 
     def rebuild_all(self, db: RLSSession) -> Dict[str, int]:
-        """Idempotently rebuild all Firestore projections from Postgres/SQLite."""
+        """Idempotently rebuild all Firestore projections from PostgreSQL 16."""
         self.clear()
         counts = {"tickets": 0, "technicians": 0, "visits": 0, "parts_requests": 0, "feed": 0}
 
@@ -162,7 +162,7 @@ class FirestoreProjectionStore:
             )
             counts["tickets"] += 1
 
-        for te in db.raw_query("SELECT * FROM technician WHERE active = 't'"):
+        for te in db.raw_query("SELECT * FROM technician WHERE active = TRUE"):
             self.project_technician(
                 te["centre_id"],
                 te["id"],

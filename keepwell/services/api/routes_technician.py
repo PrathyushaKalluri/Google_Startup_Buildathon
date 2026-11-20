@@ -104,16 +104,16 @@ def my_jobs(
         clauses: List[str] = []
         params: List[Any] = []
         if auth.technician_id:
-            clauses.append("technician_id = ?")
+            clauses.append("technician_id = %s")
             params.append(auth.technician_id)
         if date:
-            clauses.append("planned_start LIKE ?")
+            clauses.append("planned_start LIKE %s")
             params.append(f"{date}%")
         where_sql = " AND ".join(clauses) if clauses else None
         visits = db.select("visit", where=where_sql, params=params, order_by="planned_start DESC", limit=50)
         items = []
         for v in visits:
-            t_row = db.select_one("ticket", "id = ?", (v["ticket_id"],))
+            t_row = db.select_one("ticket", "id = %s", (v["ticket_id"],))
             items.append(
                 {
                     "visit": serialize_visit(v),
@@ -132,7 +132,7 @@ def update_my_location(
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
         tech_id = auth.technician_id or "unknown"
         cid = auth.centre_id or ""
-        t_row = db.select_one("technician", "id = ?", (tech_id,)) if auth.technician_id else None
+        t_row = db.select_one("technician", "id = %s", (tech_id,)) if auth.technician_id else None
         if t_row:
             cid = t_row["centre_id"]
         if cid:
@@ -157,10 +157,10 @@ def get_visit_brief(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
-        ticket = db.select_one("ticket", "id = ?", (visit["ticket_id"],))
+        ticket = db.select_one("ticket", "id = %s", (visit["ticket_id"],))
         if not ticket:
             raise APIError("ticket_not_found", f"Ticket {visit['ticket_id']} not found", status_code=404)
 
@@ -171,7 +171,7 @@ def get_visit_brief(
         phone: Optional[str] = None
         if slot_confirmed:
             address = ticket.get("visit_address") or detail["card"]["household"]["address_line"]
-            hh = db.raw_query("SELECT phone_enc FROM household WHERE id = ? LIMIT 1", (ticket["household_id"],))
+            hh = db.raw_query("SELECT phone_enc FROM household WHERE id = %s LIMIT 1", (ticket["household_id"],))
             if hh and hh[0].get("phone_enc"):
                 raw_enc = str(hh[0]["phone_enc"])
                 if raw_enc.startswith("\\x"):
@@ -182,12 +182,12 @@ def get_visit_brief(
                 phone = "+91 *****0000"
 
             # Log PII address/phone release in append-only access_log
-            db.conn.execute(
+            db.execute(
                 """
                 INSERT INTO access_log (
                   id, actor_type, actor_id, actor_centre_id, record_table, record_id,
                   owner_centre_id, cross_centre, ticket_id, reason, occurred_at
-                ) VALUES (?, 'technician', ?, ?, 'visit', ?, ?, 'f', ?, 'visit brief address and phone released', ?)
+                ) VALUES (%s, 'technician', %s, %s, 'visit', %s, %s, FALSE, %s, 'visit brief address and phone released', %s)
                 """,
                 (
                     str(uuid.uuid4()),
@@ -223,7 +223,7 @@ def visit_check_in(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
         db.update(
@@ -233,11 +233,11 @@ def visit_check_in(
                 "check_in_location": f"SRID=4326;POINT({body.lon} {body.lat})",
                 "updated_at": now_iso,
             },
-            "id = ?",
+            "id = %s",
             (visit_id,),
         )
-        db.update("ticket", {"status": "in_progress", "updated_at": now_iso}, "id = ?", (visit["ticket_id"],))
-        updated = db.select_one("visit", "id = ?", (visit_id,))
+        db.update("ticket", {"status": "in_progress", "updated_at": now_iso}, "id = %s", (visit["ticket_id"],))
+        updated = db.select_one("visit", "id = %s", (visit_id,))
         assert updated is not None
         return serialize_visit(updated)
 
@@ -249,7 +249,7 @@ def record_parts_used(
     auth: AuthContext = Depends(require_technician_auth),
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
         cid = visit["centre_id"]
@@ -257,7 +257,7 @@ def record_parts_used(
         for p in body.parts:
             part_id = p.part_id
             if not part_id and p.part_no:
-                found = db.raw_query("SELECT id FROM part_catalogue WHERE part_no = ? LIMIT 1", (p.part_no,))
+                found = db.raw_query("SELECT id FROM part_catalogue WHERE part_no = %s LIMIT 1", (p.part_no,))
                 if not found:
                     raise APIError("unknown_part", f"Part {p.part_no} not found in part_catalogue", status_code=400, field="part_no")
                 part_id = found[0]["id"]
@@ -287,7 +287,7 @@ def record_visit_outcome(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
         db.update(
@@ -299,13 +299,13 @@ def record_visit_outcome(
                 "check_out_at": now_iso,
                 "updated_at": now_iso,
             },
-            "id = ?",
+            "id = %s",
             (visit_id,),
         )
         # Note: ticket moves to 'completed' (NOT 'closed' — closure is by OTP only!)
         new_ticket_status = "needs_part" if body.outcome == "needs_part" else "completed"
-        db.update("ticket", {"status": new_ticket_status, "updated_at": now_iso}, "id = ?", (visit["ticket_id"],))
-        updated = db.select_one("visit", "id = ?", (visit_id,))
+        db.update("ticket", {"status": new_ticket_status, "updated_at": now_iso}, "id = %s", (visit["ticket_id"],))
+        updated = db.select_one("visit", "id = %s", (visit_id,))
         assert updated is not None
         return serialize_visit(updated)
 
@@ -317,7 +317,7 @@ def get_visit_media_upload_url(
     auth: AuthContext = Depends(require_technician_auth),
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
         ext = "ogg" if "audio" in body.content_type else "jpg"
@@ -333,12 +333,12 @@ def issue_firm_quote(
 ) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        ticket = db.select_one("ticket", "id = ?", (ticket_id,))
+        ticket = db.select_one("ticket", "id = %s", (ticket_id,))
         if not ticket:
             raise APIError("ticket_not_found", f"Ticket {ticket_id} not found", status_code=404)
         cid = ticket["centre_id"]
 
-        prior_quotes = db.select("quote", "ticket_id = ?", (ticket_id,), order_by="CAST(version AS INTEGER) DESC")
+        prior_quotes = db.select("quote", "ticket_id = %s", (ticket_id,), order_by="CAST(version AS INTEGER) DESC")
         next_ver = int(prior_quotes[0]["version"]) + 1 if prior_quotes else 1
 
         # Compute prior estimate total for variance
@@ -378,7 +378,7 @@ def issue_firm_quote(
                     "payer": line.payer,
                 },
             )
-            if line.payer == "household" and line.kind != "tax_gst":
+            if line.payer == "household" and line.kind not in ("tax", "tax_gst"):
                 taxable_hh += line.amount_paise
 
         if not has_gst and taxable_hh > 0:
@@ -389,7 +389,7 @@ def issue_firm_quote(
                     "id": str(uuid.uuid4()),
                     "centre_id": cid,
                     "quote_id": quote_id,
-                    "line_type": "tax_gst",
+                    "line_type": "tax",
                     "description": "GST (18%)",
                     "quantity": 1,
                     "amount_paise": gst,
@@ -397,7 +397,7 @@ def issue_firm_quote(
                 },
             )
 
-        q_row = db.select_one("quote", "id = ?", (quote_id,))
+        q_row = db.select_one("quote", "id = %s", (quote_id,))
         assert q_row is not None
         q_out = serialize_quote(db, q_row)
         variance_pct = compute_variance_pct(est_total, q_out["total_paise"]) if est_total else 0.0
@@ -421,7 +421,7 @@ def submit_visit_debrief(
     auth: AuthContext = Depends(require_technician_auth),
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
         cid = visit["centre_id"]
@@ -453,7 +453,7 @@ def confirm_visit_debrief(
     auth: AuthContext = Depends(require_technician_auth),
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
         try:
@@ -468,16 +468,16 @@ def request_close_otp(
     auth: AuthContext = Depends(require_technician_auth),
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
-        ticket = db.select_one("ticket", "id = ?", (visit["ticket_id"],))
+        ticket = db.select_one("ticket", "id = %s", (visit["ticket_id"],))
         if not ticket:
             raise APIError("ticket_not_found", f"Ticket {visit['ticket_id']} not found", status_code=404)
 
         rec = otp_service.issue_otp(visit_id=visit_id, household_id=ticket["household_id"])
-        db.update("visit", {"closure_otp_ref": rec.otp_ref}, "id = ?", (visit_id,))
-        db.update("ticket", {"closure_otp_ref": rec.otp_ref}, "id = ?", (ticket["id"],))
+        db.update("visit", {"closure_otp_ref": rec.otp_ref}, "id = %s", (visit_id,))
+        db.update("ticket", {"closure_otp_ref": rec.otp_ref}, "id = %s", (ticket["id"],))
         projection_store.emit_event(
             db,
             visit["centre_id"],
@@ -504,7 +504,7 @@ def confirm_close_otp(
     auth: AuthContext = Depends(require_technician_auth),
 ) -> Dict[str, Any]:
     with get_rls_session(centre_id=auth.centre_id, role=auth.role) as db:
-        visit = db.select_one("visit", "id = ?", (visit_id,))
+        visit = db.select_one("visit", "id = %s", (visit_id,))
         if not visit:
             raise APIError("visit_not_found", f"Visit {visit_id} not found", status_code=404)
 
@@ -521,20 +521,20 @@ def confirm_close_otp(
                 "outcome": visit.get("outcome") or "fixed",
                 "updated_at": closed_iso,
             },
-            "id = ?",
+            "id = %s",
             (visit_id,),
         )
         db.update(
             "ticket",
             {
                 "status": "closed",
-                "resolution": "fixed_by_visit",
+                "resolution": "visit",
                 "closure_otp_ref": body.otp_ref,
                 "closure_confirmed_at": closed_iso,
                 "closed_at": closed_iso,
                 "updated_at": closed_iso,
             },
-            "id = ?",
+            "id = %s",
             (visit["ticket_id"],),
         )
         projection_store.emit_event(
@@ -544,9 +544,9 @@ def confirm_close_otp(
             "household",
             "Job closed by household OTP",
             ticket_id=visit["ticket_id"],
-            payload={"resolution": "fixed_by_visit", "closure_confirmation_ref": res.closure_confirmation_ref},
+            payload={"resolution": "visit", "closure_confirmation_ref": res.closure_confirmation_ref},
         )
-        updated_ticket = db.select_one("ticket", "id = ?", (visit["ticket_id"],))
+        updated_ticket = db.select_one("ticket", "id = %s", (visit["ticket_id"],))
         assert updated_ticket is not None
         projection_store.project_ticket(visit["centre_id"], serialize_ticket_card(db, updated_ticket))
         return {
@@ -566,10 +566,10 @@ def register_device(
     now_iso = datetime.now(timezone.utc).isoformat()
     with get_rls_session(centre_id=auth.centre_id, role="platform") as db:
         dev_id = str(uuid.uuid4())
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO device_token (id, centre_id, user_id, role, token, platform, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """,
             (dev_id, auth.centre_id, auth.user_id, auth.role, body.token, body.platform, now_iso),
         )

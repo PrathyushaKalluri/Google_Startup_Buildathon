@@ -377,10 +377,10 @@ async def handle_live_call_ws(
                 with get_rls_session(centre_id=state.centre_id, role="platform") as db:
                     now_iso = datetime.now(timezone.utc).isoformat()
                     if state.resumptions == 0:
-                        db.conn.execute(
+                        db.execute(
                             """
                             INSERT INTO conversation (id, centre_id, ticket_id, household_id, channel, modality, language, started_at, recording_consent)
-                            VALUES (?, ?, NULL, NULL, 'voice', 'voice', ?, ?, 't')
+                            VALUES (%s, %s, NULL, NULL, 'voice', 'voice', %s, %s, TRUE)
                             """,
                             (state.conversation_id, state.centre_id, state.language, now_iso),
                         )

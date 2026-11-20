@@ -1,8 +1,9 @@
 """Keepwell Part A FastAPI application entrypoint (Contract C5 & C7)."""
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any, AsyncIterator, Dict
 
 from fastapi import FastAPI, HTTPException, Request, WebSocket
 from fastapi.exceptions import RequestValidationError
@@ -24,11 +25,20 @@ from services.common.logging import new_request_id
 from services.live.bridge import handle_live_call_ws
 from services.mcp.server import router as mcp_router
 
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    """Fail fast at startup if DATABASE_URL is not PostgreSQL 16."""
+    settings.require_postgres()
+    yield
+
+
 app = FastAPI(
     title="Keepwell REST API v1",
     version="1.0.0",
     description="Keepwell service-centre and brand platform API (Part A: Agent Core).",
     openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -79,6 +89,10 @@ async def permission_error_handler(_request: Request, exc: PermissionError) -> A
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(_request: Request, exc: Exception) -> Any:
+    import psycopg
+
+    if isinstance(exc, psycopg.errors.InvalidTextRepresentation) and "uuid" in str(exc).lower():
+        return make_error_response("not_found", "Resource not found", status_code=404)
     return make_error_response("internal_error", str(exc), status_code=500)
 
 
@@ -92,9 +106,10 @@ def healthz() -> Dict[str, Any]:
 
 @app.get("/readyz", tags=["System"])
 def readyz() -> Dict[str, Any]:
+    settings.require_postgres()
     with get_rls_session(role="platform") as db:
-        centres = db.raw_query("SELECT COUNT(*) AS c FROM service_centre")[0]["c"]
-    return {"status": "ready", "centres": int(centres), "database": "postgres" if settings.is_postgres else "sqlite"}
+        centres = db.raw_query("SELECT COUNT(*) AS c FROM kw.service_centre")[0]["c"]
+    return {"status": "ready", "centres": int(centres), "database": "postgresql"}
 
 
 @app.get("/v1/meta/version", tags=["System"])

@@ -31,11 +31,11 @@ def process_spoken_debrief(
     guard = ModelArmorGuard.screen_inbound(transcript, source="technician_debrief")
     clean = guard.sanitized_text
 
-    visit = db.raw_query("SELECT * FROM visit WHERE id = ?", (visit_id,))
+    visit = db.raw_query("SELECT * FROM visit WHERE id = %s", (visit_id,))
     if not visit:
         raise ValueError(f"Visit {visit_id} not found")
-    ticket = db.raw_query("SELECT * FROM ticket WHERE id = ?", (visit[0]["ticket_id"],))[0]
-    appliance = db.raw_query("SELECT * FROM appliance WHERE id = ?", (ticket["appliance_id"],))[0] if ticket.get("appliance_id") else None
+    ticket = db.raw_query("SELECT * FROM ticket WHERE id = %s", (visit[0]["ticket_id"],))[0]
+    appliance = db.raw_query("SELECT * FROM appliance WHERE id = %s", (ticket["appliance_id"],))[0] if ticket.get("appliance_id") else None
 
     mentioned_codes = list(dict.fromkeys(PART_TOKEN_RE.findall(clean.upper())))
     verified_parts_out: List[Dict[str, Any]] = []
@@ -76,11 +76,11 @@ def process_spoken_debrief(
 
     debrief_id = str(uuid.uuid4())
     now_iso = datetime.now(timezone.utc).isoformat()
-    db.conn.execute("DELETE FROM visit_debrief WHERE visit_id = ?", (visit_id,))
-    db.conn.execute(
+    db.execute("DELETE FROM visit_debrief WHERE visit_id = %s", (visit_id,))
+    db.execute(
         """
         INSERT INTO visit_debrief (id, centre_id, visit_id, status, language, media_ref, transcript, extracted, unresolved, confirmed_at, created_at, updated_at)
-        VALUES (?, ?, ?, 'ready', ?, ?, ?, ?, ?, NULL, ?, ?)
+        VALUES (%s, %s, %s, 'ready', %s, %s, %s, %s, %s, NULL, %s, %s)
         """,
         (
             debrief_id,
@@ -110,23 +110,23 @@ def process_spoken_debrief(
 
 def confirm_debrief(db: RLSSession, visit_id: str, centre_id: str, extracted: Dict[str, Any]) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
-    row = db.raw_query("SELECT * FROM visit_debrief WHERE visit_id = ?", (visit_id,))
+    row = db.raw_query("SELECT * FROM visit_debrief WHERE visit_id = %s", (visit_id,))
     if not row:
         raise ValueError(f"No debrief found for visit {visit_id}")
     debrief = row[0]
-    db.conn.execute(
-        "UPDATE visit_debrief SET status = 'confirmed', extracted = ?, confirmed_at = ?, updated_at = ? WHERE id = ?",
+    db.execute(
+        "UPDATE visit_debrief SET status = 'confirmed', extracted = %s, confirmed_at = %s, updated_at = %s WHERE id = %s",
         (json.dumps(extracted, ensure_ascii=False), now_iso, now_iso, debrief["id"]),
     )
 
     # Append technical event to appliance_event (Home Memory)
-    visit = db.raw_query("SELECT * FROM visit WHERE id = ?", (visit_id,))[0]
-    ticket = db.raw_query("SELECT * FROM ticket WHERE id = ?", (visit["ticket_id"],))[0]
+    visit = db.raw_query("SELECT * FROM visit WHERE id = %s", (visit_id,))[0]
+    ticket = db.raw_query("SELECT * FROM ticket WHERE id = %s", (visit["ticket_id"],))[0]
     if ticket.get("appliance_id"):
-        db.conn.execute(
+        db.execute(
             """
             INSERT INTO appliance_event (id, appliance_id, centre_id, event_type, visibility, occurred_at, ticket_id, details)
-            VALUES (?, ?, ?, 'repair', 'technical', ?, ?, ?)
+            VALUES (%s, %s, %s, 'repair', 'technical', %s, %s, %s)
             """,
             (
                 str(uuid.uuid4()),
