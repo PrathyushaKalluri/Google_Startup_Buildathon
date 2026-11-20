@@ -1,0 +1,23 @@
+{
+  "projects": {
+    "default": "keepwell-demo-placeholder"
+  },
+  "targets": {
+    "keepwell-demo-placeholder": {
+      "hosting": {
+        "console": [
+          "keepwell-console"
+        ],
+        "field": [
+          "keepwell-field"
+        ],
+        "household": [
+          "keepwell-household"
+        ],
+        "brand": [
+          "keepwell-brand"
+        ]
+      }
+    }
+  }
+}

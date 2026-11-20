@@ -1,0 +1,139 @@
+rules_version = '2';
+
+// Keepwell Firestore Security Rules (Contract Section 6).
+// Firestore is a backend-written live projection of Postgres.
+// Clients NEVER write to Firestore; all mutations go through the REST API.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper predicates (Firebase Auth custom claims per Contract Section 3)
+    // -------------------------------------------------------------------------
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return request.auth.token.role;
+    }
+
+    function isPlatform() {
+      return isSignedIn() && role() == 'platform';
+    }
+
+    function isCentreAdmin(cid) {
+      return isSignedIn()
+        && role() == 'centre_admin'
+        && request.auth.token.centre_id == cid;
+    }
+
+    function isTechnicianInCentre(cid) {
+      return isSignedIn()
+        && role() == 'technician'
+        && request.auth.token.centre_id == cid
+        && request.auth.token.technician_id is string
+        && request.auth.token.technician_id.size() > 0;
+    }
+
+    function isPartsCentre() {
+      return isSignedIn()
+        && role() == 'parts_centre'
+        && request.auth.token.parts_centre_id is string
+        && request.auth.token.parts_centre_id.size() > 0;
+    }
+
+    function isHousehold(hid) {
+      return isSignedIn()
+        && request.auth.token.household_id is string
+        && request.auth.token.household_id == hid;
+    }
+
+    // -------------------------------------------------------------------------
+    // Centre-scoped live projections: centres/{cid}/**
+    // - platform: reads any centre
+    // - centre_admin: reads own centre only (centre_id == cid)
+    // - technician: reads ONLY own technicians/{tid} and visits where
+    //   technician_id matches their claim
+    // - parts_centre: reads ONLY parts_requests where parts_centre_id matches
+    // - clients NEVER write
+    // -------------------------------------------------------------------------
+    match /centres/{cid} {
+      allow read: if isPlatform() || isCentreAdmin(cid);
+      allow write: if false;
+
+      match /tickets/{ticketId} {
+        allow read: if isPlatform() || isCentreAdmin(cid);
+        allow write: if false;
+      }
+
+      match /conversations/{conversationId} {
+        allow read: if isPlatform() || isCentreAdmin(cid);
+        allow write: if false;
+
+        match /turns/{turnId} {
+          allow read: if isPlatform() || isCentreAdmin(cid);
+          allow write: if false;
+        }
+      }
+
+      match /feed/{eventId} {
+        allow read: if isPlatform() || isCentreAdmin(cid);
+        allow write: if false;
+      }
+
+      match /technicians/{tid} {
+        allow read: if isPlatform()
+          || isCentreAdmin(cid)
+          || (isTechnicianInCentre(cid) && request.auth.token.technician_id == tid);
+        allow write: if false;
+      }
+
+      match /visits/{vid} {
+        allow read: if isPlatform()
+          || isCentreAdmin(cid)
+          || (isTechnicianInCentre(cid)
+              && resource != null
+              && resource.data.technician_id == request.auth.token.technician_id);
+        allow write: if false;
+      }
+
+      match /parts_requests/{requestId} {
+        allow read: if isPlatform()
+          || isCentreAdmin(cid)
+          || (isPartsCentre()
+              && resource != null
+              && resource.data.parts_centre_id == request.auth.token.parts_centre_id);
+        allow write: if false;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Household WhatsApp simulator / thread projection: households/{hid}/**
+    // Readable ONLY by a custom token minted by POST /public/session with
+    // claim household_id == hid. Nobody writes from a client.
+    // -------------------------------------------------------------------------
+    match /households/{hid} {
+      allow read: if isHousehold(hid);
+      allow write: if false;
+
+      match /{document=**} {
+        allow read: if isHousehold(hid);
+        allow write: if false;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Demo state metadata: meta/demo
+    // Readable by any signed-in user; never writable from a client.
+    // -------------------------------------------------------------------------
+    match /meta/demo {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Default deny for all other paths.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
