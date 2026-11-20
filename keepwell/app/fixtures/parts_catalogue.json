@@ -1,0 +1,50 @@
+[
+  {
+    "code": "RELAY-PTC-LG",
+    "name": "LG Genuine Compressor PTC Starter Relay (1 Pin)",
+    "category": "RELAY",
+    "price": 380.0,
+    "in_stock": 15,
+    "compatible_models": ["GL-B201ABPY", "GL-D201ABPY", "GL-B191KBLW"]
+  },
+  {
+    "code": "RELAY-PTC-SAM",
+    "name": "Samsung Refrigerator PTC Starter Relay & Overload Protector",
+    "category": "RELAY",
+    "price": 420.0,
+    "in_stock": 12,
+    "compatible_models": ["RT28T3722S8", "RT30T3742S9", "RT28M3022S8"]
+  },
+  {
+    "code": "GAS-R600A-CAN",
+    "name": "Isobutane R-600a Refrigerant Gas Canister (450g)",
+    "category": "GAS",
+    "price": 650.0,
+    "in_stock": 25,
+    "compatible_models": ["GL-B201ABPY", "RT28T3722S8", "205IMPC", "RDEDGE205"]
+  },
+  {
+    "code": "CAP-AC-50MFD",
+    "name": "Heavy Duty Dual Run Capacitor 50+5 MFD 440V AC",
+    "category": "CAPACITOR",
+    "price": 480.0,
+    "in_stock": 20,
+    "compatible_models": ["183VCZR", "185VDAZ", "AR18TY3BBWK"]
+  },
+  {
+    "code": "THERMO-DEF-LG",
+    "name": "LG Frost Free Defrost Bi-Metal Thermostat Sensor",
+    "category": "THERMOSTAT",
+    "price": 320.0,
+    "in_stock": 8,
+    "compatible_models": ["GL-B201ABPY", "GL-T292RPZY"]
+  },
+  {
+    "code": "FAN-MOTOR-WHP",
+    "name": "Whirlpool Evaporator Fan Motor 220V",
+    "category": "FAN_MOTOR",
+    "price": 750.0,
+    "in_stock": 5,
+    "compatible_models": ["205IMPC", "215VITR"]
+  }
+]

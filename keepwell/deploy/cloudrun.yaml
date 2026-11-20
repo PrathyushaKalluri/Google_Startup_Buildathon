@@ -1,0 +1,39 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: keepwell-app
+  labels:
+    cloud.google.com/location: asia-south1
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+        run.googleapis.com/cpu-throttling: "true"
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      containers:
+      - image: asia-south1-docker.pkg.dev/PROJECT_ID/keepwell-repo/keepwell-app:latest
+        ports:
+        - name: http1
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        env:
+        - name: APP_ENV
+          value: production
+        - name: GCP_REGION
+          value: asia-south1
+        - name: GEMINI_MODEL_FAST
+          value: gemini-3.5-flash-lite
+        - name: GEMINI_MODEL_REASONING
+          value: gemini-3.8-flash
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: GEMINI_API_KEY

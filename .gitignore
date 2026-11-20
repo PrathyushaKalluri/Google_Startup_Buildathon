@@ -2,8 +2,10 @@
 .DS_Store
 .env
 .env.local
+.pytest_cache/
 .venv/
 __pycache__/
 dist/
 node_modules/
+storage/
 venv/

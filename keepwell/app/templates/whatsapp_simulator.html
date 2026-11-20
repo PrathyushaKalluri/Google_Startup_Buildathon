@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp Webhook Simulator — KeepWell</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans">
+  <!-- Nav -->
+  <nav class="bg-emerald-800 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/" class="text-emerald-200 hover:text-white mr-2"><i class="fas fa-arrow-left"></i> Home</a>
+        <h1 class="font-bold text-lg"><i class="fab fa-whatsapp mr-1 text-emerald-300"></i> WhatsApp Intake Simulator</h1>
+      </div>
+      <span class="text-xs bg-emerald-900 px-3 py-1 rounded text-emerald-200">
+        Inbound Voice & Message Tester
+      </span>
+    </div>
+  </nav>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full grid grid-cols-1 md:grid-cols-12 gap-6">
+    <!-- Left Column: WhatsApp Chat Mockup -->
+    <div class="md:col-span-5 bg-white rounded-2xl shadow-lg border border-slate-200 flex flex-col h-[750px] overflow-hidden">
+      <!-- WhatsApp Header -->
+      <div class="bg-emerald-700 text-white p-4 flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-lg">
+          KW
+        </div>
+        <div class="flex-grow">
+          <div class="font-semibold text-sm">KeepWell Service Desk</div>
+          <div class="text-[11px] text-emerald-200">Official Business Account · Warangal</div>
+        </div>
+        <i class="fas fa-ellipsis-v text-emerald-200"></i>
+      </div>
+
+      <!-- Messages Stream -->
+      <div id="chatStream" class="flex-grow p-4 bg-[#e5ddd5] overflow-y-auto space-y-3 font-sans text-sm">
+        <!-- Initial Bot Greeting -->
+        <div class="flex justify-start">
+          <div class="bg-white p-3 rounded-lg shadow-sm max-w-[85%] text-slate-800">
+            <p class="font-medium text-emerald-800 text-xs mb-1">KeepWell Desk</p>
+            నమస్కారం! మీ ఫ్రిడ్జ్ లేదా ఏసీ లో సమస్య ఉంటే వాయిస్ నోట్ లేదా ఫోటో పంపండి. మేము సహాయం చేస్తాం.
+            <div class="text-[10px] text-slate-400 text-right mt-1">10:00 AM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons for Test Cases -->
+      <div class="p-3 bg-slate-50 border-t border-slate-200 space-y-2">
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Select Gold Test Case:</div>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button onclick="loadSample('te_fridge')" class="bg-white border border-slate-200 hover:border-emerald-500 p-2 rounded text-left hover:bg-emerald-50 transition">
+            <span class="font-bold block text-slate-800">1. Telugu Fridge Fault</span>
+            <span class="text-slate-500 text-[11px]">"Fridge cool avdam ledu..."</span>
+          </button>
+          <button onclick="loadSample('hazard_gas')" class="bg-white border border-red-200 hover:border-red-500 p-2 rounded text-left hover:bg-red-50 transition">
+            <span class="font-bold block text-red-700">2. Flammable Gas Hazard</span>
+            <span class="text-slate-500 text-[11px]">"Gas vasana vastundi..."</span>
+          </button>
+          <button onclick="loadSample('hi_ac')" class="bg-white border border-slate-200 hover:border-emerald-500 p-2 rounded text-left hover:bg-emerald-50 transition">
+            <span class="font-bold block text-slate-800">3. Hindi AC Repair</span>
+            <span class="text-slate-500 text-[11px]">"AC thanda nahi kar raha..."</span>
+          </button>
+          <button onclick="loadSample('shock_hazard')" class="bg-white border border-red-200 hover:border-red-500 p-2 rounded text-left hover:bg-red-50 transition">
+            <span class="font-bold block text-red-700">4. Electric Shock Hazard</span>
+            <span class="text-slate-500 text-[11px]">"Current shock kodutundi..."</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form id="chatForm" onsubmit="sendMessage(event)" class="p-3 bg-slate-100 border-t border-slate-200 flex items-center space-x-2">
+        <button type="button" onclick="attachLabelPhoto()" title="Simulate sending model plate photo" class="text-slate-500 hover:text-emerald-600 p-2">
+          <i class="fas fa-camera text-lg"></i>
+        </button>
+        <input type="text" id="messageInput" placeholder="Type complaint or voice transcript..." required
+          class="flex-grow px-3 py-2 bg-white rounded-full border border-slate-300 focus:outline-none focus:border-emerald-500 text-sm">
+        <button type="submit" class="bg-emerald-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-emerald-700 transition">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Column: Live Orchestrator Trace & State Machine -->
+    <div class="md:col-span-7 space-y-6">
+      <!-- Live Processing Trace -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-bold text-slate-900 text-lg flex items-center">
+            <i class="fas fa-microchip text-indigo-600 mr-2"></i> Live Orchestrator Trace
+          </h2>
+          <span id="activeJobStateBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600">
+            Awaiting Input
+          </span>
+        </div>
+
+        <div id="traceLog" class="space-y-3 font-mono text-xs max-h-[350px] overflow-y-auto bg-slate-900 text-emerald-400 p-4 rounded-lg">
+          <div class="text-slate-500">// KeepWell Orchestrator ready. Awaiting WhatsApp webhook events...</div>
+        </div>
+      </div>
+
+      <!-- Next Steps & Direct Links -->
+      <div id="actionCards" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <h3 class="font-bold text-slate-900 text-base">Flagship Scenario Progression:</h3>
+        
+        <div id="hazardNotice" class="hidden bg-red-50 border-l-4 border-red-500 p-4 text-red-800 text-xs">
+          <div class="font-bold uppercase mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> P0 Safety Stop Triggered</div>
+          <div id="hazardText"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <a id="agencyDeskLink" href="/agency" class="block bg-indigo-50 border border-indigo-200 hover:border-indigo-500 p-4 rounded-lg text-indigo-900 text-sm font-medium">
+            <i class="fas fa-desktop text-indigo-600 mb-2 text-xl block"></i>
+            Open in Agency Desk
+            <span class="text-xs text-indigo-600 block mt-1">Review diagnostic & approve quote</span>
+          </a>
+          <a id="homeMemoryLink" href="#" target="_blank" class="block bg-purple-50 border border-purple-200 hover:border-purple-500 p-4 rounded-lg text-purple-900 text-sm font-medium">
+            <i class="fas fa-passport text-purple-600 mb-2 text-xl block"></i>
+            Open Household Magic Link
+            <span class="text-xs text-purple-600 block mt-1">View quote & Home Memory timeline</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const SAMPLES = {
+      te_fridge: "ఫ్రిడ్జ్ కూలింగ్ అవ్వడం లేదు, రెండు నెలల క్రితం రిపేర్ చేయించాం. రేపు రండి. మోడల్: LG GL-B201ABPY",
+      hazard_gas: "ఫ్రిడ్జ్ వెనుక గ్యాస్ వాసన దారుణంగా వస్తుంది. ఒక చిన్న hiss శబ్దం వస్తుంది, ఏం చేయాలి?",
+      hi_ac: "हमारा Voltas AC ठंडा नहीं कर रहा है। मॉडल 183VCZR है। कल सुबह टेक्नीशियन को भेज दीजिए।",
+      shock_hazard: "ఫ్రిడ్జ్ డోర్ ముట్టుకుంటే కరెంట్ షాక్ కొడుతుంది. లైట్ బ్లింక్ అవుతుంది."
+    };
+
+    function loadSample(key) {
+      document.getElementById("messageInput").value = SAMPLES[key];
+    }
+
+    function attachLabelPhoto() {
+      document.getElementById("messageInput").value += " [Photo Attached: Model GL-B201ABPY, Serial LG9848123A]";
+    }
+
+    async function sendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById("messageInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendChatMessage("user", text);
+      input.value = "";
+      addTrace(`Inbound Webhook received: "${text}"`);
+
+      try {
+        const res = await fetch("/webhook/whatsapp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from_number: "+919848012345",
+            message_type: "text",
+            text_body: text,
+            language_hint: "te"
+          })
+        });
+        const data = await res.json();
+        handleBotResponse(data);
+      } catch (err) {
+        addTrace(`[Error] Failed to process webhook: ${err.message}`);
+      }
+    }
+
+    function appendChatMessage(sender, text) {
+      const stream = document.getElementById("chatStream");
+      const div = document.createElement("div");
+      div.className = sender === "user" ? "flex justify-end" : "flex justify-start";
+      div.innerHTML = `
+        <div class="${sender === 'user' ? 'bg-[#dcf8c6] text-slate-900' : 'bg-white text-slate-800'} p-3 rounded-lg shadow-sm max-w-[85%]">
+          <p class="font-medium text-xs mb-1 ${sender === 'user' ? 'text-emerald-700' : 'text-indigo-800'}">${sender === 'user' ? 'Household Customer' : 'KeepWell Desk'}</p>
+          ${text}
+          <div class="text-[10px] text-slate-400 text-right mt-1">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+        </div>
+      `;
+      stream.appendChild(div);
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function addTrace(msg) {
+      const trace = document.getElementById("traceLog");
+      const entry = document.createElement("div");
+      entry.innerHTML = `<span class="text-slate-500">[${new Date().toISOString().substring(11, 19)}]</span> ${msg}`;
+      trace.appendChild(entry);
+      trace.scrollTop = trace.scrollHeight;
+    }
+
+    function handleBotResponse(data) {
+      addTrace(`Job #${data.job_id} created. State -> <span class="text-yellow-400">${data.state}</span>`);
+      
+      const badge = document.getElementById("activeJobStateBadge");
+      badge.textContent = data.state;
+      badge.className = data.hazard_flag 
+        ? "px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800"
+        : "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
+
+      if (data.hazard_flag) {
+        addTrace(`[DETERMINISTIC SAFETY ENGINE] CRITICAL HAZARD FLAGGED! Escalating to human.`);
+        appendChatMessage("bot", `⚠️ అత్యవసర హెచ్చరిక: ${data.hazard_instructions}`);
+        document.getElementById("hazardNotice").classList.remove("hidden");
+        document.getElementById("hazardText").textContent = data.hazard_instructions;
+      } else {
+        appendChatMessage("bot", `ధన్యవాదాలు! మీ సమస్య రికార్డ్ అయింది. ${data.follow_up_question}`);
+      }
+
+      // Show action cards
+      document.getElementById("actionCards").classList.remove("hidden");
+      document.getElementById("agencyDeskLink").href = `/agency`;
+      document.getElementById("homeMemoryLink").href = data.magic_link;
+    }
+  </script>
+</body>
+</html>

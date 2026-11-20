@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agency Desk — KeepWell</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans">
+  <nav class="bg-indigo-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/" class="text-indigo-200 hover:text-white mr-2"><i class="fas fa-arrow-left"></i> Home</a>
+        <h1 class="font-bold text-lg"><i class="fas fa-tools mr-2 text-teal-400"></i> {{ agency.name }} · Dispatch Desk</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-xs text-indigo-200">{{ agency.city }} · Starter Plan (₹1,499/mo)</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full space-y-6">
+    <!-- Top Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-500 font-semibold uppercase">First-Visit Resolution</div>
+          <div class="text-2xl font-bold text-emerald-600 mt-1">{{ fvr_metrics.first_visit_resolution_rate }}%</div>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+          <i class="fas fa-check-circle"></i>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-500 font-semibold uppercase">Total Jobs</div>
+          <div class="text-2xl font-bold text-indigo-600 mt-1">{{ jobs | length }}</div>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">
+          <i class="fas fa-clipboard-list"></i>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-500 font-semibold uppercase">Spare Parts in Stock</div>
+          <div class="text-2xl font-bold text-slate-800 mt-1">{{ parts | length }}</div>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+          <i class="fas fa-boxes"></i>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-500 font-semibold uppercase">Active Technicians</div>
+          <div class="text-2xl font-bold text-slate-800 mt-1">{{ technicians | length }}</div>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-lg">
+          <i class="fas fa-user-friends"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Cards Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <h2 class="font-bold text-slate-900 text-base">Active Repair Queue</h2>
+        <span class="text-xs text-slate-500">Auto-refreshes on state transitions</span>
+      </div>
+
+      <div class="divide-y divide-slate-200">
+        {% for job in jobs %}
+        <div class="p-6 hover:bg-slate-50 transition">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+            <div>
+              <span class="text-xs font-mono font-bold text-indigo-600 mr-2">JOB #{{ job.id }}</span>
+              <span class="text-sm font-bold text-slate-900">{{ job.customer.name }} ({{ job.customer.phone }})</span>
+              <span class="text-xs text-slate-500 ml-2">· {{ job.customer.address }}</span>
+            </div>
+            <div class="mt-2 md:mt-0 flex items-center space-x-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold
+                {% if 'HAZARD' in job.state %}bg-red-100 text-red-800
+                {% elif 'CLOSED' in job.state %}bg-emerald-100 text-emerald-800
+                {% else %}bg-blue-100 text-blue-800{% endif %}">
+                {{ job.state }}
+              </span>
+              {% if job.magic_token %}
+              <a href="/m/{{ job.magic_token }}" target="_blank" class="text-xs text-purple-600 hover:text-purple-800 font-medium bg-purple-50 px-2 py-1 rounded">
+                <i class="fas fa-external-link-alt mr-1"></i> Customer Magic Link
+              </a>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4">
+            <div>
+              <span class="text-slate-400 font-semibold block uppercase">Appliance:</span>
+              <span class="font-medium text-slate-800">{{ job.appliance.brand }} {{ job.appliance.appliance_type }}</span>
+              <span class="text-slate-600 block">Model: {{ job.appliance.model_number or 'Unknown' }}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold block uppercase">Customer Complaint:</span>
+              <span class="text-slate-700 italic">"{{ job.raw_transcript }}"</span>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold block uppercase">Parts Compatibility:</span>
+              <span class="font-bold
+                {% if job.parts_status == 'VERIFIED_COMPATIBLE' %}text-emerald-600
+                {% elif job.parts_status == 'INCOMPATIBLE' %}text-red-600
+                {% else %}text-amber-600{% endif %}">
+                {{ job.parts_status }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Action Gates -->
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- 1. Run Diagnostic Button -->
+            <button onclick="runDiagnostic({{ job.id }})" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded shadow-sm transition">
+              <i class="fas fa-brain mr-1"></i> Run 3.8 Flash Diagnostics
+            </button>
+
+            <!-- 2. Generate Rate-Card Quote -->
+            <button onclick="generateQuote({{ job.id }})" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded shadow-sm transition">
+              <i class="fas fa-calculator mr-1"></i> Compute Rate-Card Quote
+            </button>
+
+            <!-- 3. Dispatch Technician -->
+            <button onclick="openDispatchModal({{ job.id }})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded shadow-sm transition">
+              <i class="fas fa-truck mr-1"></i> Dispatch Tech with Kit
+            </button>
+
+            <!-- 4. Simulate Close-out -->
+            <button onclick="simulateCloseout({{ job.id }})" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-4 py-2 rounded shadow-sm transition">
+              <i class="fas fa-microphone mr-1"></i> Technician Close-Out
+            </button>
+          </div>
+        </div>
+        {% else %}
+        <div class="p-8 text-center text-slate-400">No jobs in queue.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function runDiagnostic(jobId) {
+      const res = await fetch(`/api/jobs/${jobId}/diagnose`, { method: "POST" });
+      const data = await res.json();
+      alert(`Diagnostic Complete! \nParts Status: ${data.parts_status}\nNew State: ${data.state}`);
+      location.reload();
+    }
+
+    async function generateQuote(jobId) {
+      const res = await fetch(`/api/quotes/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          job_id: jobId,
+          visiting_charge: 250,
+          labor_charge: 350,
+          part_code: "RELAY-PTC-LG"
+        })
+      });
+      const data = await res.json();
+      alert(`Quote Generated: Rs. ${data.calculation.total_amount} (Includes 18% GST: Rs. ${data.calculation.gst_amount})`);
+      location.reload();
+    }
+
+    async function openDispatchModal(jobId) {
+      const res = await fetch(`/api/technicians/recommend/${jobId}`);
+      const data = await res.json();
+      const tech = data.recommended_technicians[0];
+      const slot = data.available_slots[0];
+      if (confirm(`Assign Technician: ${tech.name} (Match Score: ${tech.match_score})\nSlot: ${slot}?`)) {
+        await fetch(`/api/technicians/dispatch/${jobId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ technician_id: tech.id, slot: slot })
+        });
+        alert("Technician Dispatched!");
+        location.reload();
+      }
+    }
+
+    async function simulateCloseout(jobId) {
+      const notes = prompt("Enter technician voice close-out notes:", "Replaced PTC starter relay. Fridge started cooling, temperature dropped to 4 degrees. Customer satisfied.");
+      if (notes) {
+        const res = await fetch(`/api/technicians/close-out/${jobId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ technician_audio_transcript: notes })
+        });
+        const data = await res.json();
+        alert(`Job Closed & Verified!\nSaved to Home Memory Event #${data.home_memory_event_id}\nFirst-Visit Resolution: ${data.first_visit_resolved ? 'PASS' : 'FAIL'}`);
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>

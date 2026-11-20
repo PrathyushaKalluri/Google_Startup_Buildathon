@@ -1,0 +1,33 @@
+{
+  "agency_tier": "Starter",
+  "base_city": "Warangal",
+  "rates": [
+    {
+      "service_code": "VISIT_STD",
+      "name": "Standard Inspection & Visiting Charge",
+      "charge": 250.0,
+      "waived_if_repaired": false
+    },
+    {
+      "service_code": "LABOR_RELAY",
+      "name": "Starter Relay / Capacitor Replacement Labor",
+      "charge": 350.0
+    },
+    {
+      "service_code": "LABOR_GAS",
+      "name": "R-600a / R-32 Gas Charging & Vacuum Purging",
+      "charge": 850.0
+    },
+    {
+      "service_code": "LABOR_COMPRESSOR",
+      "name": "Compressor Replacement & Nitrogen Flushing",
+      "charge": 1200.0
+    },
+    {
+      "service_code": "LABOR_FAN",
+      "name": "Evaporator / Condenser Fan Motor Replacement",
+      "charge": 450.0
+    }
+  ],
+  "gst_percent": 18.0
+}

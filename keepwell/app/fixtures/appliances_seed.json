@@ -1,0 +1,50 @@
+[
+  {
+    "customer_name": "Ramesh Varma",
+    "customer_phone": "+919848012345",
+    "customer_language": "Telugu",
+    "customer_address": "Subedari, Hanamkonda, Warangal, Telangana",
+    "brand": "LG",
+    "appliance_type": "REFRIGERATOR",
+    "model_number": "GL-B201ABPY",
+    "serial_number": "LG9848123A",
+    "purchase_year": 2022,
+    "is_verified": true
+  },
+  {
+    "customer_name": "Suresh Reddy",
+    "customer_phone": "+919849067890",
+    "customer_language": "Telugu",
+    "customer_address": "Nakkalagutta, Warangal, Telangana",
+    "brand": "Samsung",
+    "appliance_type": "REFRIGERATOR",
+    "model_number": "RT28T3722S8",
+    "serial_number": "SAM771928B",
+    "purchase_year": 2021,
+    "is_verified": true
+  },
+  {
+    "customer_name": "Ananya Sharma",
+    "customer_phone": "+919701123456",
+    "customer_language": "Hindi",
+    "customer_address": "Benz Circle, Vijayawada, Andhra Pradesh",
+    "brand": "Voltas",
+    "appliance_type": "AC",
+    "model_number": "183VCZR",
+    "serial_number": "VOL998124C",
+    "purchase_year": 2023,
+    "is_verified": true
+  },
+  {
+    "customer_name": "Mohammad Irfan",
+    "customer_phone": "+919988776655",
+    "customer_language": "Hindi",
+    "customer_address": "Kazipet Railway Colony, Warangal",
+    "brand": "Whirlpool",
+    "appliance_type": "REFRIGERATOR",
+    "model_number": "205IMPC",
+    "serial_number": "WHP338819D",
+    "purchase_year": 2020,
+    "is_verified": true
+  }
+]

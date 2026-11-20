@@ -1,0 +1,36 @@
+steps:
+  # 1. Build container image in Artifact Registry (asia-south1 Mumbai)
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-f'
+      - 'deploy/Dockerfile'
+      - '-t'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/keepwell-repo/keepwell-app:$SHORT_SHA'
+      - '-t'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/keepwell-repo/keepwell-app:latest'
+      - '.'
+
+  # 2. Push image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/keepwell-repo/keepwell-app:latest'
+
+  # 3. Deploy to Cloud Run in Mumbai
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'keepwell-app'
+      - '--image'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/keepwell-repo/keepwell-app:latest'
+      - '--region'
+      - 'asia-south1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'asia-south1-docker.pkg.dev/$PROJECT_ID/keepwell-repo/keepwell-app:latest'
