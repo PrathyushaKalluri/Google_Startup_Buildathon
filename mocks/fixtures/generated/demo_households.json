@@ -1,0 +1,200 @@
+[
+  {
+    "household_id": "b6e4fcc8-4d47-549e-9c24-98421184bbd1",
+    "display_name": "Priyanka Menon",
+    "phone_masked": "+91 ••••• ••528",
+    "language": "en",
+    "magic_token": "kwm_69bcb9dbe27d20bb",
+    "centre_key": "c_av",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528"
+  },
+  {
+    "household_id": "03cf1731-ecdb-5ac1-955d-292ba749c64f",
+    "display_name": "Venkata Lakshmi",
+    "phone_masked": "+91 ••••• ••338",
+    "language": "te",
+    "magic_token": "kwm_3ab4291fc041b757",
+    "centre_key": "c_aq",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db"
+  },
+  {
+    "household_id": "82d51946-09e3-5167-befe-5a9979847dfb",
+    "display_name": "Harika Reddy",
+    "phone_masked": "+91 ••••• ••504",
+    "language": "te",
+    "magic_token": "kwm_86bbaefd36d2a40f",
+    "centre_key": "c_ls",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814"
+  },
+  {
+    "household_id": "3fd5f0f7-456b-58ad-90ac-a58e5010e0a1",
+    "display_name": "Meera Nair",
+    "phone_masked": "+91 ••••• ••876",
+    "language": "en",
+    "magic_token": "kwm_9c3218d06163a27e",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0"
+  },
+  {
+    "household_id": "5901df67-e286-513d-8ebe-e3b64f23d548",
+    "display_name": "Sravani Goud",
+    "phone_masked": "+91 ••••• ••856",
+    "language": "te",
+    "magic_token": "kwm_0e4eb04663031cb2",
+    "centre_key": "c_zn",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b"
+  },
+  {
+    "household_id": "7dd8578a-bf9e-5a8b-a2f4-6dd6879253ff",
+    "display_name": "Anusha Joshi",
+    "phone_masked": "+91 ••••• ••270",
+    "language": "en",
+    "magic_token": "kwm_5aa4e7e2a0ab1dc8",
+    "centre_key": "c_fw",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952"
+  },
+  {
+    "household_id": "9641ff7e-2eb0-5c56-baec-f6c1c014e078",
+    "display_name": "Shilpa Rao",
+    "phone_masked": "+91 ••••• ••806",
+    "language": "en",
+    "magic_token": "kwm_3438195de8d2a358",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0"
+  },
+  {
+    "household_id": "12ef4dc9-19ed-52fa-b805-221de2822c2e",
+    "display_name": "Faisal Ahmed",
+    "phone_masked": "+91 ••••• ••543",
+    "language": "hi",
+    "magic_token": "kwm_788296ce15f7a644",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0"
+  },
+  {
+    "household_id": "73820ebd-f82d-5923-bbb4-2b946e32d242",
+    "display_name": "Sunita Sharma",
+    "phone_masked": "+91 ••••• ••672",
+    "language": "hi",
+    "magic_token": "kwm_e2af3d74f1e1ded5",
+    "centre_key": "c_fw",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952"
+  },
+  {
+    "household_id": "70a2f174-1162-5a8b-8565-70a24a8a107e",
+    "display_name": "Rajesh Agarwal",
+    "phone_masked": "+91 ••••• ••744",
+    "language": "hi",
+    "magic_token": "kwm_90a4fab5502edc29",
+    "centre_key": "c_hw",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4"
+  },
+  {
+    "household_id": "ac666805-2475-5a04-83bc-c1d98674fcb6",
+    "display_name": "Ayesha Gupta",
+    "phone_masked": "+91 ••••• ••345",
+    "language": "en",
+    "magic_token": "kwm_a03fe0c965496cd9",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0"
+  },
+  {
+    "household_id": "d0f80974-d743-5f1e-80ee-a6ce17935017",
+    "display_name": "Srinivas Goud",
+    "phone_masked": "+91 ••••• ••542",
+    "language": "te",
+    "magic_token": "kwm_5374d2c8768c17b5",
+    "centre_key": "c_ls",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814"
+  },
+  {
+    "household_id": "6517b824-619f-5a11-951c-d3250f55327f",
+    "display_name": "Pooja Singh",
+    "phone_masked": "+91 ••••• ••367",
+    "language": "hi",
+    "magic_token": "kwm_08ede6c728060f3a",
+    "centre_key": "c_ls",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814"
+  },
+  {
+    "household_id": "c6c6b799-41ad-54c9-b61a-1c4abd4fc49e",
+    "display_name": "Ganesh Yadav",
+    "phone_masked": "+91 ••••• ••729",
+    "language": "te",
+    "magic_token": "kwm_1bc5a827db3e86d6",
+    "centre_key": "c_av",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528"
+  },
+  {
+    "household_id": "0f506f6c-73ec-5612-a005-07e6c4da7e9c",
+    "display_name": "Sandeep Kulkarni",
+    "phone_masked": "+91 ••••• ••361",
+    "language": "en",
+    "magic_token": "kwm_41398e62e9b6640e",
+    "centre_key": "c_zn",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b"
+  },
+  {
+    "household_id": "4f5a531e-4b98-50b8-9100-8fc5a103bf69",
+    "display_name": "Mohammed Ali Sharma",
+    "phone_masked": "+91 ••••• ••327",
+    "language": "hi",
+    "magic_token": "kwm_a14cb296b3cddd0e",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0"
+  },
+  {
+    "household_id": "690b5481-6dd4-57e6-93ec-3f13686b1e2b",
+    "display_name": "Ananya Das",
+    "phone_masked": "+91 ••••• ••445",
+    "language": "en",
+    "magic_token": "kwm_51eec925f5174342",
+    "centre_key": "c_hw",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4"
+  },
+  {
+    "household_id": "63bfc297-a240-519d-a269-fe1908a828cf",
+    "display_name": "Aditya Nair",
+    "phone_masked": "+91 ••••• ••460",
+    "language": "ml",
+    "magic_token": "kwm_390d784045b620a1",
+    "centre_key": "c_ip",
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d"
+  },
+  {
+    "household_id": "f0b5692a-5a15-5a8c-abed-48d6d007af31",
+    "display_name": "Deepak Goud",
+    "phone_masked": "+91 ••••• ••691",
+    "language": "te",
+    "magic_token": "kwm_5e7f936a165c45bd",
+    "centre_key": "c_aq",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db"
+  },
+  {
+    "household_id": "ea641c86-fa5d-5d43-a5fe-30b210ea0704",
+    "display_name": "Mohammed Ali Iyer",
+    "phone_masked": "+91 ••••• ••983",
+    "language": "te",
+    "magic_token": "kwm_84a2e952a6e59c69",
+    "centre_key": "c_mh",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e"
+  },
+  {
+    "household_id": "d41a468e-0c79-532c-86ca-d79ee3c5bb20",
+    "display_name": "Sowmya Shaik",
+    "phone_masked": "+91 ••••• ••887",
+    "language": "ml",
+    "magic_token": "kwm_78209e66f94d116b",
+    "centre_key": "c_mh",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e"
+  },
+  {
+    "household_id": "2b076546-45fa-57f8-a738-08b2092c3ead",
+    "display_name": "Lakshmi Prasanna",
+    "phone_masked": "+91 ••••• ••329",
+    "language": "te",
+    "magic_token": "kwm_4c979445b3a1aa50",
+    "centre_key": "c_ip",
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d"
+  }
+]

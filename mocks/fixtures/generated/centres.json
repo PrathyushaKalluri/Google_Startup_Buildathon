@@ -1,0 +1,553 @@
+[
+  {
+    "id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "name": "Aerovane Authorised Service, Gachibowli",
+    "address_line": "3-9/10, Main Road, Gachibowli, Hyderabad",
+    "pincode": "500032",
+    "location": {
+      "lon": 78.343916,
+      "lat": 17.439748
+    },
+    "service_pincodes": [
+      "500032",
+      "500084",
+      "500081",
+      "500089",
+      "500075"
+    ],
+    "categories": [
+      "air_conditioner"
+    ],
+    "default_language": "en",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "6f294454-b372-5971-9779-f0540fd21643",
+        "channel": "voice",
+        "number_ref": "+91 57986 43261",
+        "provider_ref": "tel-c_av",
+        "status": "active"
+      },
+      {
+        "id": "2e6d0f3b-d50e-59f0-abda-99db00f9220c",
+        "channel": "whatsapp",
+        "number_ref": "+91 56224 37552",
+        "provider_ref": "wa-c_av",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "24d15621-aa8e-5ab1-894c-2c80519be0b3",
+        "brand": "Aerovane",
+        "level": "authorised_service",
+        "valid_from": "2024-01-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "name": "Zenith Care Hub, Kondapur",
+    "address_line": "2-64/6, Main Road, Kondapur, Hyderabad",
+    "pincode": "500084",
+    "location": {
+      "lon": 78.365604,
+      "lat": 17.457205
+    },
+    "service_pincodes": [
+      "500084",
+      "500081",
+      "500032",
+      "500019",
+      "500049",
+      "500075"
+    ],
+    "categories": [
+      "air_conditioner",
+      "refrigerator",
+      "washing_machine"
+    ],
+    "default_language": "en",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "17d1c0d0-e26d-569e-b7be-1bdc30e25339",
+        "channel": "voice",
+        "number_ref": "+91 59841 40159",
+        "provider_ref": "tel-c_zn",
+        "status": "active"
+      },
+      {
+        "id": "2dc2790b-1ca7-5c36-b150-e1f3f8a1c431",
+        "channel": "whatsapp",
+        "number_ref": "+91 56556 55089",
+        "provider_ref": "wa-c_zn",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "3a6386de-ff5b-5973-976f-9e9de75b39f4",
+        "brand": "Zenith",
+        "level": "authorised_service",
+        "valid_from": "2024-01-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_key": "c_fw",
+    "name": "Frost and Wave Service Point, Kukatpally",
+    "address_line": "8-44/28, Main Road, Kukatpally, Hyderabad",
+    "pincode": "500085",
+    "location": {
+      "lon": 78.398466,
+      "lat": 17.492042
+    },
+    "service_pincodes": [
+      "500085",
+      "500049",
+      "500019",
+      "500072",
+      "500084"
+    ],
+    "categories": [
+      "refrigerator",
+      "washing_machine"
+    ],
+    "default_language": "te",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "48339b6a-136a-533f-8f28-c592320c14f2",
+        "channel": "voice",
+        "number_ref": "+91 53536 70650",
+        "provider_ref": "tel-c_fw",
+        "status": "active"
+      },
+      {
+        "id": "f364f93b-7f9e-5e16-8765-a3079c43a0ba",
+        "channel": "whatsapp",
+        "number_ref": "+91 59885 77764",
+        "provider_ref": "wa-c_fw",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "9eb23280-0e46-5119-bbb8-a394cf26402a",
+        "brand": "Frostline",
+        "level": "authorised_service",
+        "valid_from": "2024-01-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "40508238-6fc9-59b8-84af-f27406b34b7d",
+        "brand": "Wavecrest",
+        "level": "authorised_service",
+        "valid_from": "2024-06-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_key": "c_cc",
+    "name": "Cool Craft Appliance Services, Madhapur",
+    "address_line": "6-9/20, Main Road, Madhapur, Hyderabad",
+    "pincode": "500081",
+    "location": {
+      "lon": 78.390528,
+      "lat": 17.446363
+    },
+    "service_pincodes": [
+      "500081",
+      "500033",
+      "500032",
+      "500084",
+      "500034",
+      "500075",
+      "500008"
+    ],
+    "categories": [
+      "air_conditioner",
+      "refrigerator",
+      "washing_machine"
+    ],
+    "default_language": "en",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "dca7811a-d556-5245-9741-a438d6a3bb4f",
+        "channel": "voice",
+        "number_ref": "+91 56509 70841",
+        "provider_ref": "tel-c_cc",
+        "status": "active"
+      },
+      {
+        "id": "fee19e35-d316-5afc-9a9d-71fdb890c94a",
+        "channel": "whatsapp",
+        "number_ref": "+91 53921 25456",
+        "provider_ref": "wa-c_cc",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "24d15621-aa8e-5ab1-894c-2c80519be0b3",
+        "brand": "Aerovane",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "3a6386de-ff5b-5973-976f-9e9de75b39f4",
+        "brand": "Zenith",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "9eb23280-0e46-5119-bbb8-a394cf26402a",
+        "brand": "Frostline",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "40508238-6fc9-59b8-84af-f27406b34b7d",
+        "brand": "Wavecrest",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_key": "c_aq",
+    "name": "AquaCare RO and Geyser Services, Manikonda",
+    "address_line": "7-72/40, Main Road, Manikonda, Hyderabad",
+    "pincode": "500089",
+    "location": {
+      "lon": 78.383673,
+      "lat": 17.403397
+    },
+    "service_pincodes": [
+      "500089",
+      "500032",
+      "500075",
+      "500008"
+    ],
+    "categories": [
+      "water_purifier",
+      "water_heater"
+    ],
+    "default_language": "en",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "16f95608-d101-5386-92ec-5429c9863393",
+        "channel": "voice",
+        "number_ref": "+91 52007 40412",
+        "provider_ref": "tel-c_aq",
+        "status": "active"
+      },
+      {
+        "id": "9ae39469-94ca-55eb-8305-5d2e70a4815d",
+        "channel": "whatsapp",
+        "number_ref": "+91 50104 63940",
+        "provider_ref": "wa-c_aq",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "1dc607fb-2418-52d7-acd8-ae1528a4274e",
+        "brand": "Purelo",
+        "level": "authorised_service",
+        "valid_from": "2024-03-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "e660b961-34a9-5291-8a77-023165e6b221",
+        "brand": "Heatwell",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": "2026-09-01"
+      },
+      {
+        "brand_id": "e660b961-34a9-5291-8a77-023165e6b221",
+        "brand": "Heatwell",
+        "level": "authorised_service",
+        "valid_from": "2026-09-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "name": "Metro Home Appliance Care, Miyapur",
+    "address_line": "9-81/21, Main Road, Miyapur, Hyderabad",
+    "pincode": "500049",
+    "location": {
+      "lon": 78.354699,
+      "lat": 17.495238
+    },
+    "service_pincodes": [
+      "500049",
+      "500085",
+      "500019",
+      "500084",
+      "500072"
+    ],
+    "categories": [
+      "air_conditioner",
+      "refrigerator",
+      "washing_machine",
+      "water_purifier",
+      "water_heater"
+    ],
+    "default_language": "te",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "67a39472-6713-5783-afd6-9fe4ec7a6c82",
+        "channel": "voice",
+        "number_ref": "+91 55802 10503",
+        "provider_ref": "tel-c_mh",
+        "status": "active"
+      },
+      {
+        "id": "51fa7244-eac1-5d05-9bdb-bec3b469ada9",
+        "channel": "whatsapp",
+        "number_ref": "+91 52807 86488",
+        "provider_ref": "wa-c_mh",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "24d15621-aa8e-5ab1-894c-2c80519be0b3",
+        "brand": "Aerovane",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "3a6386de-ff5b-5973-976f-9e9de75b39f4",
+        "brand": "Zenith",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": "2026-10-01"
+      },
+      {
+        "brand_id": "9eb23280-0e46-5119-bbb8-a394cf26402a",
+        "brand": "Frostline",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "40508238-6fc9-59b8-84af-f27406b34b7d",
+        "brand": "Wavecrest",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "1dc607fb-2418-52d7-acd8-ae1528a4274e",
+        "brand": "Purelo",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "e660b961-34a9-5291-8a77-023165e6b221",
+        "brand": "Heatwell",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d",
+    "centre_key": "c_ip",
+    "name": "InstallPro Mounting Services, Tolichowki",
+    "address_line": "5-27/10, Main Road, Tolichowki, Hyderabad",
+    "pincode": "500008",
+    "location": {
+      "lon": 78.406545,
+      "lat": 17.40406
+    },
+    "service_pincodes": [
+      "500008",
+      "500033",
+      "500034",
+      "500032",
+      "500089",
+      "500075"
+    ],
+    "categories": [
+      "air_conditioner"
+    ],
+    "default_language": "hi",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "a4dbf51e-dcf3-56b3-8a02-394ba32c1c27",
+        "channel": "voice",
+        "number_ref": "+91 56855 97018",
+        "provider_ref": "tel-c_ip",
+        "status": "active"
+      },
+      {
+        "id": "ad107f62-e279-5825-810e-6794a7eb6b70",
+        "channel": "whatsapp",
+        "number_ref": "+91 51156 73520",
+        "provider_ref": "wa-c_ip",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "24d15621-aa8e-5ab1-894c-2c80519be0b3",
+        "brand": "Aerovane",
+        "level": "installation_only",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "3a6386de-ff5b-5973-976f-9e9de75b39f4",
+        "brand": "Zenith",
+        "level": "installation_only",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_key": "c_ls",
+    "name": "Lakeshore Service Centre, Jubilee Hills",
+    "address_line": "1-95/7, Main Road, Jubilee Hills, Hyderabad",
+    "pincode": "500033",
+    "location": {
+      "lon": 78.407319,
+      "lat": 17.43572
+    },
+    "service_pincodes": [
+      "500033",
+      "500034",
+      "500008",
+      "500016",
+      "500081"
+    ],
+    "categories": [
+      "washing_machine",
+      "refrigerator",
+      "water_heater"
+    ],
+    "default_language": "te",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "25931ab7-fd38-5a28-99e3-9897af2c5684",
+        "channel": "voice",
+        "number_ref": "+91 59576 48547",
+        "provider_ref": "tel-c_ls",
+        "status": "active"
+      },
+      {
+        "id": "1bc30364-797c-5454-a6ba-564fcaf791ce",
+        "channel": "whatsapp",
+        "number_ref": "+91 50866 46234",
+        "provider_ref": "wa-c_ls",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "40508238-6fc9-59b8-84af-f27406b34b7d",
+        "brand": "Wavecrest",
+        "level": "authorised_service",
+        "valid_from": "2025-02-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "9eb23280-0e46-5119-bbb8-a394cf26402a",
+        "brand": "Frostline",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "e660b961-34a9-5291-8a77-023165e6b221",
+        "brand": "Heatwell",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      },
+      {
+        "brand_id": "3a6386de-ff5b-5973-976f-9e9de75b39f4",
+        "brand": "Zenith",
+        "level": "independent",
+        "valid_from": "2025-09-01",
+        "valid_to": null
+      }
+    ]
+  },
+  {
+    "id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_key": "c_hw",
+    "name": "Heatwell Authorised Service, Banjara Hills",
+    "address_line": "8-49/2, Main Road, Banjara Hills, Hyderabad",
+    "pincode": "500034",
+    "location": {
+      "lon": 78.446992,
+      "lat": 17.411267
+    },
+    "service_pincodes": [
+      "500034",
+      "500033",
+      "500016",
+      "500008"
+    ],
+    "categories": [
+      "water_heater"
+    ],
+    "default_language": "en",
+    "onboarding_status": "active",
+    "channels": [
+      {
+        "id": "b968a779-c17d-5268-a0bc-884455b57a91",
+        "channel": "voice",
+        "number_ref": "+91 50852 00863",
+        "provider_ref": "tel-c_hw",
+        "status": "active"
+      },
+      {
+        "id": "5f29c62f-0a83-5e93-a4ec-96cf1ee8e4c1",
+        "channel": "whatsapp",
+        "number_ref": "+91 53842 96072",
+        "provider_ref": "wa-c_hw",
+        "status": "active"
+      }
+    ],
+    "authorisations": [
+      {
+        "brand_id": "e660b961-34a9-5291-8a77-023165e6b221",
+        "brand": "Heatwell",
+        "level": "authorised_service",
+        "valid_from": "2024-01-01",
+        "valid_to": null
+      }
+    ]
+  }
+]

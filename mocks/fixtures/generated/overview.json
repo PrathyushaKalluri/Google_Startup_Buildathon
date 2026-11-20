@@ -1,0 +1,218 @@
+{
+  "104db10d-cf58-540e-b1b1-ceb7874ba528": {
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "centre_name": "Aerovane Authorised Service, Gachibowli",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 3,
+      "planned": 0
+    },
+    "first_time_fix": 0.783,
+    "fvr_14d": 0.743,
+    "self_fix_resolution": 0.297,
+    "gate_funnel": {
+      "gate1_asked": 37,
+      "gate1_yes": 25,
+      "gate2_asked": 25,
+      "switch_to_video": 12
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "cd48115c-1d4c-56d1-aa81-54e3d615236b": {
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "centre_name": "Zenith Care Hub, Kondapur",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 2,
+      "planned": 0
+    },
+    "first_time_fix": 0.548,
+    "fvr_14d": 0.508,
+    "self_fix_resolution": 0.205,
+    "gate_funnel": {
+      "gate1_asked": 39,
+      "gate1_yes": 26,
+      "gate2_asked": 26,
+      "switch_to_video": 13
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "f1c5b94d-56f5-55db-9b31-8b6f844af952": {
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_key": "c_fw",
+    "centre_name": "Frost and Wave Service Point, Kukatpally",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 2,
+      "planned": 1
+    },
+    "first_time_fix": 0.625,
+    "fvr_14d": 0.585,
+    "self_fix_resolution": 0.182,
+    "gate_funnel": {
+      "gate1_asked": 11,
+      "gate1_yes": 7,
+      "gate2_asked": 7,
+      "switch_to_video": 3
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "9a38f5cb-0133-52d7-bfab-151e24a7dca0": {
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_key": "c_cc",
+    "centre_name": "Cool Craft Appliance Services, Madhapur",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 4,
+      "planned": 1
+    },
+    "first_time_fix": 0.567,
+    "fvr_14d": 0.527,
+    "self_fix_resolution": 0.268,
+    "gate_funnel": {
+      "gate1_asked": 41,
+      "gate1_yes": 27,
+      "gate2_asked": 27,
+      "switch_to_video": 13
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "4347bd3d-1925-5374-aa34-75318750a2db": {
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_key": "c_aq",
+    "centre_name": "AquaCare RO and Geyser Services, Manikonda",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 0,
+      "planned": 1
+    },
+    "first_time_fix": 0.625,
+    "fvr_14d": 0.585,
+    "self_fix_resolution": 0.429,
+    "gate_funnel": {
+      "gate1_asked": 14,
+      "gate1_yes": 9,
+      "gate2_asked": 9,
+      "switch_to_video": 4
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "5f2f0307-14f3-5d94-9675-cff9fffd3e4e": {
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "centre_name": "Metro Home Appliance Care, Miyapur",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 0,
+      "planned": 0
+    },
+    "first_time_fix": 0.655,
+    "fvr_14d": 0.615,
+    "self_fix_resolution": 0.158,
+    "gate_funnel": {
+      "gate1_asked": 38,
+      "gate1_yes": 25,
+      "gate2_asked": 25,
+      "switch_to_video": 12
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d": {
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d",
+    "centre_key": "c_ip",
+    "centre_name": "InstallPro Mounting Services, Tolichowki",
+    "open_by_class": {
+      "safety": 0,
+      "urgent": 0,
+      "standard": 0,
+      "planned": 1
+    },
+    "first_time_fix": 0.0,
+    "fvr_14d": 0.0,
+    "self_fix_resolution": 0.0,
+    "gate_funnel": {
+      "gate1_asked": 10,
+      "gate1_yes": 6,
+      "gate2_asked": 6,
+      "switch_to_video": 3
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814": {
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_key": "c_ls",
+    "centre_name": "Lakeshore Service Centre, Jubilee Hills",
+    "open_by_class": {
+      "safety": 1,
+      "urgent": 2,
+      "standard": 0,
+      "planned": 0
+    },
+    "first_time_fix": 0.5,
+    "fvr_14d": 0.46,
+    "self_fix_resolution": 0.267,
+    "gate_funnel": {
+      "gate1_asked": 15,
+      "gate1_yes": 10,
+      "gate2_asked": 10,
+      "switch_to_video": 5
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  },
+  "f14f733d-238c-5f57-8236-50d484d6f5f4": {
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_key": "c_hw",
+    "centre_name": "Heatwell Authorised Service, Banjara Hills",
+    "open_by_class": {
+      "safety": 1,
+      "urgent": 0,
+      "standard": 1,
+      "planned": 0
+    },
+    "first_time_fix": 0.0,
+    "fvr_14d": 0.0,
+    "self_fix_resolution": 0.0,
+    "gate_funnel": {
+      "gate1_asked": 10,
+      "gate1_yes": 6,
+      "gate2_asked": 6,
+      "switch_to_video": 3
+    },
+    "urgency_agreement": 0.92,
+    "override_rate": 6.4,
+    "parts_ready_at_visit": 0.87,
+    "jobs_per_tech_day": 2.4
+  }
+}

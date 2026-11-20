@@ -1,0 +1,684 @@
+[
+  {
+    "id": "9ab776d3-cbcd-5ea3-93b9-d8461537f508",
+    "code": "SF-AC-FILTER-AV",
+    "category_code": "air_conditioner",
+    "brand": "Aerovane",
+    "fault_family": "cooling",
+    "title": "Clean the washable air filters (Aerovane)",
+    "symptom_terms": [
+      "weak cooling",
+      "airflow weak",
+      "smell when started"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the AC off with the remote and then at the wall switch.",
+        "check": "The display is dark."
+      },
+      {
+        "n": 2,
+        "say": "Lift the front panel gently until it stays open (the manual's 'open the front grille' step).",
+        "check": "The panel holds by itself."
+      },
+      {
+        "n": 3,
+        "say": "Slide each mesh filter straight out.",
+        "check": "Both filters are in your hands."
+      },
+      {
+        "n": 4,
+        "say": "Rinse them under a tap with plain water, no hot water, and shake off the water.",
+        "check": "Water runs clear."
+      },
+      {
+        "n": 5,
+        "say": "Dry them in shade for 10 minutes, slide them back and close the panel.",
+        "check": "The panel clicks shut."
+      },
+      {
+        "n": 6,
+        "say": "Switch on and set cooling mode; wait 15 minutes.",
+        "check": "Airflow is stronger."
+      }
+    ],
+    "step_count": 6,
+    "est_minutes": 10,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": true,
+    "worst_case": "Filters are put back wet; the household is told to dry them first.",
+    "reviewer_name": "Imran Qureshi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 10,
+      "worked_count": 5,
+      "resolution_rate": 0.5
+    }
+  },
+  {
+    "id": "44dff367-31ef-5ef6-84f1-ba2912c75dec",
+    "code": "SF-AC-FILTER-ZN",
+    "category_code": "air_conditioner",
+    "brand": "Zenith",
+    "fault_family": "cooling",
+    "title": "Clean the washable air filters (Zenith)",
+    "symptom_terms": [
+      "weak cooling",
+      "airflow weak",
+      "smell when started"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the AC off with the remote and then at the wall switch.",
+        "check": "The display is dark."
+      },
+      {
+        "n": 2,
+        "say": "Open the front panel from the two side notches as the manual shows.",
+        "check": "The panel holds by itself."
+      },
+      {
+        "n": 3,
+        "say": "Lift each filter out of its slot.",
+        "check": "Both filters are out."
+      },
+      {
+        "n": 4,
+        "say": "Rinse them under a tap with plain water and shake off the water.",
+        "check": "Water runs clear."
+      },
+      {
+        "n": 5,
+        "say": "Dry them in shade for 10 minutes, refit and close the panel.",
+        "check": "The panel clicks shut."
+      },
+      {
+        "n": 6,
+        "say": "Switch on, set cooling mode and wait 15 minutes.",
+        "check": "Airflow is stronger."
+      }
+    ],
+    "step_count": 6,
+    "est_minutes": 10,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": true,
+    "worst_case": "Filters are put back wet; the household is told to dry them first.",
+    "reviewer_name": "S. Padmavathi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 5,
+      "worked_count": 3,
+      "resolution_rate": 0.6
+    }
+  },
+  {
+    "id": "8cf7781c-4c0b-555b-93c0-3ef2f6058da3",
+    "code": "SF-AC-DRAINLOOK",
+    "category_code": "air_conditioner",
+    "brand": null,
+    "fault_family": "drainage",
+    "title": "Look at the drain hose from the floor",
+    "symptom_terms": [
+      "water dripping indoors",
+      "wall wet",
+      "water from front panel"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the AC off at the wall switch and put a towel or bucket under the leak.",
+        "check": "The unit is off."
+      },
+      {
+        "n": 2,
+        "say": "Standing on the floor, follow the thin drain hose from the unit to where it leaves the wall.",
+        "check": "You can see the hose."
+      },
+      {
+        "n": 3,
+        "say": "Check that the hose has no kink and that its end is lower than the unit.",
+        "check": "No kink, end is lower."
+      },
+      {
+        "n": 4,
+        "say": "Run the AC for 30 minutes and watch the leak point.",
+        "check": "Dripping stops."
+      }
+    ],
+    "step_count": 4,
+    "est_minutes": 6,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes; the household is told to leave the AC off.",
+    "reviewer_name": "Dr. L. Varalakshmi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 7,
+      "worked_count": 2,
+      "resolution_rate": 0.29
+    }
+  },
+  {
+    "id": "f51e3f3c-e3ee-5c11-bdba-697f5f44efa0",
+    "code": "SF-AC-RESET",
+    "category_code": "air_conditioner",
+    "brand": null,
+    "fault_family": "electrical",
+    "title": "Switch the AC off at the MCB for two minutes",
+    "symptom_terms": [
+      "error code",
+      "not responding to remote",
+      "communication error"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the AC off with the remote.",
+        "check": "The display is dark."
+      },
+      {
+        "n": 2,
+        "say": "Switch off its MCB or wall switch and wait two minutes.",
+        "check": "Two minutes have passed."
+      },
+      {
+        "n": 3,
+        "say": "Switch the MCB back on and start the AC.",
+        "check": "The unit starts normally."
+      }
+    ],
+    "step_count": 3,
+    "est_minutes": 5,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "Dr. L. Varalakshmi",
+    "status": "review_due",
+    "effectiveness": {
+      "offered_count": 60,
+      "worked_count": 18,
+      "resolution_rate": 0.3
+    }
+  },
+  {
+    "id": "50d584bf-6fdd-54be-a200-9a927af55d22",
+    "code": "SF-WM-DRAINFILTER-WC",
+    "category_code": "washing_machine",
+    "brand": "Wavecrest",
+    "fault_family": "drainage",
+    "title": "Clean the drain pump filter (Wavecrest)",
+    "symptom_terms": [
+      "will not drain",
+      "E21",
+      "water stays in drum"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the machine off and pull the plug out of the socket.",
+        "check": "The plug is out."
+      },
+      {
+        "n": 2,
+        "say": "Place a flat tray and towels in front of the machine and open the small filter cover at the bottom right.",
+        "check": "The cover is open."
+      },
+      {
+        "n": 3,
+        "say": "Turn the filter a quarter turn left slowly and let the water drain into the tray.",
+        "check": "Water stops flowing."
+      },
+      {
+        "n": 4,
+        "say": "Take out lint, coins and clips, and rinse the filter.",
+        "check": "The filter is clean."
+      },
+      {
+        "n": 5,
+        "say": "Refit the filter fully, close the cover and wipe the floor.",
+        "check": "The cover is closed."
+      },
+      {
+        "n": 6,
+        "say": "Plug in and run a drain or spin cycle.",
+        "check": "The drum empties."
+      }
+    ],
+    "step_count": 6,
+    "est_minutes": 12,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": true,
+    "worst_case": "A little water on the floor; the household is told to stop if the filter will not turn.",
+    "reviewer_name": "K. Anjaiah",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 3,
+      "worked_count": 2,
+      "resolution_rate": 0.67
+    }
+  },
+  {
+    "id": "170a57b8-e965-5258-985a-333ae1d8634e",
+    "code": "SF-WM-DRAINFILTER-ZN",
+    "category_code": "washing_machine",
+    "brand": "Zenith",
+    "fault_family": "drainage",
+    "title": "Clean the drain pump filter (Zenith AquaFlow)",
+    "symptom_terms": [
+      "will not drain",
+      "water stays in drum"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the machine off and pull the plug out of the socket.",
+        "check": "The plug is out."
+      },
+      {
+        "n": 2,
+        "say": "Open the lower service flap and place a tray under it.",
+        "check": "The flap is open."
+      },
+      {
+        "n": 3,
+        "say": "Turn the filter left slowly and let the water drain.",
+        "check": "Water stops flowing."
+      },
+      {
+        "n": 4,
+        "say": "Remove lint and coins; rinse the filter.",
+        "check": "The filter is clean."
+      },
+      {
+        "n": 5,
+        "say": "Refit the filter and close the flap.",
+        "check": "The flap is closed."
+      },
+      {
+        "n": 6,
+        "say": "Plug in and run a drain cycle.",
+        "check": "The drum empties."
+      }
+    ],
+    "step_count": 6,
+    "est_minutes": 12,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": true,
+    "worst_case": "A little water on the floor.",
+    "reviewer_name": "S. Padmavathi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 1,
+      "worked_count": 0,
+      "resolution_rate": 0.0
+    }
+  },
+  {
+    "id": "3db22940-ac6b-59f5-8a41-6b3f5b8890c7",
+    "code": "SF-WM-LID",
+    "category_code": "washing_machine",
+    "brand": "Wavecrest",
+    "fault_family": "door",
+    "title": "Clear the lid and press it shut",
+    "symptom_terms": [
+      "lid error",
+      "will not start",
+      "beeps"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the machine off at the wall and remove anything caught under the lid edge.",
+        "check": "The lid edge is clear."
+      },
+      {
+        "n": 2,
+        "say": "Close the lid and press down firmly at the centre until you hear a click.",
+        "check": "You heard a click."
+      },
+      {
+        "n": 3,
+        "say": "Switch on and press start.",
+        "check": "The cycle starts."
+      }
+    ],
+    "step_count": 3,
+    "est_minutes": 5,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "K. Anjaiah",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 1,
+      "worked_count": 1,
+      "resolution_rate": 1.0
+    }
+  },
+  {
+    "id": "d6849a86-0670-58b6-8799-acfc0a21e84d",
+    "code": "SF-WM-HOSE",
+    "category_code": "washing_machine",
+    "brand": null,
+    "fault_family": "drainage",
+    "title": "Check the outlet hose for a kink",
+    "symptom_terms": [
+      "will not drain",
+      "water drains slowly",
+      "repeat drain complaint"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the machine off and pull the plug out.",
+        "check": "The plug is out."
+      },
+      {
+        "n": 2,
+        "say": "Look along the outlet hose from the side without moving the machine.",
+        "check": "You can see the hose."
+      },
+      {
+        "n": 3,
+        "say": "If it is bent sharply, straighten it by hand.",
+        "check": "The hose runs in a smooth curve."
+      },
+      {
+        "n": 4,
+        "say": "Make sure the hose end is not pushed deep into the standpipe.",
+        "check": "The end sits loose above the water line."
+      },
+      {
+        "n": 5,
+        "say": "Plug in and run a drain cycle.",
+        "check": "The drum empties."
+      }
+    ],
+    "step_count": 5,
+    "est_minutes": 8,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "Dr. L. Varalakshmi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 6,
+      "worked_count": 2,
+      "resolution_rate": 0.33
+    }
+  },
+  {
+    "id": "c9f49e87-e3d0-56d1-82bc-bc0f18b27f01",
+    "code": "SF-FR-SEAL-FL",
+    "category_code": "refrigerator",
+    "brand": "Frostline",
+    "fault_family": "cooling",
+    "title": "Check the door seal, vents and thermostat (Frostline)",
+    "symptom_terms": [
+      "frost",
+      "warm interior",
+      "freezer iced over"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Close the door on a sheet of paper and pull it out; check the paper grips all the way round.",
+        "check": "The paper grips."
+      },
+      {
+        "n": 2,
+        "say": "Look inside for items blocking the air vents at the back.",
+        "check": "Vents are clear."
+      },
+      {
+        "n": 3,
+        "say": "Check that the thermostat dial is at the mid setting.",
+        "check": "Dial is at the mid setting."
+      },
+      {
+        "n": 4,
+        "say": "Leave the door shut for two hours and check the temperature again.",
+        "check": "It recovers."
+      }
+    ],
+    "step_count": 4,
+    "est_minutes": 8,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "M. Suresh Babu",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 5,
+      "worked_count": 4,
+      "resolution_rate": 0.8
+    }
+  },
+  {
+    "id": "bd214229-d361-59a3-9b70-329e7db1efa4",
+    "code": "SF-FR-SEAL-ZN",
+    "category_code": "refrigerator",
+    "brand": "Zenith",
+    "fault_family": "cooling",
+    "title": "Check the door seal, vents and thermostat (Zenith)",
+    "symptom_terms": [
+      "frost",
+      "dF",
+      "warm interior"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Close the door on a sheet of paper and pull it out; check the paper grips all the way round.",
+        "check": "The paper grips."
+      },
+      {
+        "n": 2,
+        "say": "Look inside for items blocking the air vents.",
+        "check": "Vents are clear."
+      },
+      {
+        "n": 3,
+        "say": "Check the display set-point is at the recommended setting.",
+        "check": "Set-point is correct."
+      },
+      {
+        "n": 4,
+        "say": "Leave the door shut for two hours and check again.",
+        "check": "It recovers."
+      }
+    ],
+    "step_count": 4,
+    "est_minutes": 8,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "S. Padmavathi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 2,
+      "worked_count": 1,
+      "resolution_rate": 0.5
+    }
+  },
+  {
+    "id": "b9f35d0e-64dc-519e-8ce8-2b825bf8fd8b",
+    "code": "SF-ANY-POWER",
+    "category_code": "refrigerator",
+    "brand": null,
+    "fault_family": "electrical",
+    "title": "Check the plug and socket",
+    "symptom_terms": [
+      "does not switch on",
+      "no power",
+      "not working"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Check that the plug is pushed in fully.",
+        "check": "The plug is seated."
+      },
+      {
+        "n": 2,
+        "say": "Plug a lamp or phone charger into the same socket.",
+        "check": "It works."
+      },
+      {
+        "n": 3,
+        "say": "Look at the MCB for this circuit.",
+        "check": "The MCB is up."
+      }
+    ],
+    "step_count": 3,
+    "est_minutes": 5,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "Dr. L. Varalakshmi",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 2,
+      "worked_count": 0,
+      "resolution_rate": 0.0
+    }
+  },
+  {
+    "id": "e0e69e48-885a-5ece-bee5-f03854c0e28a",
+    "code": "SF-RO-FLOW",
+    "category_code": "water_purifier",
+    "brand": "Purelo",
+    "fault_family": "service",
+    "title": "Check the inlet tap and adaptor, then flush",
+    "symptom_terms": [
+      "low flow",
+      "no water"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Check that the water inlet tap is fully open.",
+        "check": "The tap is open."
+      },
+      {
+        "n": 2,
+        "say": "Check that the power adaptor is plugged in and its light is on.",
+        "check": "The light is on."
+      },
+      {
+        "n": 3,
+        "say": "Run the purifier tap for two minutes as the manual says.",
+        "check": "Flow returns."
+      }
+    ],
+    "step_count": 3,
+    "est_minutes": 8,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "R. Divya",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 9,
+      "worked_count": 6,
+      "resolution_rate": 0.67
+    }
+  },
+  {
+    "id": "18ed0cdf-c990-59d3-95fb-056a53a27d55",
+    "code": "SF-GY-SWITCH",
+    "category_code": "water_heater",
+    "brand": "Heatwell",
+    "fault_family": "heating",
+    "title": "Check the switch and thermostat setting",
+    "symptom_terms": [
+      "no hot water",
+      "indicator light off"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Check that the geyser switch is on and its indicator light is lit.",
+        "check": "The light is on."
+      },
+      {
+        "n": 2,
+        "say": "Check that the thermostat dial is at the mid setting.",
+        "check": "Dial is at the mid setting."
+      },
+      {
+        "n": 3,
+        "say": "Wait ten minutes and check that the heating light comes on.",
+        "check": "The heating light is on."
+      }
+    ],
+    "step_count": 3,
+    "est_minutes": 6,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "V. Narasimha Rao",
+    "status": "active",
+    "effectiveness": {
+      "offered_count": 7,
+      "worked_count": 4,
+      "resolution_rate": 0.57
+    }
+  },
+  {
+    "id": "e56e7d61-ee62-5fad-a344-1dffc0dd8ee5",
+    "code": "SF-GY-LEGACY",
+    "category_code": "water_heater",
+    "brand": "Heatwell",
+    "fault_family": "heating",
+    "title": "Reset the geyser by switching off for a minute (withdrawn)",
+    "symptom_terms": [
+      "no hot water"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "say": "Switch the geyser off.",
+        "check": "Off."
+      },
+      {
+        "n": 2,
+        "say": "Wait one minute.",
+        "check": "Waited."
+      },
+      {
+        "n": 3,
+        "say": "Switch on.",
+        "check": "On."
+      }
+    ],
+    "step_count": 3,
+    "est_minutes": 6,
+    "reversible": true,
+    "needs_tools": false,
+    "opens_panel": false,
+    "worst_case": "Nothing changes.",
+    "reviewer_name": "V. Narasimha Rao",
+    "status": "retired",
+    "effectiveness": {
+      "offered_count": 0,
+      "worked_count": 0,
+      "resolution_rate": 0.42
+    }
+  }
+]

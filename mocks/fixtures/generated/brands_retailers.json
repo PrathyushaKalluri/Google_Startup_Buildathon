@@ -1,0 +1,78 @@
+{
+  "brands": [
+    {
+      "id": "24d15621-aa8e-5ab1-894c-2c80519be0b3",
+      "name": "Aerovane",
+      "forwarding_enabled": "t",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    },
+    {
+      "id": "3a6386de-ff5b-5973-976f-9e9de75b39f4",
+      "name": "Zenith",
+      "forwarding_enabled": "t",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    },
+    {
+      "id": "9eb23280-0e46-5119-bbb8-a394cf26402a",
+      "name": "Frostline",
+      "forwarding_enabled": "f",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    },
+    {
+      "id": "40508238-6fc9-59b8-84af-f27406b34b7d",
+      "name": "Wavecrest",
+      "forwarding_enabled": "t",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    },
+    {
+      "id": "1dc607fb-2418-52d7-acd8-ae1528a4274e",
+      "name": "Purelo",
+      "forwarding_enabled": "f",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    },
+    {
+      "id": "e660b961-34a9-5291-8a77-023165e6b221",
+      "name": "Heatwell",
+      "forwarding_enabled": "t",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    },
+    {
+      "id": "2110da75-6586-55db-827b-5fd977340588",
+      "name": "Generic",
+      "forwarding_enabled": "f",
+      "created_at": "2025-08-01T10:00:00+05:30"
+    }
+  ],
+  "retailers": [
+    {
+      "id": "f9a681f4-e677-5371-9710-be87d66e026d",
+      "name": "Digital Plaza Electronics",
+      "city": "Hyderabad",
+      "created_at": "2025-09-05T10:00:00+05:30"
+    },
+    {
+      "id": "22cbadf4-670d-5a5a-9f63-4b7925950118",
+      "name": "Sri Sai Electronics, Kukatpally",
+      "city": "Hyderabad",
+      "created_at": "2025-09-05T10:00:00+05:30"
+    },
+    {
+      "id": "b54068aa-aca3-5daa-8bb7-d419f6600655",
+      "name": "Mega Electronics, Kondapur",
+      "city": "Hyderabad",
+      "created_at": "2025-09-05T10:00:00+05:30"
+    },
+    {
+      "id": "1a329fc9-b1bb-560c-b1f6-7d00e7927cb6",
+      "name": "Sree Electronics, Kondapur",
+      "city": "Hyderabad",
+      "created_at": "2025-09-05T10:00:00+05:30"
+    },
+    {
+      "id": "330169d2-ee6a-5084-90e2-ecfa2dbcb5e3",
+      "name": "Bharat Home Mart",
+      "city": "Hyderabad",
+      "created_at": "2025-09-05T10:00:00+05:30"
+    }
+  ]
+}
