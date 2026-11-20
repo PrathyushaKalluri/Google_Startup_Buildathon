@@ -1,7 +1,0 @@
-db/keepwell_part_a.db*
-storage_part_a/
-input/dataset/
-.env
-__pycache__/
-*.pyc
-.pytest_cache/
