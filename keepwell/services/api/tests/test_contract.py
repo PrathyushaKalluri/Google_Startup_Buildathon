@@ -434,3 +434,59 @@ def test_parts_centre_brand_and_admin_endpoints() -> None:
     rep = client.post("/v1/admin/demo/replay-call")
     assert rep.status_code == 200
     assert len(rep.json()["events"]) > 0
+
+
+def test_live_api_degraded_fallback_fvr14_view_and_all_20_play_cases() -> None:
+    import asyncio
+    from contextlib import asynccontextmanager
+    from services.live.bridge import GeminiLiveUpstream, LiveSessionState
+
+    # 1. Verify degraded WebSocket frame when Gemini Live upstream is unavailable
+    sent_frames: list[dict] = []
+
+    class _DummyWS:
+        async def send_json(self, payload: dict) -> None:
+            sent_frames.append(payload)
+
+        async def send_bytes(self, data: bytes) -> None:
+            pass
+
+    class _FailingLive:
+        @asynccontextmanager
+        async def connect(self, **kwargs):
+            raise RuntimeError("Simulated Gemini Live API outage")
+            yield  # pragma: no cover
+
+    class _FailingClient:
+        class _Aio:
+            live = _FailingLive()
+
+        aio = _Aio()
+
+    state = LiveSessionState(
+        session_id="sess-degraded-test",
+        conversation_id="conv-degraded-test",
+        centre_id="00000000-0000-0000-0000-000000000000",
+        centre_key="c_fw",
+        centre_name="Frost and Wave Service Point, Kukatpally",
+        caller_number="+91 50971 16577",
+    )
+    upstream = GeminiLiveUpstream(state, _DummyWS())
+    upstream._get_client = lambda: _FailingClient()  # type: ignore[method-assign]
+    asyncio.run(upstream._run_loop())
+    assert any(
+        f.get("type") == "error" and f.get("code") == "live_api_degraded"
+        for f in sent_frames
+    ), f"Expected live_api_degraded frame, got {sent_frames}"
+
+    # 2. Verify FVR-14 PostgreSQL view returns rows as kw_app
+    with get_rls_session(role="platform") as db:
+        fvr_rows = db.raw_query("SELECT count(*) AS cnt FROM fvr_14d")
+        assert int(fvr_rows[0]["cnt"]) > 0
+
+    # 3. Verify all 20 dataset cases (C01-C20) run through real POST /v1/admin/demo/play-case
+    cases = client.get("/v1/admin/demo/cases", headers=PLATFORM_AUTH).json()["items"]
+    assert len(cases) == 20
+    for c in cases:
+        r = client.post("/v1/admin/demo/play-case", headers=PLATFORM_AUTH, json={"case_id": c["case_id"]})
+        assert r.status_code == 200, f"Case {c['case_id']} failed: {r.text}"
