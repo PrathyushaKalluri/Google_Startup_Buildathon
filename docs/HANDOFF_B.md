@@ -27,17 +27,21 @@ keepwell/.venv/bin/pytest mocks/test_mocks.py -v
 cd apps && flutter pub get && flutter analyze kw_ui kw_ui/example kw_client console field household brand
 # Expected: No issues found!
 
-# 4. Run all Dart & Flutter tests
+# 4. Run all Dart, Flutter & Firestore Rules tests
 cd apps/kw_client && dart test          # Expected: 8 passed
 cd ../kw_ui && flutter test             # Expected: 15 passed
-cd ../console && flutter test           # Expected: 3 passed
-cd ../field && flutter test             # Expected: 5 passed
-cd ../household && flutter test         # Expected: 5 passed
+cd ../console && flutter test           # Expected: 5 passed (incl. C03 Stage + Reclassify/Reassign Undo journeys)
+cd ../field && flutter test             # Expected: 6 passed (incl. offline outbox FIFO sync journey)
+cd ../household && flutter test         # Expected: 6 passed (incl. quote approval + payment + OTP boundary journey)
 cd ../brand && flutter test             # Expected: 4 passed
+cd ../../infra/frontend && firebase emulators:exec --only firestore --project keepwell-demo-placeholder "npm --prefix test_rules test"
+# Expected: 7 passed (incl. cross-centre read denial & all client write denials)
 
-# 5. Build all 4 web apps for Firebase Hosting (or switch to Part A via --dart-define)
+# 5. Build all 4 web apps with Wasm (--wasm) for Firebase Hosting (or switch to Part A via --dart-define)
 cd apps && make build-web API_BASE_URL=https://<kw-api-host>/v1 LIVE_WS_URL=wss://<kw-api-host>/v1/live/call FIREBASE_PROJECT_ID=<real-project> DEMO_MODE=false PAYMENT_MODE=sandbox
-# Expected: Built build/web for console, field, household, brand
+# Or individually with --wasm:
+#   flutter build web --wasm --dart-define=DEMO_MODE=true
+# Expected: Built build/web (main.dart.wasm 2.4-2.7 MB + deferred chunks) for console, field, household, brand
 
 # 6. Optional: Run Firestore emulator + C03 Stage time-lapse
 cd infra/frontend && firebase emulators:start --only auth,firestore
@@ -65,27 +69,28 @@ python3 mocks/firestore/timelapse_c03.py
   - Verified by `mocks/test_mocks.py` (**7/7 passed**).
 - **Centre Console (`apps/console/`):**
   - Sign-In, adaptive List-Detail Case Board (strict `safety -> urgent -> standard -> planned` + `needed_by`), Case Detail with Reclassify & Reassign + 10s Undo SnackBar, **Live Stage View (`/stage`)** with Projector Mode & built-in C03 live playback, Test-Call Sheet, Technicians & Calendar with keyboard-accessible Reschedule & static map fallback, Overview with FVR-14 gauge & table toggle, Operations tables (Stock, Prices, Safe-Fix overdue badges, Overrides + CSV export), Demo Control Drawer.
-  - Verified by `apps/console/test/console_test.dart` (**3/3 passed**) + `flutter build web`.
+  - Verified by `apps/console/test/console_test.dart` + `apps/console/test/journeys_test.dart` (**5/5 passed**, including C03 Stage View projector playback and Reclassify/Reassign + Undo execution) + `flutter build web --wasm` (deferred-loaded `calendar_screen` and `overview_screen`).
 - **Field Apps (`apps/field/`):**
   - Role-based Sign-In routing to Technician Shell (offline-first queued outbox + sync banner, privacy-gated address/phone, Already Tried list, firm quote composer with variance, spoken debrief review with `"Needs checking"` resolution, OTP closure) and Parts Centre Shell (≥52dp one-handed Accept/Ready/Handover + stock stepper).
-  - Verified by `apps/field/test/field_test.dart` (**5/5 passed**) + `flutter build web`.
+  - Verified by `apps/field/test/field_test.dart` + `apps/field/test/offline_sync_journey_test.dart` (**6/6 passed**, including offline outbox FIFO sync with idempotency keys) + `flutter build web --wasm`.
 - **Household Surfaces (`apps/household/`):**
   - Zero-sign-in routes (`/`, `/whatsapp`, `/call`, `/v/:token`, `/home/:token`, `/quotes/:token`, `/otp/:token`), Material 3 WhatsApp Simulator (9 centres + household picker, no WhatsApp branding), Call Dialer with verbatim recording notice & live captions, Video-Link `/v/<token>` with 4 `ui_hint` framing guides + 1 fps counter + camera-denied still-photo fallback, Home Memory with explainable Care Index, Quote Approval + Google Pay TEST sheet / UPI Intent / Sandbox completion + explicit OTP-only closure boundary.
-  - Verified by `apps/household/test/household_test.dart` (**5/5 passed**) + `flutter build web`.
+  - Verified by `apps/household/test/household_test.dart` + `apps/household/test/quote_payment_journey_test.dart` (**6/6 passed**, including Quote -> Google Pay TEST -> sandbox payment -> OTP-only closure) + `flutter build web --wasm` + live Chrome mic/camera WebSocket test.
 - **Brand & Retailer Portal (`apps/brand/`):**
-  - Sign-In, Forwarded Requests with C18 authority-decline visibility, Brand Forward & Retailer Handover forms (`202` response card), FVR-14 Analytics + accessible table + Looker Studio embed/fallback.
-  - Verified by `apps/brand/test/brand_test.dart` (**4/4 passed**) + `flutter build web`.
+  - Sign-In, Forwarded Requests with C18 authority-decline visibility, Brand Forward & Retailer Handover forms (`202` response card), FVR-14 Analytics + accessible table + Looker Studio embed/fallback (deferred-loaded).
+  - Verified by `apps/brand/test/brand_test.dart` (**4/4 passed**) + `flutter build web --wasm`.
 - **Frontend Infrastructure & Skills (`infra/frontend/`, `.agents/part-b/`):**
-  - `firebase.json` (4 Hosting targets + emulators), `.firebaserc`, `firestore.rules` (strict Contract §6), `firestore.indexes.json`, `app_check.md`, `@firebase/rules-unit-testing` suite (`test_rules/firestore_rules.test.mjs`), 8 skills + 5 workflows (<40 lines each).
+  - `firebase.json` (4 Hosting targets with COOP/COEP headers for WasmGC + emulators), `.firebaserc`, `firestore.rules` (strict Contract §6), `firestore.indexes.json`, `app_check.md`, `@firebase/rules-unit-testing` suite (`test_rules/firestore_rules.test.mjs`, **7/7 passed under Firebase Firestore emulator**, including cross-centre read denial and client write denials), 8 skills + 5 workflows (<40 lines each).
 
 ---
 
 ## 3. What Is Not Done (Honest List)
 
-1. **Live Browser Media Capture (`getUserMedia` / `AudioWorklet`):** Call Dialer and Video-Link pages implement the full Contract §7 WebSocket protocol and UI state machine with simulated audio/frame triggers in web/headless mode; wiring raw Chrome `AudioWorklet` PCM16 capture and `HTMLVideoElement` canvas JPEG encoding is a clean next step during Integrator rehearsal.
-2. **Firebase Rules Emulator Execution:** `infra/frontend/test_rules/firestore_rules.test.mjs` passed `node --check` and JSON validation; requires running `npm install && firebase emulators:exec "npm test"` once in `infra/frontend/test_rules/`.
-3. **Flutter Web Engine `aria-allowed-attr` & CanvasKit Initial Bundle Performance:** Lighthouse Accessibility is **100** on `household` and `brand`, and **94** on `console` and `field` (remaining `aria-allowed-attr` comes from Flutter Web's CanvasKit semantics tree rather than app widgets; `aria-toggle-field-name` on `field` was fixed and re-verified). Desktop Performance scores are **54–69** due to Flutter CanvasKit's initial WebAssembly/JS bootstrap payload (`--wasm` dry run succeeded and is ready for production hosting with gzip/brotli).
-4. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) UI chrome strings render cleanly with Noto Sans Devanagari and Noto Sans Telugu glyphs verified in screenshots, and remain drafts ready for native-speaker sign-off.
+1. **Live Browser AudioWorklet & `<video>` Canvas Encoding:** Tested in real Chrome (`--use-fake-device-for-media-stream --use-fake-ui-for-media-stream`) against the live mock WebSocket (`ws://localhost:8082/v1/live/call`): `navigator.mediaDevices.getUserMedia({audio: true, video: true})` succeeds, the WebSocket connects, exchanges `start`/`ready`/`event`/Hindi `transcript`/`video_link`/`modality`/`go_away` reconnect/binary PCM16 audio frames, and streams 1 fps `video_frame` messages. **Not yet wired via `dart:js_interop`:**
+   - Capturing live microphone PCM16 chunks via `AudioWorklet` onto the WebSocket and decoding/playing incoming 24 kHz PCM16 binary audio frames via Web Audio `AudioContext`.
+   - Binding the live `getUserMedia` `MediaStream` to an HTML `<video>` preview and `<canvas>.toDataURL('image/jpeg')` (currently sends a synthetic placeholder JPEG payload at 1 fps).
+2. **Flutter Web Engine `aria-allowed-attr`:** Lighthouse Accessibility is **100** on `household` and `brand`, and **94** on `console` and `field` (the remaining `aria-allowed-attr` finding comes from Flutter Web's semantics tree on `<flt-semantics>` nodes rather than app widgets; `aria-toggle-field-name` on `field` was fixed and verified).
+3. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) UI chrome strings render cleanly with Noto Sans Devanagari and Noto Sans Telugu glyphs verified in screenshots, and remain drafts ready for native-speaker sign-off.
 
 ---
 
@@ -131,12 +136,17 @@ No Contract Change Requests (`contract/CHANGE_REQUESTS.md`) were required — ev
 ## 7. Quality Report
 
 - **Static Analysis (`flutter analyze` across all 7 workspace packages):** `No issues found!`
-- **Test Counts:** **47 / 47 passed** (`mocks`: 7, `kw_client`: 8, `kw_ui`: 15, `console`: 3, `field`: 5, `household`: 5, `brand`: 4).
-- **Web Production Builds:** All 4 Firebase Hosting targets (`console`, `field`, `household`, `brand`) compiled cleanly via `flutter build web` (with Wasm dry run passing on all 4).
+- **Test Counts:** **58 / 58 passed** (`mocks`: 7, `kw_client`: 8, `kw_ui`: 15, `console`: 5, `field`: 6, `household`: 6, `brand`: 4, `firestore.rules` emulator: 7).
+- **Web Production Builds (`--wasm` + Deferred Loading + Font Optimization):**
+  - All 4 Firebase Hosting targets (`console`, `field`, `household`, `brand`) compiled cleanly via `flutter build web --wasm` (`main.dart.wasm`: **2.4–2.7 MB** vs **3.1–3.4 MB** `main.dart.js`; deferred chunks emitted for `console` Calendar/Overview and `brand` Analytics; trimmed non-render-blocking Google Fonts preload with `display=swap` and unicode-range subsetting for Devanagari/Telugu).
 - **Visual Matrix Screenshots (`docs/design/screenshots/`):** **76 PNGs** captured via Playwright Chromium against live mocks across all 4 apps × 3 widths (`390`, `820`, `1440` px) × 2 themes (`light`, `dark`) × 3 languages (`en`, `hi`, `te`) + 4 Projector Mode Stage View captures (`console_stage_{390,820,1440}_projector_en.png` & `console_stage_1440_projector_hi.png`). Visual inspection caught and fixed: (1) `field` demo-persona jobs fallback in `mocks/rest/server.py`, (2) `ChoiceChip` horizontal `labelPadding` for Devanagari/Telugu nav chips in `apps/household/lib/src/household_app.dart`.
-- **Lighthouse Reports (`docs/design/lighthouse/`):** HTML & JSON reports saved for all 4 production web builds against live mocks:
-  - `console`: Accessibility **94**, Performance **54** (`console.report.html` / `console.report.json`)
-  - `field`: Accessibility **94** (fixed `aria-toggle-field-name` from 89 → 94), Performance **69** (`field.report.html` / `field.report.json`)
-  - `household`: Accessibility **100**, Performance **60** (`household.report.html` / `household.report.json`)
-  - `brand`: Accessibility **100**, Performance **63** (`brand.report.html` / `brand.report.json`)
+- **Lighthouse Reports (`docs/design/lighthouse/`, Before JS/CanvasKit vs After `--wasm` + Deferred + Font Preload):**
+
+| App | Perf (Before → After) | A11y | FCP (Before → After) | LCP (Before → After) | TBT (Before → After) | Transfer KB (Before → After) |
+|---|---|---|---|---|---|---|
+| `console` | 54 → **71** (+17) | 94 | 0.6 s → **0.2 s** | 5.5 s → **4.6 s** | 320 ms → **0 ms** | 5,600 → **4,570** (-18.4%) |
+| `field` | 69 → **73** (+4) | 94 | 0.6 s → **0.2 s** | 5.0 s → **4.0 s** | 110 ms → **0 ms** | 4,867 → **3,908** (-19.7%) |
+| `household` | 60 → **75** (+15) | 100 | 0.6 s → **0.2 s** | 5.0 s → **3.9 s** | 250 ms → **0 ms** | 4,874 → **3,861** (-20.8%) |
+| `brand` | 63 → **73** (+10) | 100 | 0.6 s → **0.2 s** | 5.0 s → **4.1 s** | 200 ms → **0 ms** | 4,889 → **3,925** (-19.7%) |
+
 - **Rubric Self-Assessment:** See [docs/rubric_B.md](file:///Users/Shared/Files%20From%20e.localized/PDM/Google%20buildathon%20/Google_Startup_Buildathon/docs/rubric_B.md).

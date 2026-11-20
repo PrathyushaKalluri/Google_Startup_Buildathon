@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kw_client/kw_client.dart';
 import 'package:kw_ui/kw_ui.dart';
 
-import 'analytics_screen.dart';
+import 'analytics_screen.dart' deferred as analytics_deferred;
 import 'brand_strings.dart';
 import 'intake_forms_screen.dart';
 import 'requests_screen.dart';
@@ -289,11 +289,14 @@ class _BrandPortalAppState extends State<BrandPortalApp> {
         session: session,
         brandStrings: bs,
       ),
-      BrandAnalyticsScreen(
-        api: _apiClient,
-        config: widget.config,
-        session: session,
-        brandStrings: bs,
+      _DeferredAnalyticsPane(
+        loader: analytics_deferred.loadLibrary,
+        builder: () => analytics_deferred.BrandAnalyticsScreen(
+          api: _apiClient,
+          config: widget.config,
+          session: session,
+          brandStrings: bs,
+        ),
       ),
     ];
 
@@ -481,6 +484,36 @@ class _PersonaSignInTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DeferredAnalyticsPane extends StatefulWidget {
+  const _DeferredAnalyticsPane({
+    required this.loader,
+    required this.builder,
+  });
+
+  final Future<void> Function() loader;
+  final Widget Function() builder;
+
+  @override
+  State<_DeferredAnalyticsPane> createState() => _DeferredAnalyticsPaneState();
+}
+
+class _DeferredAnalyticsPaneState extends State<_DeferredAnalyticsPane> {
+  late final Future<void> _future = widget.loader();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return widget.builder();
+      },
     );
   }
 }

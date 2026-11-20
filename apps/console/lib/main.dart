@@ -5,11 +5,11 @@ import 'package:kw_client/kw_client.dart';
 import 'package:kw_ui/kw_ui.dart';
 
 import 'src/board_screen.dart';
-import 'src/calendar_screen.dart';
+import 'src/calendar_screen.dart' deferred as calendar_deferred;
 import 'src/console_state.dart';
 import 'src/demo_drawer.dart';
 import 'src/operations_screen.dart';
-import 'src/overview_screen.dart';
+import 'src/overview_screen.dart' deferred as overview_deferred;
 import 'src/sign_in_screen.dart';
 import 'src/stage_view_screen.dart';
 import 'src/test_call_sheet.dart';
@@ -133,8 +133,14 @@ class ConsoleShell extends StatelessWidget {
     final body = switch (controller.destination) {
       ConsoleDestination.board => BoardScreen(controller: controller),
       ConsoleDestination.stage => StageViewScreen(controller: controller),
-      ConsoleDestination.calendar => CalendarScreen(controller: controller),
-      ConsoleDestination.overview => OverviewScreen(controller: controller),
+      ConsoleDestination.calendar => _DeferredPane(
+          load: calendar_deferred.loadLibrary,
+          builder: () => calendar_deferred.CalendarScreen(controller: controller),
+        ),
+      ConsoleDestination.overview => _DeferredPane(
+          load: overview_deferred.loadLibrary,
+          builder: () => overview_deferred.OverviewScreen(controller: controller),
+        ),
       ConsoleDestination.operations => OperationsScreen(controller: controller),
     };
 
@@ -294,6 +300,47 @@ class ConsoleShell extends StatelessWidget {
                 Expanded(child: body),
               ],
             ),
+    );
+  }
+}
+
+class _DeferredPane extends StatefulWidget {
+  const _DeferredPane({required this.load, required this.builder});
+
+  final Future<void> Function() load;
+  final Widget Function() builder;
+
+  @override
+  State<_DeferredPane> createState() => _DeferredPaneState();
+}
+
+class _DeferredPaneState extends State<_DeferredPane> {
+  late Future<void> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = widget.load();
+  }
+
+  @override
+  void didUpdateWidget(covariant _DeferredPane oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.load != widget.load) {
+      _future = widget.load();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _future,
+      builder: (context, snap) {
+        if (snap.connectionState == ConnectionState.done) {
+          return widget.builder();
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
