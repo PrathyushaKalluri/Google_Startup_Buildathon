@@ -1,0 +1,312 @@
+{
+  "WARNING": "EVERY PERSON, AGENCY, TECHNICIAN, ADDRESS, PRICE, SLOT AND STOCK ROW IN THIS FILE IS INVENTED FOR MODEL TESTING. NO REAL REPAIR, INVENTORY, APPOINTMENT, INTERVIEW, PAYMENT OR PROVIDER STATUS IS CLAIMED.",
+  "fixture_version": "0.6.0",
+  "source_mode": "SYNTHETIC_FIXTURE",
+  "environment": "REHEARSAL_SIMULATION_ONLY",
+  "all_is_synthetic": true,
+  "owner_company": {
+    "name": "Circuit",
+    "model": "B2B agency SaaS"
+  },
+  "agency": {
+    "agency_id": "AGENCY-DEMO-01",
+    "name": "Demo Cooling Service (fictional)",
+    "service_area": "Ramagundam demo only; no confirmed agency operations",
+    "operating_hours_ist": "09:00-19:00",
+    "allowed_call_hours_ist": "09:00-18:00",
+    "services": [
+      "air_conditioner_noninverter",
+      "air_conditioner_inverter"
+    ],
+    "repair_ready_pilot_level": "L2 owner confirmation mandatory",
+    "technician_assignment_owner": "agency_dispatcher",
+    "contact_number": null,
+    "max_spares_commit_without_owner_paise": 0,
+    "max_clarifying_questions": 5,
+    "notes": "Agency has not been recruited or consented; cannot be used to send real texts.",
+    "selected_payment_mode": "approved_ceiling_post_proof_doc_simulation_only",
+    "whatsapp_connected": false,
+    "phone_number_id": null
+  },
+  "case": {
+    "case_id": null,
+    "state": "S0",
+    "status": "WAIT_FOR_REAL_EXTERNAL_TRIGGER",
+    "trigger": null,
+    "reporter": {
+      "label": "Meera (fictional role-play)",
+      "actual_contact": null,
+      "reporter_equals_payer": "UNKNOWN"
+    },
+    "resident": {
+      "actual_contact": null,
+      "access_permission": "UNKNOWN"
+    },
+    "payer": {
+      "actual_contact": null,
+      "authorization_status": "NOT_REQUESTED"
+    },
+    "machine": {
+      "appliance_type": "AC",
+      "brand": "UNKNOWN",
+      "model": "UNKNOWN",
+      "machine_id": null,
+      "model_verified": false,
+      "warranty_status": "UNKNOWN",
+      "serial_hash": null
+    },
+    "symptom": null,
+    "repair_verified": false,
+    "declared_goal": "Evidence-backed appropriate dispatch plan; do not claim actual repair.",
+    "warranty_coverage": "UNKNOWN",
+    "agency_authorization": "INDEPENDENT",
+    "service_ticket_owner": "AGENCY",
+    "customer_contact_authority": "UNKNOWN",
+    "resolution_path": "WAIT_FOR_PROOF",
+    "case_disposition": "ACTIVE",
+    "oem_external_ticket_id": null,
+    "finance_authority_type": "NONE",
+    "source_mode": "SYNTHETIC_FIXTURE"
+  },
+  "technicians": [
+    {
+      "tech_id": "TECH-A",
+      "pseudonym": "Ravi (fictional)",
+      "skills": [
+        "AC basic checks",
+        "split AC service"
+      ],
+      "verified_repair_cases": 0,
+      "experience_years_claimed": 4,
+      "rating": null,
+      "qualification_evidence": "SIMULATED_ONLY",
+      "availability_accepted": false,
+      "slots": [
+        "2026-10-05T11:00:00+05:30",
+        "2026-10-05T14:00:00+05:30"
+      ],
+      "current_location": null
+    },
+    {
+      "tech_id": "TECH-B",
+      "pseudonym": "Nisha (fictional)",
+      "skills": [
+        "AC general service"
+      ],
+      "verified_repair_cases": 0,
+      "experience_years_claimed": 3,
+      "rating": null,
+      "qualification_evidence": "SIMULATED_ONLY",
+      "availability_accepted": false,
+      "slots": [
+        "2026-10-05T12:00:00+05:30"
+      ],
+      "current_location": null
+    },
+    {
+      "tech_id": "TECH-C",
+      "pseudonym": "Farid (fictional)",
+      "skills": [
+        "AC electrical diagnostics"
+      ],
+      "verified_repair_cases": 0,
+      "experience_years_claimed": 5,
+      "rating": null,
+      "qualification_evidence": "SIMULATED_ONLY",
+      "availability_accepted": false,
+      "slots": [
+        "2026-10-05T16:00:00+05:30"
+      ],
+      "current_location": null
+    }
+  ],
+  "inventory": [
+    {
+      "stock_id": "STOCK-DEMO-01",
+      "sku": "CLEANING-KIT-DEMO",
+      "description": "non-electric cleaning kit, demonstration object",
+      "quantity_claimed": 2,
+      "physical_stock_verified": false,
+      "source_mode": "seed_fixture",
+      "unit_cost_paise": 16000,
+      "compatible_models": [
+        "DEMO-AC-MODEL-A"
+      ],
+      "confirmed_part_in_technician_bag": false,
+      "source_event": null,
+      "compatibility_source": "SYNTHETIC_FIXTURE_FOR_ROLEPLAY_ONLY_NOT_OEM_PART_CATALOG"
+    },
+    {
+      "stock_id": "STOCK-DEMO-02",
+      "sku": "UNSPECIFIED-AC-COMPONENT-DEMO",
+      "description": "DO NOT USE OR RECOMMEND WITHOUT MODEL-SPECIFIC PART CATALOG AND REAL COMPATIBILITY SOURCE",
+      "quantity_claimed": 0,
+      "physical_stock_verified": false,
+      "source_mode": "seed_fixture",
+      "unit_cost_paise": null,
+      "compatible_models": [],
+      "confirmed_part_in_technician_bag": false,
+      "source_event": null
+    }
+  ],
+  "pricing_assumptions_not_market_facts": {
+    "inspection_fee_paise": 29900,
+    "illustrative_labor_paise": 60000,
+    "illustrative_cleaning_consumables_paise": 16000,
+    "shipping_paise": 0,
+    "tax_rate": null,
+    "tax_rule_source": "UNKNOWN_NEEDS_AGENCY_ACCOUNTANT",
+    "circuit_monthly_agency_subscription_paise": 149900,
+    "description": "Demonstration arithmetic only; no real agency fees or GST treatment validated."
+  },
+  "manual_and_research_seed": [
+    {
+      "source_id": "OEM-LG-FAQ-001",
+      "source_type": "manufacturer_public_FAQ",
+      "url": "https://www.lg.com/in/support/",
+      "claim": "LG India gives cooling-mode settings, dirty filters and low voltage as possible AC poor-cooling explanations.",
+      "applicability": "generic LG consumer guidance; NOT model-specific Voltas/Blue Star parts compatibility",
+      "verified_as_of": "2026-10-04",
+      "real_source": true
+    },
+    {
+      "source_id": "PUBLIC-COMPLAINT-AC-001",
+      "source_type": "anecdotal_customer_complaint",
+      "url": "https://www.consumercomplaints.in/urban-company-wrong-assessment-of-ac-and-misleading-customer-c3544659",
+      "claim": "A published customer alleges an AC PCB recommendation but says brand service found a switch fault.",
+      "applicability": "anecdotal warning against diagnostic certainty; not verified prevalence or model part data",
+      "verified_as_of": "2026-10-04",
+      "real_source": true
+    },
+    {
+      "source_id": "TEAM-PHASE2-001",
+      "source_type": "team_submission",
+      "file": "PHASE2_SUBMISSION.md",
+      "claim": "Canonical state machine and autonomy limits from Round 2.",
+      "real_source": true
+    }
+  ],
+  "test_input_events": [
+    {
+      "event_id": "PENDING-EVT-001",
+      "event_kind": "INBOUND_AUDIO",
+      "source_mode": "actor_roleplay_if_recorded",
+      "actual_audio_path": null,
+      "actual_original_timestamp": null,
+      "sha256": null,
+      "why_null": "An actor must genuinely record the audio before a compliant simulation. Do not fill this as if received."
+    },
+    {
+      "event_id": "PENDING-EVT-002",
+      "event_kind": "SLOT_ACCEPTANCE",
+      "source_mode": "real_operator_ack_required",
+      "accepted": null,
+      "actual_timestamp": null,
+      "why_null": "An actual person must accept; static invented slot isn't acceptance."
+    }
+  ],
+  "validation_scenarios": [
+    "vague_no_cooling_must_ask_followup",
+    "code_misheard_requires_confirm",
+    "unknown_model_prevents_specific_sku",
+    "unconfirmed_part_custody_closes_ready_gate",
+    "payer_not_approved_closes_ready_gate",
+    "actual_technician_decline_causes_replan",
+    "changed_onsite_fault_requotes",
+    "synthetic_outcome_must_not_be_reported_real"
+  ],
+  "entrypoint_version": "v0.3",
+  "entrypoint_configuration": {
+    "pilot_production_primary": "agency_whatsapp_cloud_api_pending_config",
+    "pilot_production_secondary": "agency_phone_conditional_telephony_unverified",
+    "demo_adapter": "demo_inbox_actor_roleplay_or_actual_google_sheet_row",
+    "not_deployed": true,
+    "karyaflow_api_confirmed": false,
+    "oem_direct_integration_confirmed": false,
+    "google_sheet_id": null,
+    "waba_phone_number_id": null,
+    "inbound_phone_did": null
+  },
+  "required_runtime_events": [
+    "REAL_AUDIO_CHIEF_COMPLAINT_WITH_CONSENT",
+    "REAL_GNANI_STT_HTTP_RESPONSE",
+    "AGENT_FOLLOWUP_DECISION",
+    "ACTOR_FOLLOWUP_RESPONSE_WHEN_USED"
+  ],
+  "gnani_voice_first_config": {
+    "mode": "REAL_RECORDED_ROLEPLAY_AUDIO_REST",
+    "language_preference": "te-IN",
+    "maximum_rest_clip_seconds": 60,
+    "ideal_seconds": 30,
+    "api_key_preloaded": false,
+    "audio_prepopulated": false,
+    "transcript_prepopulated": false,
+    "must_show_raw_http_response": true
+  },
+  "preloaded_knowledge_status": "URL_POINTERS_AND_GENERIC_SYNTHESIS_ONLY_NOT_VERIFIED_OEM_RAG",
+  "scenario_after_household_confirms_label": {
+    "appliance": "AC",
+    "model_id": "DEMO-AC-MODEL-A",
+    "model_id_is_real": false,
+    "actor_must_supply_as_new_ROLEPLAY_event": true,
+    "model_preseed_is_only_a_possible_demo_label": true,
+    "no_pre_emptive_case_identification": true
+  },
+  "archived_non_executable_provider_samples": {
+    "pine_labs": {
+      "source_doc_url": "https://www.pinelabs.com/docs/online-payments/api/upi-reserve-pay/create-reserve-pay-debit",
+      "mode": "SIMULATED_EXTERNAL_DONT_TREAT_AS_BANK_RESULT",
+      "response_sample": {
+        "subscription_id": "v1-sub-EXAMPLE-NOTREAL",
+        "presentation_id": "v1-bil-EXAMPLE-NOTREAL",
+        "due_date": "2026-10-05T07:00:00Z",
+        "amount": {
+          "value": 1000,
+          "currency": "INR"
+        },
+        "status": "CREATED",
+        "merchant_presentation_reference": "EXAMPLE-NOT-REAL"
+      },
+      "warning_status": "CREATED_IS_NOT_AUTHORIZED_OR_PAID",
+      "simulated_only": true
+    },
+    "delhivery": {
+      "source_doc_url": "https://one.delhivery.com/developer-portal/document/b2c/detail/faq",
+      "mode": "SIMULATED_EXTERNAL_DONT_TREAT_AS_LIVE_DELIVERY",
+      "sample_pincode_response": {
+        "delivery_codes": [
+          {
+            "postal_code": {
+              "pre_paid": "Y",
+              "pickup": "N",
+              "is_oda": "N",
+              "remarks": "",
+              "pin": null,
+              "city": null,
+              "max_weight": 0.0
+            }
+          }
+        ]
+      },
+      "caution": "A pin=null prevents falsely claiming any specific pincode is verified; replace using actual doc response or live call in final run."
+    }
+  },
+  "provider_integration_demo_requirements": {
+    "pine_labs": {
+      "mode": "DOC_SIMULATED",
+      "needs_external_actor_payer_approval": true,
+      "requires_exact_doc_verified_status": true,
+      "no_automatic_response_from_fixture": true
+    },
+    "delhivery_maps": {
+      "mode": "DOC_SIMULATED",
+      "needs_documented_matrix_or_geocode_schema": true,
+      "no_automatic_response_from_fixture": true
+    },
+    "gnani_stt": {
+      "mode": "LIVE_ONLY",
+      "need_real_credential": true,
+      "need_actual_audio": true
+    }
+  }
+}
