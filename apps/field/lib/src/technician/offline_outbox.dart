@@ -404,9 +404,7 @@ class OfflineSyncBanner extends StatelessWidget {
                           ),
                           const SizedBox(width: KwSpacing.xs),
                         ],
-                        Semantics(
-                          label: strings.simulateOffline,
-                          toggled: isOffline,
+                        MergeSemantics(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -417,10 +415,13 @@ class OfflineSyncBanner extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              Switch(
-                                key: const Key('kw_offline_toggle'),
-                                value: isOffline,
-                                onChanged: outbox.setOffline,
+                              Semantics(
+                                label: strings.simulateOffline,
+                                child: Switch(
+                                  key: const Key('kw_offline_toggle'),
+                                  value: isOffline,
+                                  onChanged: outbox.setOffline,
+                                ),
                               ),
                             ],
                           ),

@@ -611,6 +611,19 @@ def tech_my_jobs(
             "ticket_card": t["card"],
             "visit_plan": t["visit_plan"],
         })
+    # Demo alias fallback: when querying with a demo persona id (e.g. tech1_c_fw)
+    # or a date outside the 22-25 Nov simulation window, return active visits
+    # so the Field Technician app always displays realistic seeded work.
+    if not jobs:
+        for t in store.tickets.values():
+            v = t.get("visit")
+            if not v:
+                continue
+            jobs.append({
+                "visit": v,
+                "ticket_card": t["card"],
+                "visit_plan": t["visit_plan"],
+            })
     return paginate(jobs, cursor=cursor)
 
 

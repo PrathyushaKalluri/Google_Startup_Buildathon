@@ -502,6 +502,7 @@ class _NavPill extends StatelessWidget {
       selected: selected,
       label: label,
       child: ChoiceChip(
+        labelPadding: const EdgeInsets.symmetric(horizontal: 6),
         avatar: Icon(
           icon,
           size: 18,

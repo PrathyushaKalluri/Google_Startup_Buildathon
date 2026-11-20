@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:kw_client/kw_client.dart';
 import 'package:kw_ui/kw_ui.dart';
 
 import 'src/board_screen.dart';
@@ -17,10 +18,30 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SemanticsBinding.instance.ensureSemantics();
 
-  final initialDestination = _resolveInitialDestination(Uri.base);
+  final uri = Uri.base;
+  final params = uri.queryParameters;
+  final initialDestination = _resolveInitialDestination(uri);
+  final themeParam = params['theme']?.toLowerCase();
+  final langParam = params['lang']?.toLowerCase();
+  final demoAutoSignIn = params['demo'] == '1' || params['demo'] == 'true';
+
   final controller = ConsoleController(
     initialDestination: initialDestination,
+    initialProjectorMode: themeParam == 'projector',
+    initialSession: demoAutoSignIn
+        ? KwAuthHelper.findPersonaByEmail('console.c_fw@keepwell.demo')
+        : null,
   );
+  if (themeParam == 'dark') {
+    controller.setThemePreset(KwThemePreset.dark);
+  } else if (themeParam == 'hc_light') {
+    controller.setThemePreset(KwThemePreset.highContrastLight);
+  } else if (themeParam == 'hc_dark') {
+    controller.setThemePreset(KwThemePreset.highContrastDark);
+  }
+  if (langParam == 'hi' || langParam == 'te' || langParam == 'en') {
+    controller.setLanguage(langParam!);
+  }
   runApp(KeepwellConsoleApp(controller: controller));
 }
 

@@ -83,9 +83,9 @@ python3 mocks/firestore/timelapse_c03.py
 ## 3. What Is Not Done (Honest List)
 
 1. **Live Browser Media Capture (`getUserMedia` / `AudioWorklet`):** Call Dialer and Video-Link pages implement the full Contract §7 WebSocket protocol and UI state machine with simulated audio/frame triggers in web/headless mode; wiring raw Chrome `AudioWorklet` PCM16 capture and `HTMLVideoElement` canvas JPEG encoding is a clean next step during Integrator rehearsal.
-2. **Lighthouse JSON & Visual Screenshots (`docs/design/lighthouse/`):** Not yet captured against a live hosted server; automated semantics, ≥48dp target, and 200% text-scale assertions are verified in `flutter test`.
-3. **Firebase Rules Emulator Execution:** `infra/frontend/test_rules/firestore_rules.test.mjs` passed `node --check` and JSON validation; requires running `npm install && firebase emulators:exec "npm test"` once in `infra/frontend/test_rules/`.
-4. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) UI chrome strings are complete drafts ready for native-speaker sign-off.
+2. **Firebase Rules Emulator Execution:** `infra/frontend/test_rules/firestore_rules.test.mjs` passed `node --check` and JSON validation; requires running `npm install && firebase emulators:exec "npm test"` once in `infra/frontend/test_rules/`.
+3. **Flutter Web Engine `aria-allowed-attr` & CanvasKit Initial Bundle Performance:** Lighthouse Accessibility is **100** on `household` and `brand`, and **94** on `console` and `field` (remaining `aria-allowed-attr` comes from Flutter Web's CanvasKit semantics tree rather than app widgets; `aria-toggle-field-name` on `field` was fixed and re-verified). Desktop Performance scores are **54–69** due to Flutter CanvasKit's initial WebAssembly/JS bootstrap payload (`--wasm` dry run succeeded and is ready for production hosting with gzip/brotli).
+4. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) UI chrome strings render cleanly with Noto Sans Devanagari and Noto Sans Telugu glyphs verified in screenshots, and remain drafts ready for native-speaker sign-off.
 
 ---
 
@@ -132,5 +132,11 @@ No Contract Change Requests (`contract/CHANGE_REQUESTS.md`) were required — ev
 
 - **Static Analysis (`flutter analyze` across all 7 workspace packages):** `No issues found!`
 - **Test Counts:** **47 / 47 passed** (`mocks`: 7, `kw_client`: 8, `kw_ui`: 15, `console`: 3, `field`: 5, `household`: 5, `brand`: 4).
-- **Web Production Builds:** All 4 Firebase Hosting targets (`console`, `field`, `household`, `brand`) compiled cleanly via `flutter build web`.
+- **Web Production Builds:** All 4 Firebase Hosting targets (`console`, `field`, `household`, `brand`) compiled cleanly via `flutter build web` (with Wasm dry run passing on all 4).
+- **Visual Matrix Screenshots (`docs/design/screenshots/`):** **76 PNGs** captured via Playwright Chromium against live mocks across all 4 apps × 3 widths (`390`, `820`, `1440` px) × 2 themes (`light`, `dark`) × 3 languages (`en`, `hi`, `te`) + 4 Projector Mode Stage View captures (`console_stage_{390,820,1440}_projector_en.png` & `console_stage_1440_projector_hi.png`). Visual inspection caught and fixed: (1) `field` demo-persona jobs fallback in `mocks/rest/server.py`, (2) `ChoiceChip` horizontal `labelPadding` for Devanagari/Telugu nav chips in `apps/household/lib/src/household_app.dart`.
+- **Lighthouse Reports (`docs/design/lighthouse/`):** HTML & JSON reports saved for all 4 production web builds against live mocks:
+  - `console`: Accessibility **94**, Performance **54** (`console.report.html` / `console.report.json`)
+  - `field`: Accessibility **94** (fixed `aria-toggle-field-name` from 89 → 94), Performance **69** (`field.report.html` / `field.report.json`)
+  - `household`: Accessibility **100**, Performance **60** (`household.report.html` / `household.report.json`)
+  - `brand`: Accessibility **100**, Performance **63** (`brand.report.html` / `brand.report.json`)
 - **Rubric Self-Assessment:** See [docs/rubric_B.md](file:///Users/Shared/Files%20From%20e.localized/PDM/Google%20buildathon%20/Google_Startup_Buildathon/docs/rubric_B.md).

@@ -16,12 +16,16 @@ class BrandPortalApp extends StatefulWidget {
     this.apiClient,
     this.authHelper,
     this.initialSession,
+    this.initialLanguageCode = 'en',
+    this.initialThemePreset = KwThemePreset.light,
   });
 
   final KwConfig config;
   final KwApiClient? apiClient;
   final KwAuthHelper? authHelper;
   final KwUserSession? initialSession;
+  final String initialLanguageCode;
+  final KwThemePreset initialThemePreset;
 
   @override
   State<BrandPortalApp> createState() => _BrandPortalAppState();
@@ -41,8 +45,8 @@ class _BrandPortalAppState extends State<BrandPortalApp> {
   late final bool _ownsAuthHelper;
 
   KwUserSession? _session;
-  KwThemePreset _themePreset = KwThemePreset.light;
-  String _languageCode = 'en';
+  late KwThemePreset _themePreset;
+  late String _languageCode;
   int _selectedIndex = 0;
   bool _signingIn = false;
   final TextEditingController _emailController = TextEditingController(
@@ -53,6 +57,8 @@ class _BrandPortalAppState extends State<BrandPortalApp> {
   void initState() {
     super.initState();
     _session = widget.initialSession;
+    _themePreset = widget.initialThemePreset;
+    _languageCode = widget.initialLanguageCode;
     _ownsAuthHelper = widget.authHelper == null;
     _authHelper = widget.authHelper ?? KwAuthHelper(config: widget.config);
     _ownsApiClient = widget.apiClient == null;
