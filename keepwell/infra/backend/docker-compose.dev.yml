@@ -1,0 +1,69 @@
+# ============================================================================
+# Keepwell Part A Local Development Stack
+# Brings up:
+#   - PostgreSQL 16 with PostGIS + pgvector + pgcrypto + btree_gist
+#     (loads db/schema.sql + db/migrations/001_part_a_additions.sql on init)
+#   - Firebase Auth (9099) & Firestore (8080) Emulators + Emulator UI (4000)
+# Usage:
+#   docker compose -f infra/backend/docker-compose.dev.yml up -d
+# ============================================================================
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM pgvector/pgvector:pg16
+        RUN apt-get update \
+         && apt-get install -y --no-install-recommends postgresql-16-postgis-3 postgresql-16-postgis-3-scripts \
+         && rm -rf /var/lib/apt/lists/*
+    container_name: keepwell-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keepwell
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-keepwell_dev}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - kw_pgdata:/var/lib/postgresql/data
+      - ../../db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ../../db/migrations/001_part_a_additions.sql:/docker-entrypoint-initdb.d/02_part_a_additions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d keepwell"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  firebase-emulators:
+    image: node:20-slim
+    container_name: keepwell-firebase-emulators
+    restart: unless-stopped
+    working_dir: /workspace
+    environment:
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-keepwell-dev}
+    ports:
+      - "4000:4000"   # Emulator UI
+      - "8080:8080"   # Firestore Emulator
+      - "9099:9099"   # Auth Emulator
+    command: >
+      sh -c "apt-get update -qq && apt-get install -y -qq default-jre-headless >/dev/null
+      && npm install -g firebase-tools >/dev/null 2>&1
+      && cat <<'EOF' > /tmp/firebase.json
+      {
+        \"emulators\": {
+          \"auth\": { \"host\": \"0.0.0.0\", \"port\": 9099 },
+          \"firestore\": { \"host\": \"0.0.0.0\", \"port\": 8080 },
+          \"ui\": { \"enabled\": true, \"host\": \"0.0.0.0\", \"port\": 4000 }
+        }
+      }
+      EOF
+      && firebase emulators:start --config /tmp/firebase.json --only auth,firestore --project $${FIREBASE_PROJECT_ID}"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:9099').then(() => process.exit(0)).catch(() => process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  kw_pgdata:
