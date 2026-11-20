@@ -1,3 +1,7 @@
+VENV_BIN := $(shell if [ -d ".venv" ]; then echo ".venv/bin/"; fi)
+PYTHON := $(VENV_BIN)python3
+PYTEST := $(VENV_BIN)pytest
+
 .PHONY: dev test eval seed deploy clean help
 
 help:
@@ -9,16 +13,16 @@ help:
 	@echo "  make deploy   - Deploy KeepWell to Google Cloud Run (asia-south1)"
 
 dev:
-	python3 run.py
+	$(PYTHON) run.py
 
 seed:
-	python3 -m app.fixtures.seed_data
+	$(PYTHON) -m app.fixtures.seed_data
 
 test:
-	pytest -v tests/
+	$(PYTEST) -v tests/
 
 eval:
-	python3 evals/eval_runner.py
+	$(PYTHON) evals/eval_runner.py
 
 deploy:
 	cd deploy && ./setup_gcp.sh
