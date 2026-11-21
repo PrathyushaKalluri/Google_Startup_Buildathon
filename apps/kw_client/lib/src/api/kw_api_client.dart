@@ -833,7 +833,27 @@ class KwApiClient {
         final response = await http.Response.fromStream(streamed).timeout(timeout);
 
         if (response.statusCode >= 200 && response.statusCode < 300) {
-          return _decodeMapResponse(response);
+          final decoded = _decodeMapResponse(response);
+          if (config.demoMode) {
+            if (path.startsWith('/channels/whatsapp/simulator/inbound')) {
+              KwEmbeddedSnapshot.handleSimulatorInbound(body);
+            } else if (path == '/tickets' && decoded['items'] is List) {
+              final live = KwEmbeddedSnapshot.loadLiveTickets();
+              if (live.isNotEmpty) {
+                final existing = (decoded['items'] as List)
+                    .map((e) => Map<String, dynamic>.from(e as Map))
+                    .toList();
+                final seen = <String>{for (final item in existing) item['id'].toString()};
+                final prepended = <Map<String, dynamic>>[
+                  for (final l in live)
+                    if (!seen.contains(l['id'].toString())) l,
+                  ...existing,
+                ];
+                decoded['items'] = prepended;
+              }
+            }
+          }
+          return decoded;
         }
 
         final retryAfter = int.tryParse(response.headers['retry-after'] ?? '');

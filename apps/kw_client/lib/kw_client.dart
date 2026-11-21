@@ -5,6 +5,7 @@
 /// and reactive Firestore / REST polling repositories.
 library;
 
+export 'src/api/embedded_snapshot.dart';
 export 'src/api/kw_api_client.dart';
 export 'src/auth/kw_auth.dart';
 export 'src/config.dart';

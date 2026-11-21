@@ -163,59 +163,68 @@ _UNIFIED_HUB_HTML = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Keepwell — Unified 4-Surface Prototype Hub</title>
+  <title>Keepwell — Unified 4-Surface Prototype</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
     header { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: #1e293b; border-bottom: 1px solid #334155; flex-wrap: wrap; }
-    .brand { font-weight: 700; font-size: 15px; color: #38bdf8; margin-right: 10px; display: flex; align-items: center; gap: 6px; }
+    .brand { font-weight: 800; font-size: 15px; color: #38bdf8; margin-right: 8px; display: flex; align-items: center; gap: 6px; }
     .badge { font-size: 11px; background: #065f46; color: #6ee7b7; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
-    .tab-btn { background: #334155; color: #e2e8f0; border: 1px solid #475569; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; }
+    .tab-btn { background: #334155; color: #e2e8f0; border: 1px solid #475569; padding: 7px 13px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; }
     .tab-btn:hover { background: #475569; }
-    .tab-btn.active { background: #0284c7; color: #ffffff; border-color: #38bdf8; }
+    .tab-btn.active { background: #0284c7; color: #ffffff; border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56,189,248,0.25); }
     .spacer { flex: 1; }
-    .action-btn { background: #0f766e; color: #fff; border: none; padding: 6px 11px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; }
-    .action-btn:hover { background: #115e59; }
-    main { flex: 1; display: flex; width: 100%; height: calc(100vh - 49px); background: #0f172a; }
+    .guide-bar { background: #0f766e; color: #ecfdf5; font-size: 12.5px; padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #115e59; }
+    .guide-steps { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .guide-steps strong { color: #5eead4; }
+    main { flex: 1; display: flex; width: 100%; height: calc(100vh - 80px); background: #0f172a; }
     .pane { height: 100%; border: none; background: #fff; display: none; flex-direction: column; }
     .pane.visible { display: flex; }
-    .pane-header { background: #f1f5f9; color: #0f172a; font-size: 12px; font-weight: 700; padding: 4px 12px; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; }
+    .pane-header { background: #f1f5f9; color: #0f172a; font-size: 12px; font-weight: 700; padding: 5px 14px; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; }
     iframe { flex: 1; width: 100%; height: 100%; border: none; }
-    .split-left { width: 42%; border-right: 3px solid #334155; }
-    .split-right { width: 58%; }
+    .split-left { width: 38%; border-right: 3px solid #334155; }
+    .split-right { width: 62%; }
     .full-width { width: 100%; }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand">Keepwell Unified Prototype <span class="badge">Live Local PG18 · $0 Credits</span></div>
-    <button class="tab-btn active" onclick="setMode('split')" id="btn-split">⚡ Split View: Household + Agent Console</button>
-    <button class="tab-btn" onclick="setMode('household')" id="btn-household">1. Household (Customer)</button>
-    <button class="tab-btn" onclick="setMode('console')" id="btn-console">2. Agent Console &amp; Stage</button>
-    <button class="tab-btn" onclick="setMode('field')" id="btn-field">3. Field (Technician &amp; Parts)</button>
-    <button class="tab-btn" onclick="setMode('brand')" id="btn-brand">4. Brand &amp; Retailer</button>
-    <div class="spacer"></div>
-    <button class="action-btn" onclick="syncFrames()">🔄 Refresh Views</button>
+    <div class="brand">Keepwell Prototype <span class="badge">All 4 Touchpoints Connected · $0 Credits</span></div>
+    <button class="tab-btn active" onclick="setMode('household')" id="btn-household">1. Customer (Send Complaint &amp; Follow-Up)</button>
+    <button class="tab-btn" onclick="setMode('console')" id="btn-console">2. Agent Console &amp; Live Stage (18+ Cases)</button>
+    <button class="tab-btn" onclick="setMode('field')" id="btn-field">3. Field Technician &amp; Parts</button>
+    <button class="tab-btn" onclick="setMode('brand')" id="btn-brand">4. Brand &amp; Retailer Portal</button>
+    <button class="tab-btn" onclick="setMode('split')" id="btn-split">⚡ Side-by-Side (Customer + Console)</button>
   </header>
+  <div class="guide-bar">
+    <div class="guide-steps">
+      <span><strong>Step 1:</strong> Tap a sample complaint in <em>1. Customer</em> &amp; answer the agent's follow-up questions</span>
+      <span>→</span>
+      <span><strong>Step 2:</strong> Switch to <em>2. Agent Console</em> to see your new ticket at the top of the Case Board</span>
+      <span>→</span>
+      <span><strong>Step 3:</strong> Check in &amp; debrief in <em>3. Field Technician</em> or inspect C18 in <em>4. Brand</em></span>
+    </div>
+  </div>
   <main>
-    <div class="pane visible split-left" id="pane-household">
-      <div class="pane-header"><span>1. HOUSEHOLD COMPANION (Send a complaint here → appears in Agent Console on right)</span></div>
+    <div class="pane visible full-width" id="pane-household">
+      <div class="pane-header"><span>1. CUSTOMER HOUSEHOLD APP — Frost &amp; Wave Service Point, Kukatpally (WhatsApp Simulator · Voice/Video Call · Quote &amp; OTP · Home Memory)</span></div>
       <iframe id="frame-household" src="/app/household/"></iframe>
     </div>
-    <div class="pane visible split-right" id="pane-console">
-      <div class="pane-header"><span>2. CENTRE CONSOLE &amp; LIVE STAGE VIEW (Auto-signed in: Frost &amp; Wave, Kukatpally)</span></div>
+    <div class="pane full-width" id="pane-console">
+      <div class="pane-header"><span>2. SERVICE CENTRE AGENT CONSOLE &amp; LIVE STAGE VIEW — Auto-signed into Frost &amp; Wave, Kukatpally</span></div>
       <iframe id="frame-console" src="/app/console/?demo=1"></iframe>
     </div>
     <div class="pane full-width" id="pane-field">
-      <div class="pane-header"><span>3. FIELD APP — TECHNICIAN (tech1.c_fw@keepwell.demo) &amp; PARTS CENTRE (parts.demo@keepwell.demo)</span></div>
+      <div class="pane-header"><span>3. FIELD APP — Technician (tech1.c_fw@keepwell.demo) &amp; Parts Desk (parts.demo@keepwell.demo)</span></div>
       <iframe id="frame-field" src="/app/field/"></iframe>
     </div>
     <div class="pane full-width" id="pane-brand">
-      <div class="pane-header"><span>4. BRAND &amp; RETAILER PORTAL (brand.aerovane@keepwell.demo)</span></div>
+      <div class="pane-header"><span>4. BRAND &amp; RETAILER PORTAL — Brand Manager (brand.aerovane@keepwell.demo) &amp; Retailer Quick-Reg</span></div>
       <iframe id="frame-brand" src="/app/brand/"></iframe>
     </div>
   </main>
   <script>
+    let lastTicketCount = '';
     function setMode(mode) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById('btn-' + mode).classList.add('active');
@@ -236,10 +245,14 @@ _UNIFIED_HUB_HTML = """<!DOCTYPE html>
       } else if (mode === 'brand') {
         brd.className = 'pane visible full-width';
       }
-    }
-    function syncFrames() {
-      const cf = document.getElementById('frame-console');
-      if (cf) cf.contentWindow.location.reload();
+      if (mode === 'console' || mode === 'split') {
+        const cur = localStorage.getItem('kw_live_tickets_v2') || '';
+        if (cur !== lastTicketCount) {
+          lastTicketCount = cur;
+          const cf = document.getElementById('frame-console');
+          if (cf && cf.contentWindow) cf.contentWindow.location.reload();
+        }
+      }
     }
   </script>
 </body>
@@ -256,7 +269,8 @@ def unified_prototype_hub() -> HTMLResponse:
 def serve_flutter_app_index(app_name: str) -> HTMLResponse:
     if app_name not in ("console", "household", "field", "brand"):
         raise HTTPException(status_code=404, detail="Unknown app")
-    idx = KEEPWELL_ROOT / "apps" / app_name / "build" / "web" / "index.html"
+    nested_idx = KEEPWELL_ROOT / "apps" / "console" / "build" / "web" / "app" / app_name / "index.html"
+    idx = nested_idx if nested_idx.exists() else (KEEPWELL_ROOT / "apps" / app_name / "build" / "web" / "index.html")
     if not idx.exists():
         return HTMLResponse(f"<h3>Building {app_name}... refresh in 30s.</h3>", status_code=503)
     html = idx.read_text(encoding="utf-8").replace('<base href="/">', f'<base href="/app/{app_name}/">')
@@ -267,7 +281,8 @@ def serve_flutter_app_index(app_name: str) -> HTMLResponse:
 def serve_flutter_app_asset(app_name: str, asset_path: str) -> Any:
     if app_name not in ("console", "household", "field", "brand"):
         raise HTTPException(status_code=404, detail="Unknown app")
-    base_dir = (KEEPWELL_ROOT / "apps" / app_name / "build" / "web").resolve()
+    nested_dir = (KEEPWELL_ROOT / "apps" / "console" / "build" / "web" / "app" / app_name).resolve()
+    base_dir = nested_dir if nested_dir.exists() else (KEEPWELL_ROOT / "apps" / app_name / "build" / "web").resolve()
     target = (base_dir / asset_path).resolve()
     if str(target).startswith(str(base_dir)) and target.is_file():
         return FileResponse(target)

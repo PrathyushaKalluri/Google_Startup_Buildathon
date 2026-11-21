@@ -1,8 +1,9 @@
 # Keepwell Complete Engineering Handover (`docs/HANDOVER.md`)
 
-**Generated:** 2026-11-21T06:22+05:30  
+**Generated / Last Updated:** 2026-11-21T07:43+05:30  
 **Repository Root:** `/Users/klprathyusha/google_startup_keepwell/Google_Startup_Buildathon`  
-**Active Branch:** `main` (merged `origin/part-a/agent-core` + `origin/part-b/experience` + Part C milestones C0–C5 & C7)
+**Active Branch:** `main` (merged `origin/part-a/agent-core` + `origin/part-b/experience` + Part C milestones C0–C7 complete & deployed)  
+**Single Deployed 4-in-1 Prototype URL (All 4 Screens on One Page):** `https://kw-console-0527.web.app` (also served locally on `http://localhost:8000`)
 
 ---
 
@@ -40,16 +41,16 @@ Keepwell is an agentic platform that appliance service centres and brands deploy
 - **All branches pushed to GitHub:** `main`, `part-a/agent-core`, and `part-b/experience` are all pushed to `origin` with zero unpushed commits.
 - **`git log --oneline -10 main`:**
   ```text
-  581b880 (HEAD -> main) feat(part-c): merge Part A & Part B, C2/C3 conformance & 12 E2E journeys, C4/C5/C7 docs & deploy kit
+  510051e feat(demo): add unified 4-in-1 prototype hub, 18-case PG snapshot fallback, and live 3s ticket sync
+  148e589 docs(c7): add end-to-end zero-credit click-by-click navigation guide to DEMO_LINKS.md and update HANDOVER.md
+  93be9c7 feat(c6): deploy Cloud Run, Firebase Hosting (4 sites), Firestore rules/indexes, demo_up/down scripts, DEMO_LINKS & update HANDOVER
+  53e86f3 docs(handover): add complete docs/HANDOVER.md and docs/RESUME_PROMPT.md for assistant transition
+  581b880 feat(part-c): merge Part A & Part B, C2/C3 conformance & 12 E2E journeys, C4/C5/C7 docs & deploy kit
   8fb9159 chore(integration): track synthetic input/ dataset, drop generated keepwell.db
   4c87049 merge: part-b/experience into main
   a2897c9 merge: part-a/agent-core into main
   9295111 part-c: AGENTS.md from PROMPT_C
   1783021 (origin/part-b/experience) part-b: live mic/camera bridge (AudioWorklet PCM16, Web Audio playback, real JPEG frames), config switch, build/deploy scripts, a11y fixes, evidence
-  2cce0ac part-b: verify firestore rules in emulator, add 4 E2E journey tests, optimize Wasm/deferred/font bundles
-  2bf7a9c (origin/part-a/agent-core, part-a/agent-core) part-a: move Part A folders to repo root and harden .gitignore for clean merge
-  a30dab3 part-a: wire & verify live Firestore, GCS, gemini-embedding-2, 21-PDF KB, Model Armor, Firebase Auth, Live API C03, Cloud SQL PG16
-  1cd8e01 test(a11y): capture 76 Playwright screenshots, Lighthouse reports, and fix visual/a11y findings
   ```
 - **`git log --oneline -10 part-a/agent-core`:**
   ```text
@@ -169,6 +170,8 @@ We completed Part C Milestone C6 (Cloud Build image build, Cloud Run `kw-api` & 
 - **D-C02 (`INT-001` — Offline STT Cache for 7 Dataset `.ogg` Files):** Added `_OFFLINE_STT_CACHE` in `services/api/routes_channels.py` so `POST /v1/admin/demo/play-case` resolves voice-call cases (`C01`, `C03`, `C05`, `C11`, `C12`, `C15`, `C16`) without reading `evaluator_only/` at runtime.
 - **D-C03 (Unified Python 3.12 `.venv312`):** Created `.venv312` (`Python 3.12.16`) at repo root so Part A (`services/`) and Part B (`mocks/` using PEP 604 `str | None`) run in a single interpreter.
 - **D-C04 (`INT-002`, `INT-003`, `INT-004`):** Fixed `POST /v1/devices` idempotency (`ON CONFLICT (token) DO UPDATE`), fixed `confirm_debrief` JSONB `list` handling in `services/agents/memory_agent.py`, and set Cloud Run `--min-instances=0 --max-instances=2`.
+- **D-C05 (`INT-005` — Firebase Auth Real Demo Persona Seeding & `demo-token-*` Support):** Seeded all 35 demo personas (`console.<centre>@keepwell.demo`, `tech1.<centre>@keepwell.demo`, `tech2.<centre>@keepwell.demo`, `parts.demo@keepwell.demo`, `brand.<brand>@keepwell.demo`, `platform@keepwell.demo`) with password `keepwell-demo-password` and custom claims (`role`, `centre_id`, `centre_key`, `technician_id`, `parts_centre_id`, `brand_id`) in real Firebase Auth (`gen-lang-client-0527907563`), updated `KwAuthHelper.signInDemoPersona` (`apps/kw_client/lib/src/auth/kw_auth.dart`) to call real Identity Toolkit `accounts:signInWithPassword` when `FIREBASE_API_KEY` is configured, and updated `decode_dev_bearer_token` (`services/common/auth.py`) to accept both `demo:<email>` and `demo-token-<role>-<key>` in `DEMO_MODE=true`.
+- **D-C06 (Single Deployed 4-in-1 Prototype Hub + 3-Stage Guided WhatsApp Follow-Up):** Bundled all 4 Flutter Web `--wasm` surfaces (`/app/household/`, `/app/console/`, `/app/field/`, `/app/brand/`) under the single deployed Firebase Hosting site `https://kw-console-0527.web.app` (and local `http://localhost:8000`) with shared same-origin `localStorage` live ticket sync (`kw_live_tickets_v2`) and a 3-stage interactive WhatsApp follow-up conversation.
 
 ---
 
@@ -234,7 +237,7 @@ All local runtime values live in `/Users/klprathyusha/google_startup_keepwell/Go
 
 ## h. Known Issues, Defects & Risks
 
-1. **Secret Rotation Advisory:** Earlier interactive terminal outputs printed the Google Sign-In OAuth client secret (`GOCSPX-...`), `GEMINI_API_KEY`, and `GOOGLE_MAPS_API_KEY` into the chat transcript. Zero secrets are in git, but if the chat transcript is shared externally, rotate those credentials in GCP Console → APIs & Services → Credentials.
+1. **Secret Rotation Advisory:** Earlier interactive terminal outputs printed the Google Sign-In OAuth client secret, `GEMINI_API_KEY`, and `GOOGLE_MAPS_API_KEY` into the chat transcript. Zero secrets are in git, but if the chat transcript is shared externally, rotate those credentials in GCP Console → APIs & Services → Credentials.
 2. **Gemini Live API Quota & Preview Status:** `gemini-3.1-flash-live-preview` is a preview model capped by our Service Usage quota override to **30 sessions** (`6 / 30` used so far; `24` remaining). Never run `LIVE_GOOGLE=1` in a loop. Use `POST /v1/admin/demo/replay-call` or offline `scripted_client.py` for routine test runs.
 3. **Local PostgreSQL 18.7 vs Cloud SQL PostgreSQL 16.15:** Homebrew on macOS arm64 compiles `postgis` and `pgvector` only for PostgreSQL 18/19, whereas Cloud SQL runs PostgreSQL 16.15. Both have been verified loading `input/docs/keepwell_schema.sql` and `001_part_a_additions.sql` unmodified.
 4. **Offline Fallbacks When `LIVE_GOOGLE` Is Unset:** By design, standard `pytest` runs with `LIVE_GOOGLE` unset so it completes in 10 seconds with zero cloud cost (using in-memory Firestore projection mirror, local `storage_part_a/` directory, deterministic regex Model Armor guard, Haversine drive-time calculation, and deterministic LLM/STT fallbacks). Setting `LIVE_GOOGLE=1` switches Firestore, GCS, Model Armor, embeddings, KB upload, Firebase Auth, and Gemini Live API to real Google Cloud calls.

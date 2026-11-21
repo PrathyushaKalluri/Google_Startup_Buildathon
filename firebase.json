@@ -90,6 +90,22 @@
           }
         },
         {
+          "source": "/app/household/**",
+          "destination": "/app/household/index.html"
+        },
+        {
+          "source": "/app/console/**",
+          "destination": "/app/console/index.html"
+        },
+        {
+          "source": "/app/field/**",
+          "destination": "/app/field/index.html"
+        },
+        {
+          "source": "/app/brand/**",
+          "destination": "/app/brand/index.html"
+        },
+        {
           "source": "**",
           "destination": "/index.html"
         }

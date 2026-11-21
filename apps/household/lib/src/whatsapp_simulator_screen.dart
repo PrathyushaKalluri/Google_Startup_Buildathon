@@ -91,12 +91,37 @@ class _WhatsAppSimulatorScreenState extends State<WhatsAppSimulatorScreen> {
 
   final List<_SimChatMessage> _messages = <_SimChatMessage>[];
 
-  static const List<String> _quickReplies = <String>[
-    'Yes, try safe fix',
-    'Switch to video',
-    'Confirm slot',
-    'Send a technician',
+  String _conversationStage = 'start';
+
+  static const List<String> _stageStartChips = <String>[
+    'My Wavecrest washing machine shows E21 and water is not draining',
+    'Bedroom AC is leaking water indoors since last night',
+    'Geyser is giving a mild electric shock at the tap',
   ];
+
+  static const List<String> _stageFollowupChips = <String>[
+    'Started yesterday, no smell/smoke — Yes, try safe fix',
+    'Switch to video',
+    'Skip self-fix — book a technician',
+  ];
+
+  static const List<String> _stageSafeFixChips = <String>[
+    'Tried all 3 steps, still showing E21 — Send a technician',
+    'That fixed it! Draining normally now',
+    'Switch to video',
+  ];
+
+  static const List<String> _stageBookedChips = <String>[
+    'My Wavecrest washing machine shows E21 and water is not draining',
+    'Bedroom AC is leaking water indoors since last night',
+  ];
+
+  List<String> get _activeQuickReplies => switch (_conversationStage) {
+        'followup_asked' => _stageFollowupChips,
+        'safe_fix_offered' => _stageSafeFixChips,
+        'booked' || 'resolved' => _stageBookedChips,
+        _ => _stageStartChips,
+      };
 
   @override
   void initState() {
@@ -125,13 +150,15 @@ class _WhatsAppSimulatorScreenState extends State<WhatsAppSimulatorScreen> {
   }
 
   void _seedCentreGreeting() {
+    _conversationStage = 'start';
     _messages.add(
       _SimChatMessage(
         id: 'welcome-${widget.activeCentre.key}',
         isFromHousehold: false,
         kind: 'text',
         text:
-            'Hello from ${widget.activeCentre.name}. Tell us which appliance needs help — you can type, send a voice note, or share a photo of the model sticker.',
+            '👋 Welcome to ${widget.activeCentre.name} (${widget.activeCentre.locality}).\n'
+            'Tap any sample complaint below (or type your own) — I will log your ticket to the Agent Console, ask follow-up questions, and guide you through a safe fix or technician booking.',
         at: DateTime.now(),
       ),
     );
@@ -249,7 +276,17 @@ class _WhatsAppSimulatorScreenState extends State<WhatsAppSimulatorScreen> {
       _updateTick(msgId, _DeliveryTick.read);
 
       final replies = _extractVerbatimReplies(response);
+      final nextStage = response['stage']?.toString();
       setState(() {
+        if (nextStage != null && nextStage.isNotEmpty) {
+          _conversationStage = nextStage;
+        } else if (_conversationStage == 'start') {
+          _conversationStage = 'followup_asked';
+        } else if (_conversationStage == 'followup_asked') {
+          _conversationStage = 'safe_fix_offered';
+        } else {
+          _conversationStage = 'booked';
+        }
         for (var i = 0; i < replies.length; i++) {
           final replyText = replies[i];
           _messages.add(
@@ -266,14 +303,36 @@ class _WhatsAppSimulatorScreenState extends State<WhatsAppSimulatorScreen> {
         _sending = false;
       });
       _scrollToBottom();
-    } catch (e) {
+    } catch (_) {
       if (!mounted) return;
-      _updateTick(msgId, _DeliveryTick.sent);
-      setState(() {
-        _sending = false;
-        _statusNotice =
-            'Could not reach simulator backend. Check API_BASE_URL and try again.';
+      _updateTick(msgId, _DeliveryTick.read);
+      final fallback = KwEmbeddedSnapshot.handleSimulatorInbound(<String, dynamic>{
+        'to_number': _centreServiceNumber(widget.activeCentre.key),
+        'from_phone': fromPhone,
+        'sender_profile_name': profileName,
+        'messages': <Map<String, dynamic>>[wireMessage],
       });
+      final replies = _extractVerbatimReplies(fallback);
+      final nextStage = fallback['stage']?.toString() ?? 'followup_asked';
+      setState(() {
+        _conversationStage = nextStage;
+        for (var i = 0; i < replies.length; i++) {
+          final replyText = replies[i];
+          _messages.add(
+            _SimChatMessage(
+              id: 'reply-${now.microsecondsSinceEpoch}-$i',
+              isFromHousehold: false,
+              kind: 'text',
+              text: replyText,
+              at: DateTime.now(),
+              deepLinkRoute: _detectDeepLink(replyText),
+            ),
+          );
+        }
+        _sending = false;
+        _statusNotice = null;
+      });
+      _scrollToBottom();
     }
   }
 
@@ -418,14 +477,17 @@ class _WhatsAppSimulatorScreenState extends State<WhatsAppSimulatorScreen> {
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 520),
+        constraints: const BoxConstraints(maxWidth: 680),
         child: Padding(
-          padding: const EdgeInsets.all(KwSpacing.md),
+          padding: const EdgeInsets.symmetric(
+            horizontal: KwSpacing.sm,
+            vertical: KwSpacing.xs,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildSelectorCard(context, hStrings),
-              const SizedBox(height: KwSpacing.sm),
+              const SizedBox(height: KwSpacing.xs),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -793,27 +855,63 @@ class _WhatsAppSimulatorScreenState extends State<WhatsAppSimulatorScreen> {
   }
 
   Widget _buildQuickReplies(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final stepHint = switch (_conversationStage) {
+      'followup_asked' =>
+        'Step 2 of 3 · Tap to answer the agent’s follow-up questions:',
+      'safe_fix_offered' =>
+        'Step 3 of 3 · Tap to report whether the 3-step Safe Fix worked:',
+      'booked' || 'resolved' =>
+        'Done! Ticket updated in Agent Console · Tap to test another complaint:',
+      _ => 'Step 1 of 3 · Tap a sample complaint below (or type your own):',
+    };
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(
         KwSpacing.sm,
         KwSpacing.xs,
         KwSpacing.sm,
-        0,
+        4,
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            for (final chip in _quickReplies) ...[
-              ActionChip(
-                label: Text(chip),
-                onPressed: _sending ? null : () => _handleSendText(chip),
-              ),
-              const SizedBox(width: KwSpacing.xs),
-            ],
-          ],
-        ),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLow,
+        border: Border(top: BorderSide(color: cs.outlineVariant.withValues(alpha: 0.5))),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            stepHint,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: cs.primary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 4),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (final chip in _activeQuickReplies) ...[
+                  ActionChip(
+                    backgroundColor: cs.primaryContainer.withValues(alpha: 0.55),
+                    label: Text(
+                      chip,
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    onPressed: _sending ? null : () => _handleSendText(chip),
+                  ),
+                  const SizedBox(width: KwSpacing.xs),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

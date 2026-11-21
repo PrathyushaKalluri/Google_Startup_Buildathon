@@ -23,7 +23,7 @@ void main() {
   final initialDestination = _resolveInitialDestination(uri);
   final themeParam = params['theme']?.toLowerCase();
   final langParam = params['lang']?.toLowerCase();
-  final demoAutoSignIn = params['demo'] == '1' || params['demo'] == 'true';
+  final demoAutoSignIn = params['signin'] != '1' && params['signin'] != 'true';
 
   final controller = ConsoleController(
     initialDestination: initialDestination,

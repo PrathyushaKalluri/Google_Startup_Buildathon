@@ -88,6 +88,26 @@ def decode_dev_bearer_token(token: str) -> Optional[Dict[str, Any]]:
             return None
         return {"email": token[5:], "sub": token[5:], "_auth_backend": "demo_mode"}
 
+    if token.startswith("demo-token-"):
+        if not allow_dev:
+            return None
+        rest = token.removeprefix("demo-token-")
+        if rest == "parts":
+            email = "parts.demo@keepwell.demo"
+        elif rest == "platform":
+            email = "platform@keepwell.demo"
+        elif rest.startswith("console-"):
+            email = f"console.{rest.removeprefix('console-')}@keepwell.demo"
+        elif rest.startswith("tech1-"):
+            email = f"tech1.{rest.removeprefix('tech1-')}@keepwell.demo"
+        elif rest.startswith("tech2-"):
+            email = f"tech2.{rest.removeprefix('tech2-')}@keepwell.demo"
+        elif rest.startswith("brand-"):
+            email = f"brand.{rest.removeprefix('brand-')}@keepwell.demo"
+        else:
+            email = "console.c_fw@keepwell.demo"
+        return {"email": email, "sub": email, "_auth_backend": "demo_mode"}
+
     if token.count(".") == 1:
         try:
             claims = verify_magic_token(token)

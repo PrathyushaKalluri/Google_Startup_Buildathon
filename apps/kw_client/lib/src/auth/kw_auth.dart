@@ -319,18 +319,25 @@ class KwAuthHelper {
           displayName: email,
         );
 
-    if (!config.useAuthEmulator) {
+    if (!config.useAuthEmulator && config.firebaseApiKey.trim().isEmpty) {
       return base;
     }
 
     try {
-      final host = config.firebaseAuthEmulatorHost.trim();
-      final prefix = host.startsWith('http://') || host.startsWith('https://')
-          ? host
-          : 'http://$host';
-      final uri = Uri.parse(
-        '$prefix/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake-api-key',
-      );
+      final Uri uri;
+      if (config.useAuthEmulator) {
+        final host = config.firebaseAuthEmulatorHost.trim();
+        final prefix = host.startsWith('http://') || host.startsWith('https://')
+            ? host
+            : 'http://$host';
+        uri = Uri.parse(
+          '$prefix/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake-api-key',
+        );
+      } else {
+        uri = Uri.parse(
+          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${config.firebaseApiKey.trim()}',
+        );
+      }
       final resp = await _http
           .post(
             uri,
@@ -341,7 +348,7 @@ class KwAuthHelper {
               'returnSecureToken': true,
             }),
           )
-          .timeout(const Duration(seconds: 4));
+          .timeout(const Duration(seconds: 6));
 
       if (resp.statusCode >= 200 && resp.statusCode < 300) {
         final data = jsonDecode(resp.body) as Map<String, dynamic>;

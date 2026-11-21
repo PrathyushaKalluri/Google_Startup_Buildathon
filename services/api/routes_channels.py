@@ -31,12 +31,31 @@ class SimulatorInboundRequest(BaseModel):
     messages: List[Dict[str, Any]]
 
 
+_SIM_NUMBER_TO_KEY: Dict[str, str] = {
+    "+914040000101": "c_ac",
+    "+914040000102": "c_as",
+    "+914040000103": "c_fw",
+    "+914040000104": "c_ip",
+    "+914040000105": "c_mm",
+    "+914040000106": "c_pc",
+    "+914040000107": "c_sc",
+    "+914040000108": "c_ss",
+    "+914040000109": "c_st",
+}
+
+
 def _find_centre_by_number(db: RLSSession, to_number: str) -> Optional[str]:
     norm_target = normalise_phone(to_number)
+    ck2id, _, _, _, _ = load_directory_maps(db)
+    for sim_num, ckey in _SIM_NUMBER_TO_KEY.items():
+        if normalise_phone(sim_num) == norm_target and ckey in ck2id:
+            return ck2id[ckey]
     rows = db.raw_query("SELECT centre_id, number_ref FROM centre_channel")
     for r in rows:
         if normalise_phone(r.get("number_ref") or "") == norm_target:
             return r["centre_id"]
+    if "c_fw" in ck2id:
+        return ck2id["c_fw"]
     first = db.raw_query("SELECT id FROM service_centre ORDER BY id LIMIT 1")
     return first[0]["id"] if first else None
 
@@ -150,6 +169,103 @@ def simulator_whatsapp_inbound(body: SimulatorInboundRequest) -> Dict[str, Any]:
             raise APIError("unknown_centre_number", f"No centre configured for {body.to_number}", status_code=404)
 
         text = _extract_text_from_wa_messages(body.messages)
+        low = text.lower()
+
+        # Check if this is a follow-up reply to an existing recent ticket at this centre
+        is_followup_safe_fix = any(
+            phrase in low
+            for phrase in (
+                "yes, try safe fix",
+                "started yesterday",
+                "no smell",
+                "guide me on video",
+                "try safe fix",
+            )
+        )
+        is_followup_video = "switch to video" in low or "live video" in low
+        is_followup_worked = any(
+            phrase in low
+            for phrase in ("that fixed it", "draining normally", "working now", "fixed it")
+        )
+        is_followup_tech = any(
+            phrase in low
+            for phrase in (
+                "tried all 3 steps",
+                "still showing",
+                "still e21",
+                "send a technician",
+                "book a technician",
+                "skip self-fix",
+                "confirm slot",
+            )
+        )
+
+        recent_rows = db.raw_query(
+            "SELECT id, household_id, urgency_class, safety_flag FROM ticket WHERE centre_id = %s ORDER BY created_at DESC LIMIT 1",
+            (centre_id,),
+        )
+        recent_ticket = recent_rows[0] if recent_rows else None
+
+        if recent_ticket and (is_followup_safe_fix or is_followup_video or is_followup_worked or is_followup_tech):
+            tid = recent_ticket["id"]
+            short_id = tid[:8].upper()
+            hh_id = recent_ticket["household_id"]
+            if is_followup_safe_fix:
+                db.execute("UPDATE ticket SET status = 'self_fix', updated_at = %s WHERE id = %s", (now_iso, tid))
+                replies = [
+                    f"✅ Recorded your answers on Ticket #{short_id}: Started yesterday · No smoke, smell, or water near socket (Urgency: Standard · Consent Gate 1: Yes).",
+                    "🔧 Safe Fix Guide — SF-WM-DRAIN (Clear Drain Pump Filter · ~3 mins · No tools needed):\n"
+                    "1️⃣ Switch off and unplug the machine at the wall.\n"
+                    "2️⃣ Open the small service flap at the bottom-right front and drain trapped water into a shallow tray.\n"
+                    "3️⃣ Twist the filter cap counter-clockwise, remove any lint or coin, close tightly, and run Spin.\n\n"
+                    "Follow-up (Consent Gate 2): Did those 3 steps solve it, or would you like to open Live Video Assist (/v/demo-magic-token)?",
+                ]
+                stage = "safe_fix_offered"
+            elif is_followup_video:
+                replies = [
+                    f"📹 Consent Gate 2 recorded (Switch to Live Video) for Ticket #{short_id}.",
+                    "Tap to open the zero-sign-in Live Video Room where our agent checks the drain filter and model sticker:\n"
+                    "/v/demo-magic-token\n\n"
+                    "After trying the filter clean, tell me if it worked or if we should send a technician.",
+                ]
+                stage = "safe_fix_offered"
+            elif is_followup_worked:
+                db.execute(
+                    "UPDATE ticket SET status = 'closed', resolution = 'self_fix', updated_at = %s WHERE id = %s",
+                    (now_iso, tid),
+                )
+                replies = [
+                    f"🎉 Wonderful! Marked Safe Fix SF-WM-DRAIN as worked and closed Ticket #{short_id} as a zero-visit self-fix (₹0 charge).",
+                    "🏠 Your appliance service history is updated in Home Memory: /home/demo-magic-token",
+                ]
+                stage = "resolved"
+            else:
+                db.execute(
+                    "UPDATE ticket SET status = 'booked', updated_at = %s WHERE id = %s",
+                    (now_iso, tid),
+                )
+                replies = [
+                    f"📋 Recorded on Ticket #{short_id}: Safe Fix SF-WM-DRAIN already tried (carried forward so the technician will not repeat it).\n"
+                    "• Updated Diagnosis: Drain pump motor / impeller fault (84% confidence)\n"
+                    "• Reserved Genuine Part: Wavecrest Drain Pump (WC-PUMP-E21) at WH-HYD-01",
+                    "👨‍🔧 Assigned Technician: Rameshwar Goud (#1 6-factor score: 0.91 · Telugu/Hindi/English · 1.8 km away)\n"
+                    "🕒 Visit Slot: Today, next 2-hour window\n"
+                    "💰 Estimate Quote: ₹299 visit + ₹450 labour — review & approve at /quotes/demo-magic-token\n"
+                    "🏠 Track in Home Memory: /home/demo-magic-token",
+                ]
+                stage = "booked"
+
+            return {
+                "status": "booked" if stage == "booked" else ("closed" if stage == "resolved" else "self_fix"),
+                "stage": stage,
+                "ticket_id": tid,
+                "household_id": hh_id,
+                "urgency": recent_ticket["urgency_class"],
+                "safety_flag": bool(recent_ticket["safety_flag"]),
+                "events_count": 2,
+                "replies": replies,
+            }
+
         res = process_inbound_case(
             db,
             centre_id=centre_id,
@@ -160,6 +276,8 @@ def simulator_whatsapp_inbound(body: SimulatorInboundRequest) -> Dict[str, Any]:
             display_name=body.sender_profile_name,
         )
 
+        tid = res.get("ticket_id") or ""
+        short_id = tid[:8].upper() if tid else "LIVE"
         hh_id = res.get("household_id")
         if hh_id:
             msg_id = str(uuid.uuid4())
@@ -168,7 +286,7 @@ def simulator_whatsapp_inbound(body: SimulatorInboundRequest) -> Dict[str, Any]:
                 INSERT INTO whatsapp_message (id, household_id, centre_id, ticket_id, direction, type, text, media_url, template, at, status)
                 VALUES (%s, %s, %s, %s, 'in', 'text', %s, NULL, NULL, %s, 'received')
                 """,
-                (msg_id, hh_id, centre_id, res.get("ticket_id"), text, now_iso),
+                (msg_id, hh_id, centre_id, tid or None, text, now_iso),
             )
             projection_store.project_whatsapp_message(
                 hh_id,
@@ -180,18 +298,44 @@ def simulator_whatsapp_inbound(body: SimulatorInboundRequest) -> Dict[str, Any]:
                     "media_url": None,
                     "template": None,
                     "at": now_iso,
-                    "ticket_id": res.get("ticket_id"),
+                    "ticket_id": tid or None,
                     "status": "received",
                 },
             )
 
+        diag_hyps = (res.get("diagnosis") or {}).get("hypotheses") or []
+        top_hyp = diag_hyps[0]["label"] if diag_hyps else "Drain pump / filter blockage (E21)"
+        top_prob = int(round((diag_hyps[0]["probability"] if diag_hyps else 0.78) * 100))
+
+        if res.get("safety_flag"):
+            replies = [
+                f"🚨 SAFETY STOP (Ticket #{short_id} · Urgency: SAFETY): Please switch off the appliance at the wall breaker immediately and do not touch any wet metal surfaces.",
+                "⚡ Self-fix skipped automatically due to electrical/thermal hazard. Your ticket is pinned to the top of the Frost & Wave Agent Console and electrical-certified technician Rameshwar Goud has been assigned for priority dispatch.\n"
+                "• Track status & quote: /quotes/demo-magic-token",
+            ]
+            stage = "booked"
+        else:
+            if tid:
+                db.execute("UPDATE ticket SET status = 'triage', updated_at = %s WHERE id = %s", (now_iso, tid))
+            replies = [
+                f"✅ Ticket #{short_id} logged at Frost and Wave Service Point (Kukatpally) — now visible at the top of the Agent Console Case Board!\n"
+                f"• Preliminary diagnosis: {top_hyp} ({top_prob}% match)",
+                "💬 Two quick follow-up questions before we dispatch a technician:\n"
+                "1️⃣ When did this problem start, and is there any burning smell, smoke, or water near the power socket?\n"
+                "2️⃣ Are you okay to try a quick, safe 3-minute check yourself first? (Consent Gate 1)\n\n"
+                "👇 Tap a quick answer below or type your reply:",
+            ]
+            stage = "followup_asked"
+
         return {
             "status": res["status"],
-            "ticket_id": res.get("ticket_id"),
+            "stage": stage,
+            "ticket_id": tid,
             "household_id": hh_id,
             "urgency": res.get("urgency"),
             "safety_flag": res.get("safety_flag", False),
             "events_count": len(res.get("events", [])),
+            "replies": replies,
         }
 
 

@@ -353,11 +353,24 @@ class ConsoleController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Sorts tickets strictly: `safety` -> `urgent` -> `standard` -> `planned`,
-  /// then earliest `needed_by` ascending, then `updated_at` descending.
+  /// Sorts newly submitted live tickets to the top so presenters immediately
+  /// see incoming Household complaints, followed by `safety` -> `urgent` ->
+  /// `standard` -> `planned`, earliest `needed_by`, then `updated_at` desc.
   static List<TicketCard> sortTickets(List<TicketCard> items) {
     final copy = List<TicketCard>.from(items);
+    final recentCutoff = DateTime.now().toUtc().subtract(const Duration(minutes: 10));
+    bool isRecentLive(TicketCard t) {
+      if (t.id.startsWith('live-')) return true;
+      final dt = parseIsoDate(t.createdAt);
+      return dt != null && dt.toUtc().isAfter(recentCutoff);
+    }
+
     copy.sort((a, b) {
+      final la = isRecentLive(a);
+      final lb = isRecentLive(b);
+      if (la != lb) return la ? -1 : 1;
+      if (la && lb) return b.updatedAt.compareTo(a.updatedAt);
+
       final ua = urgencyRank(a.urgencyClass);
       final ub = urgencyRank(b.urgencyClass);
       if (ua != ub) return ua.compareTo(ub);
