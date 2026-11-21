@@ -1,0 +1,283 @@
+# Keepwell Runtime Repair Vocabulary Lexicon
+# Source note: Derived from input/dataset/evaluator_only/voice_scripts.json,
+# input/dataset/csv/safe_fix_catalogue.csv, input/dataset/csv/appliance_category.csv,
+# and multilingual Indian home-appliance service terminology (English, Hindi Devanagari
+# + Romanized, Telugu script + Romanized).
+
+metadata:
+  version: "1.0.0"
+  languages: ["en", "hi", "te"]
+  categories:
+    - air_conditioner
+    - refrigerator
+    - washing_machine
+    - water_purifier
+    - water_heater
+  category_aliases:
+    ac: air_conditioner
+    split_ac: air_conditioner
+    air_conditioner: air_conditioner
+    fridge: refrigerator
+    refrigerator: refrigerator
+    wm: washing_machine
+    washer: washing_machine
+    washing_machine: washing_machine
+    ro: water_purifier
+    ro_purifier: water_purifier
+    water_purifier: water_purifier
+    geyser: water_heater
+    water_heater: water_heater
+
+appliances:
+  air_conditioner:
+    canonical_code: air_conditioner
+    short_code: ac
+    en:
+      - "ac"
+      - "air conditioner"
+      - "split ac"
+      - "window ac"
+      - "inverter ac"
+      - "outdoor unit"
+      - "indoor unit"
+      - "cooling unit"
+    hi_devanagari:
+      - "एसी"
+      - "एयर कंडीशनर"
+      - "स्प्लिट एसी"
+      - "आउटडोर यूनिट"
+      - "इनडोर यूनिट"
+    hi_romanized:
+      - "ac"
+      - "air conditioner"
+      - "split ac"
+      - "outdoor unit"
+      - "indoor unit"
+    te_script:
+      - "ఏసీ"
+      - "ఎయిర్ కండీషనర్"
+      - "స్ప్లిట్ ఏసీ"
+      - "బయట యూనిట్"
+      - "లోపల యూనిట్"
+    te_romanized:
+      - "ac"
+      - "bayata unit"
+      - "lopala unit"
+      - "split ac"
+    symptoms:
+      weak_cooling:
+        en: ["not cooling", "weak cooling", "blows warm air", "airflow weak", "warm air", "low cooling"]
+        hi_devanagari: ["ठंडा नहीं कर रहा", "कूलिंग नहीं हो रही", "कम ठंडक", "गर्म हवा", "हवा कम आ रही है"]
+        hi_romanized: ["thanda nahi kar raha", "cooling nahi ho rahi", "kam thandak", "garam hawa", "hawa kam aa rahi"]
+        te_script: ["చల్లదనం రావడం లేదు", "కూలింగ్ రావడం లేదు", "వేడి గాలి", "వేడిగా అవుతుంది", "గాలి తక్కువగా వస్తోంది"]
+        te_romanized: ["challadanam ravatam ledu", "cooling ravatam ledu", "vedi gaali", "vediga avuthundi"]
+      water_leak:
+        en: ["water dripping indoors", "wall wet", "water from front panel", "water leaking", "drain blocked"]
+        hi_devanagari: ["पानी टपक रहा है", "दीवार गीली", "एसी से पानी निकल रहा है", "ड्रेन पाइप जाम"]
+        hi_romanized: ["paani tapak raha hai", "deewar geeli", "ac se paani nikal raha", "drain pipe jam"]
+        te_script: ["నీళ్లు కారుతున్నాయి", "గోడ మొత్తం తడిసిపోయింది", "ఏసీ నుంచి నీళ్లు", "నీరు లీక్ అవుతోంది"]
+        te_romanized: ["neellu karuthunnayi", "goda thadisipoyindi", "ac nunchi neellu", "water leak"]
+      outdoor_fan_noise:
+        en: ["outdoor fan not spinning", "fan not running", "noise from outdoor unit", "loud humming"]
+        hi_devanagari: ["बाहर का पंखा नहीं घूम रहा", "आउटडोर से आवाज", "फैन नहीं चल रहा"]
+        hi_romanized: ["bahar ka pankha nahi ghoom raha", "outdoor se awaaz", "fan nahi chal raha"]
+        te_script: ["ఫ్యాన్ తిరగడం లేదు", "బయట యూనిట్ లోంచి శబ్దం వస్తోంది", "శబ్దం వస్తోంది"]
+        te_romanized: ["fan tiragadam ledu", "bayata unit lonchi shabdam vasthondi", "shabdam vasthondi"]
+    parts:
+      - "air filter"
+      - "drain pipe"
+      - "outdoor fan motor capacitor"
+      - "compressor run capacitor"
+      - "fan motor"
+      - "pcb"
+      - "thermostat sensor"
+
+  refrigerator:
+    canonical_code: refrigerator
+    short_code: refrigerator
+    en:
+      - "refrigerator"
+      - "fridge"
+      - "freezer"
+      - "double door fridge"
+      - "single door fridge"
+    hi_devanagari:
+      - "फ्रिज"
+      - "रेफ्रिजरेटर"
+      - "फ्रीजर"
+    hi_romanized:
+      - "fridge"
+      - "freezer"
+      - "refrigerator"
+    te_script:
+      - "ఫ్రిడ్జ్"
+      - "రిఫ్రిజిరేటర్"
+      - "ఫ్రీజర్"
+    te_romanized:
+      - "fridge"
+      - "freezer"
+      - "refrigerator"
+    symptoms:
+      not_cooling:
+        en: ["not cooling", "warm interior", "food spoiling", "milk spoiling", "medicine at risk"]
+        hi_devanagari: ["ठंडा नहीं हो रहा", "फ्रिज गर्म है", "खाना खराब हो रहा", "दूध फट रहा", "दवाई खराब"]
+        hi_romanized: ["thanda nahi ho raha", "fridge garam hai", "khana kharab", "doodh phat raha", "dawai kharab"]
+        te_script: ["కూలింగ్ అవ్వడం లేదు", "లోపల వేడిగా ఉంది", "ఆహారం పాడైపోతుంది", "పాలు పాడైపోతున్నాయి", "మందులు"]
+        te_romanized: ["cooling avvadam ledu", "lopala vediga undi", "aahaaram paadaipothundi", "paalu paadaipothunnayi"]
+      frost_buildup:
+        en: ["frost", "freezer iced over", "heavy ice", "defrost problem"]
+        hi_devanagari: ["बर्फ जम रही है", "बहुत ज्यादा बर्फ", "डिफ्रॉस्ट नहीं हो रहा"]
+        hi_romanized: ["barf jam rahi hai", "zyada barf", "defrost nahi ho raha"]
+        te_script: ["ఐస్ గడ్డకట్టింది", "మంచు ఎక్కువగా పట్టింది", "డీఫ్రాస్ట్ అవ్వడం లేదు"]
+        te_romanized: ["ice gaddakattindi", "manchu ekkuvaga pattindi", "defrost avvadam ledu"]
+    parts:
+      - "door seal gasket"
+      - "defrost heater"
+      - "defrost thermostat"
+      - "evaporator fan"
+      - "compressor relay"
+      - "pcb"
+
+  washing_machine:
+    canonical_code: washing_machine
+    short_code: washing_machine
+    en:
+      - "washing machine"
+      - "washer"
+      - "front load"
+      - "top load"
+      - "drum"
+    hi_devanagari:
+      - "वॉशिंग मशीन"
+      - "वाशिंग मशीन"
+      - "कपड़े धोने की मशीन"
+      - "मशीन"
+    hi_romanized:
+      - "washing machine"
+      - "washer"
+      - "kapde dhone ki machine"
+    te_script:
+      - "వాషింగ్ మెషీన్"
+      - "వాషింగ్ మిషన్"
+      - "బట్టలు ఉతికే మిషన్"
+    te_romanized:
+      - "washing machine"
+      - "battalu uthike machine"
+    symptoms:
+      will_not_drain:
+        en: ["will not drain", "water stays in drum", "water drains slowly", "not draining", "clothes still wet"]
+        hi_devanagari: ["पानी नहीं निकल रहा", "पानी अंदर ही भरा है", "कपड़े अंदर ही भीगे पड़े हैं", "ड्रेन नहीं हो रहा"]
+        hi_romanized: ["paani nahi nikal raha", "paani andar bhara hai", "kapde bheege pade hain", "drain nahi ho raha"]
+        te_script: ["నీళ్లు బయటకు పోవడం లేదు", "నీరు పోవడం లేదు", "డ్రమ్ లో నీళ్లు నిలిచిపోయాయి"]
+        te_romanized: ["neellu bayataku povadam ledu", "neeru povadam ledu", "drum lo neellu nilichipoyayi"]
+      lid_or_door_error:
+        en: ["lid error", "door not locking", "will not start", "beeps"]
+        hi_devanagari: ["ढक्कन बंद नहीं हो रहा", "दरवाजा लॉक नहीं हो रहा", "बीप कर रही है", "स्टार्ट नहीं हो रही"]
+        hi_romanized: ["dhakkan band nahi ho raha", "darwaza lock nahi ho raha", "beep kar rahi hai", "start nahi ho rahi"]
+        te_script: ["మూత సరిగ్గా మూసుకోవడం లేదు", "డోర్ లాక్ అవ్వడం లేదు", "స్టార్ట్ అవ్వడం లేదు", "బీప్ శబ్దం"]
+        te_romanized: ["mootha sarigga moosukovadam ledu", "door lock avvadam ledu", "start avvadam ledu"]
+    parts:
+      - "drain pump"
+      - "drain pump filter"
+      - "outlet hose"
+      - "lid switch"
+      - "door lock"
+      - "inlet valve"
+
+  water_purifier:
+    canonical_code: water_purifier
+    short_code: ro_purifier
+    en:
+      - "ro purifier"
+      - "water purifier"
+      - "ro"
+      - "ro system"
+      - "purifier"
+    hi_devanagari:
+      - "आरओ"
+      - "वाटर प्यूरीफायर"
+      - "पानी का फिल्टर"
+    hi_romanized:
+      - "ro"
+      - "water purifier"
+      - "paani ka filter"
+    te_script:
+      - "ఆర్ఓ"
+      - "వాటర్ ప్యూరిఫయర్"
+      - "నీటి ఫిల్టర్"
+    te_romanized:
+      - "ro"
+      - "water purifier"
+      - "neeti filter"
+    symptoms:
+      low_flow:
+        en: ["low flow", "no water", "slow water", "tank not filling", "bad taste", "high tds"]
+        hi_devanagari: ["पानी कम आ रहा है", "पानी नहीं आ रहा", "टैंक नहीं भर रहा", "स्वाद खराब है"]
+        hi_romanized: ["paani kam aa raha hai", "paani nahi aa raha", "tank nahi bhar raha", "swaad kharab"]
+        te_script: ["నీళ్లు తక్కువగా వస్తున్నాయి", "నీళ్లు రావడం లేదు", "ట్యాంక్ నిండడం లేదు", "రుచి బాగోలేదు"]
+        te_romanized: ["neellu thakkuvaga vasthunnayi", "neellu ravatam ledu", "tank nindadam ledu"]
+    parts:
+      - "sediment filter"
+      - "carbon filter"
+      - "ro membrane"
+      - "booster pump"
+      - "power adaptor"
+      - "uv lamp"
+
+  water_heater:
+    canonical_code: water_heater
+    short_code: geyser
+    en:
+      - "geyser"
+      - "water heater"
+      - "instant geyser"
+      - "storage geyser"
+    hi_devanagari:
+      - "गीज़र"
+      - "गीजर"
+      - "वाटर हीटर"
+    hi_romanized:
+      - "geyser"
+      - "geezer"
+      - "water heater"
+    te_script:
+      - "గీజర్"
+      - "వాటర్ హీటర్"
+    te_romanized:
+      - "geyser"
+      - "water heater"
+    symptoms:
+      no_hot_water:
+        en: ["no hot water", "water not heating", "indicator light off", "cold water only"]
+        hi_devanagari: ["गर्म पानी नहीं आ रहा", "पानी गर्म नहीं हो रहा", "लाइट नहीं जल रही"]
+        hi_romanized: ["garam paani nahi aa raha", "paani garam nahi ho raha", "light nahi jal rahi"]
+        te_script: ["వేడి నీళ్లు రావడం లేదు", "నీళ్లు వేడెక్కడం లేదు", "లైట్ వెలగడం లేదు"]
+        te_romanized: ["vedi neellu ravatam ledu", "neellu vedekkadam ledu", "light velagadam ledu"]
+    parts:
+      - "heating element"
+      - "thermostat"
+      - "thermal cutout"
+      - "pressure relief valve"
+      - "anode rod"
+
+error_codes:
+  E21:
+    canonical: "E21"
+    category_code: washing_machine
+    meaning: "Drain pump timeout / drain filter blocked"
+    variants: ["E21", "e21", "E-21", "E 21", "ई21", "ई 21", "ఈ21", "ఈ 21"]
+  E6:
+    canonical: "E6"
+    category_code: air_conditioner
+    meaning: "Indoor-outdoor communication error"
+    variants: ["E6", "e6", "E-6", "E 6", "E06", "ई6", "ఈ6"]
+  dF:
+    canonical: "dF"
+    category_code: refrigerator
+    meaning: "Defrost cycle / defrost sensor fault"
+    variants: ["dF", "df", "DF", "D-F", "डीएफ", "డీఎఫ్"]
+  Er4:
+    canonical: "Er4"
+    category_code: water_heater
+    meaning: "Temperature sensor / overheat cutout fault"
+    variants: ["Er4", "er4", "ER4", "Er-4", "E4", "ईआर4", "ఈఆర్4"]

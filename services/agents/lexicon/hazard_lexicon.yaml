@@ -1,0 +1,271 @@
+# Keepwell Runtime Hazard Lexicon
+# Source note: Derived from input/dataset/csv/urgency_rule.csv (SAF-SHOCK,
+# SAF-SMOKE-BURN, SAF-WATER-ELEC, SAF-GAS-SMELL), contract C9/C11, and
+# input/dataset/evaluator_only/voice_scripts.json (C05, C15).
+# Used deterministically by services/agents/engines/urgency.py to guarantee
+# 100% recall on safety cases across English, Hindi (Devanagari + Romanized),
+# and Telugu (script + Romanized).
+
+metadata:
+  version: "1.0.0"
+  languages: ["en", "hi", "te"]
+  canonical_stop_use_message: "Please stop using it and switch it off at the wall. A technician will come as soon as possible."
+
+hazards:
+  shock_or_tingling:
+    rule_code: "SAF-SHOCK"
+    category_code: null
+    protective_message: "Please keep the appliance and its MCB switched off, do not touch it or any tap connected to it, and keep children away. We are arranging a technician."
+    phrases:
+      en:
+        - "electric shock"
+        - "shock"
+        - "tingling"
+        - "tingle"
+        - "tap shock"
+        - "current in tap"
+        - "current in water"
+        - "current on body"
+        - "gives current"
+        - "getting current"
+        - "mild current"
+        - "zapped"
+        - "electrocution"
+        - "earthing shock"
+      hi_devanagari:
+        - "करंट"
+        - "हल्का करंट"
+        - "करंट लगता है"
+        - "करंट मार रहा"
+        - "बिजली का झटका"
+        - "झटका लगा"
+        - "झनझनाहट"
+        - "नल में करंट"
+        - "पानी में करंट"
+        - "शॉक"
+      hi_romanized:
+        - "current lagta"
+        - "current laga"
+        - "halka current"
+        - "current maar raha"
+        - "bijli ka jhatka"
+        - "jhatka laga"
+        - "nal mein current"
+        - "paani mein current"
+        - "body mein current"
+        - "shock lag raha"
+        - "shock laga"
+      te_script:
+        - "కరెంట్"
+        - "కరెంట్ కొడుతోంది"
+        - "కరెంట్ తగులుతోంది"
+        - "షాక్"
+        - "షాక్ కొడుతోంది"
+        - "షాక్ తగిలింది"
+        - "ట్యాప్ లో కరెంట్"
+        - "నీళ్లలో కరెంట్"
+        - "కుళాయిలో కరెంట్"
+      te_romanized:
+        - "current koduthondi"
+        - "current thaguluthondi"
+        - "current vasthondi"
+        - "shock koduthondi"
+        - "shock thagilindi"
+        - "tap lo current"
+        - "neellalo current"
+
+  smoke_or_burning_smell:
+    rule_code: "SAF-SMOKE-BURN"
+    category_code: null
+    protective_message: "Please unplug it or switch it off at the MCB if you can do so without touching it, keep away from it and open a window."
+    phrases:
+      en:
+        - "burning smell"
+        - "smell of burning"
+        - "burnt smell"
+        - "smells burnt"
+        - "smoke"
+        - "smoking"
+        - "sparks"
+        - "sparking"
+        - "spark"
+        - "melting"
+        - "melted plug"
+        - "melted wire"
+        - "wire burning"
+        - "caught fire"
+        - "fire"
+        - "flame"
+        - "flames"
+        - "short circuit"
+        - "charred"
+      hi_devanagari:
+        - "जलने जैसी बदबू"
+        - "जलने की बदबू"
+        - "जलने की बू"
+        - "जल रहा है"
+        - "धुआं"
+        - "धुआँ"
+        - "चिंगारी"
+        - "चिंगारियां"
+        - "पिघल रहा है"
+        - "तार जल"
+        - "आग"
+        - "शॉर्ट सर्किट"
+      hi_romanized:
+        - "jalne jaisi badboo"
+        - "jalne ki badboo"
+        - "jalne ki bu"
+        - "jal raha hai"
+        - "dhuan"
+        - "dhuwa"
+        - "chingari"
+        - "pighal raha"
+        - "taar jal"
+        - "aag lag"
+        - "short circuit"
+      te_script:
+        - "కాలిపోయిన వాసన"
+        - "కాలిన వాసన"
+        - "పొగ"
+        - "పొగ వస్తోంది"
+        - "నిప్పురవ్వలు"
+        - "మంట"
+        - "కరిగిపోతోంది"
+        - "వైర్ కాలిపోయింది"
+        - "షార్ట్ సర్క్యూట్"
+      te_romanized:
+        - "kalipoyina vasana"
+        - "kalina vasana"
+        - "poga vasthondi"
+        - "poga"
+        - "nippuravvalu"
+        - "manta"
+        - "wire kalipoyindi"
+        - "short circuit"
+
+  water_near_electrics:
+    rule_code: "SAF-WATER-ELEC"
+    category_code: null
+    protective_message: "Please switch off the MCB for that circuit and keep away from the wet area."
+    phrases:
+      en:
+        - "water near socket"
+        - "water near the socket"
+        - "water on socket"
+        - "water on the socket"
+        - "water into socket"
+        - "water onto switchboard"
+        - "onto the switchboard"
+        - "water on switchboard"
+        - "water on the switchboard"
+        - "switchboard wet"
+        - "switchboard is wet"
+        - "socket wet"
+        - "socket is wet"
+        - "water dripping on switchboard"
+        - "water dripping onto the switchboard"
+        - "water dripping on socket"
+        - "water on plug"
+        - "water on wiring"
+        - "water near electrics"
+        - "water on electrical"
+        - "water entering mcb"
+      hi_devanagari:
+        - "स्विचबोर्ड पर पानी"
+        - "सॉकेट में पानी"
+        - "सॉकेट के पास पानी"
+        - "बिजली के बोर्ड पर पानी"
+        - "तार पर पानी"
+        - "स्विच गीला"
+        - "प्लग में पानी"
+      hi_romanized:
+        - "switchboard par paani"
+        - "socket mein paani"
+        - "socket ke paas paani"
+        - "bijli ke board par paani"
+        - "taar par paani"
+        - "switch geela"
+        - "plug mein paani"
+      te_script:
+        - "స్విచ్‌బోర్డ్ మీద నీళ్లు"
+        - "స్విచ్ బోర్డ్ మీద నీళ్లు"
+        - "సాకెట్ లో నీళ్లు"
+        - "సాకెట్ దగ్గర నీళ్లు"
+        - "వైర్ల మీద నీళ్లు"
+        - "ప్లగ్ తడిసింది"
+      te_romanized:
+        - "switchboard meeda neellu"
+        - "socket lo neellu"
+        - "socket daggara neellu"
+        - "wire meeda neellu"
+        - "plug thadisindi"
+
+  chemical_smell:
+    rule_code: "SAF-GAS-SMELL"
+    category_code: "refrigerator"
+    protective_message: "Please keep flames and switches away, open windows and do not run the refrigerator."
+    phrases:
+      en:
+        - "gas smell"
+        - "gas leak"
+        - "gas leaking"
+        - "chemical smell"
+        - "refrigerant smell"
+        - "refrigerant leak"
+        - "hissing gas"
+        - "pungent chemical"
+        - "fumes from fridge"
+      hi_devanagari:
+        - "गैस की बदबू"
+        - "गैस लीक"
+        - "गैस निकल रही है"
+        - "केमिकल की बदबू"
+        - "गैस की गंध"
+      hi_romanized:
+        - "gas ki badboo"
+        - "gas leak"
+        - "gas nikal rahi"
+        - "chemical ki badboo"
+        - "gas smell"
+      te_script:
+        - "గ్యాస్ వాసన"
+        - "గ్యాస్ లీక్"
+        - "కెమికల్ వాసన"
+        - "గ్యాస్ వస్తోంది"
+      te_romanized:
+        - "gas vasana"
+        - "gas leak"
+        - "chemical vasana"
+
+  swelling_or_rupture:
+    rule_code: "SAF-SMOKE-BURN"
+    category_code: null
+    protective_message: "Please unplug it or switch it off at the MCB if you can do so without touching it, keep away from it and open a window."
+    phrases:
+      en:
+        - "swelling"
+        - "swollen"
+        - "bulging"
+        - "bulged body"
+        - "tank bulging"
+        - "capacitor swollen"
+        - "about to burst"
+        - "bursting"
+      hi_devanagari:
+        - "फूल गया है"
+        - "फूल रही है"
+        - "सूजन"
+        - "फटने वाला है"
+      hi_romanized:
+        - "phool gaya"
+        - "phool rahi"
+        - "phatne wala"
+      te_script:
+        - "ఉబ్బింది"
+        - "ఉబ్బుతోంది"
+        - "పేలిపోయేలా ఉంది"
+      te_romanized:
+        - "ubbindi"
+        - "ubbuthondi"
+        - "pelipoyela undi"
