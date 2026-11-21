@@ -45,7 +45,7 @@ class _TechJobsScreenState extends State<TechJobsScreen> {
       );
       if (!mounted) return;
       setState(() {
-        _jobs = page.items;
+        _jobs = page.items.map(_flattenJob).toList();
         _loading = false;
       });
     } catch (e) {
@@ -69,6 +69,25 @@ class _TechJobsScreenState extends State<TechJobsScreen> {
       return '$startRaw – $endRaw';
     }
     return 'Slot window pending';
+  }
+
+  /// The API returns `{visit: {...}, ticket: {...}}` per job. The cards below read flat
+  /// fields (`visit_id`, `planned_start`, `summary`, ...), so merge the two maps.
+  Map<String, dynamic> _flattenJob(Map<String, dynamic> raw) {
+    final visit = raw['visit'];
+    final ticket = raw['ticket'];
+    if (visit is! Map && ticket is! Map) return raw;
+    final out = <String, dynamic>{};
+    if (ticket is Map) {
+      out.addAll(Map<String, dynamic>.from(ticket));
+      out['ticket_id'] = ticket['id'];
+    }
+    if (visit is Map) {
+      out.addAll(Map<String, dynamic>.from(visit));
+      out['visit_id'] = visit['id'];
+    }
+    if (ticket is Map && ticket['id'] != null) out['id'] = ticket['id'];
+    return out;
   }
 
   Future<void> _openVisit(Map<String, dynamic> job) async {

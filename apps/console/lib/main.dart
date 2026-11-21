@@ -45,6 +45,14 @@ void main() {
   runApp(KeepwellConsoleApp(controller: controller));
 }
 
+/// Calendar / route planning is out of the MVP cut in the flow document, so it is not in the navigation.
+const List<ConsoleDestination> _navOrder = [
+  ConsoleDestination.board,
+  ConsoleDestination.stage,
+  ConsoleDestination.overview,
+  ConsoleDestination.operations,
+];
+
 ConsoleDestination _resolveInitialDestination(Uri uri) {
   final path = uri.path.toLowerCase();
   final fragment = uri.fragment.toLowerCase();
@@ -128,7 +136,8 @@ class ConsoleShell extends StatelessWidget {
     final size = KwWindowSize.of(context);
     final hideChrome = controller.projectorMode &&
         controller.destination == ConsoleDestination.stage;
-    final selectedIndex = controller.destination.index;
+    final navIdx = _navOrder.indexOf(controller.destination);
+    final selectedIndex = navIdx < 0 ? 0 : navIdx;
 
     final body = switch (controller.destination) {
       ConsoleDestination.board => BoardScreen(controller: controller),
@@ -229,7 +238,7 @@ class ConsoleShell extends StatelessWidget {
           ? NavigationBar(
               selectedIndex: selectedIndex,
               onDestinationSelected: (i) =>
-                  controller.setDestination(ConsoleDestination.values[i]),
+                  controller.setDestination(_navOrder[i]),
               destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.view_kanban_outlined),
@@ -240,11 +249,6 @@ class ConsoleShell extends StatelessWidget {
                   icon: Icon(Icons.live_tv_outlined),
                   selectedIcon: Icon(Icons.live_tv_rounded),
                   label: 'Stage',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.calendar_month_outlined),
-                  selectedIcon: Icon(Icons.calendar_month_rounded),
-                  label: 'Calendar',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.insights_outlined),
@@ -267,7 +271,7 @@ class ConsoleShell extends StatelessWidget {
                   extended: size.isLarge,
                   selectedIndex: selectedIndex,
                   onDestinationSelected: (i) =>
-                      controller.setDestination(ConsoleDestination.values[i]),
+                      controller.setDestination(_navOrder[i]),
                   destinations: const [
                     NavigationRailDestination(
                       icon: Icon(Icons.view_kanban_outlined),
@@ -278,11 +282,6 @@ class ConsoleShell extends StatelessWidget {
                       icon: Icon(Icons.live_tv_outlined),
                       selectedIcon: Icon(Icons.live_tv_rounded),
                       label: Text('Live Stage'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.calendar_month_outlined),
-                      selectedIcon: Icon(Icons.calendar_month_rounded),
-                      label: Text('Calendar'),
                     ),
                     NavigationRailDestination(
                       icon: Icon(Icons.insights_outlined),

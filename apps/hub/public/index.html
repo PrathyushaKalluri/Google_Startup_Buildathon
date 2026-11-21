@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keepwell — Guided Demo</title>
+  <style>
+    :root { --bg:#0b1220; --panel:#111a2e; --line:#26334f; --text:#f1f5f9; --muted:#94a3b8; --accent:#38bdf8; --accent2:#0284c7; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); overflow: hidden; display: flex; flex-direction: column; }
+
+    /* Top control bar */
+    .bar { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .brand { font-weight: 800; color: var(--accent); letter-spacing: .2px; margin-right: 6px; }
+    button { font: inherit; cursor: pointer; border: 1px solid #3b4a6b; background: #1d2a46; color: var(--text); padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+    button:hover { background: #2a3b60; }
+    button.primary { background: var(--accent2); border-color: var(--accent); }
+    button.primary:hover { background: #0369a1; }
+    .dots { display: flex; gap: 6px; align-items: center; margin: 0 4px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #334155; border: 0; padding: 0; }
+    .dot.done { background: #0e7490; }
+    .dot.on { background: var(--accent); box-shadow: 0 0 0 3px rgba(56,189,248,.3); }
+    .spacer { flex: 1; }
+    .hint { color: var(--muted); font-size: 12px; }
+
+    /* Caption */
+    .caption { display: flex; gap: 14px; align-items: center; padding: 10px 16px; background: linear-gradient(90deg,#0c4a6e,#0f172a); border-bottom: 1px solid var(--line); min-height: 64px; }
+    .step-no { flex: none; font-weight: 800; font-size: 12px; background: var(--accent); color: #082f49; padding: 4px 9px; border-radius: 999px; }
+    .cap-title { font-weight: 800; font-size: 16px; }
+    .cap-text { color: #cbd5e1; font-size: 13.5px; margin-top: 2px; line-height: 1.4; }
+    .cap-do { margin-top: 4px; font-size: 13px; color: #fde68a; font-weight: 600; }
+    .progress { height: 3px; background: #1e293b; }
+    .progress > i { display: block; height: 100%; width: 0; background: var(--accent); }
+
+    /* Stage */
+    #stage { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+    .pane { position: absolute; left: 0; top: 0; width: 1280px; height: 800px; transform-origin: 0 0; border-radius: 14px; overflow: hidden; background: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,.5); transition: transform .9s cubic-bezier(.4,0,.2,1), opacity .6s ease, box-shadow .6s ease; }
+    .pane.active { box-shadow: 0 0 0 4px var(--accent), 0 18px 60px rgba(56,189,248,.28); }
+    .pane.dim { opacity: .6; }
+    .pane .label { position: absolute; left: 0; right: 0; top: 0; height: 38px; display: flex; align-items: center; gap: 10px; padding: 0 16px; background: #0f172a; color: #e2e8f0; font-weight: 700; font-size: 15px; z-index: 2; }
+    .pane .label small { color: var(--muted); font-weight: 500; }
+    .pane iframe { position: absolute; left: 0; top: 38px; width: 1280px; height: 762px; border: 0; background: #fff; }
+    .pane .shield { position: absolute; inset: 0; z-index: 3; cursor: zoom-in; display: none; background: transparent; }
+    .pane.dim .shield, .overview .pane .shield { display: block; }
+    @media (max-width: 760px) { .hint { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <div class="brand">Keepwell</div>
+    <button id="prev">◀ Back</button>
+    <button id="play" class="primary">▶ Play guided demo</button>
+    <button id="next">Next ▶</button>
+    <div class="dots" id="dots"></div>
+    <button id="ov">⛶ Overview</button>
+    <div class="spacer"></div>
+    <span class="hint">← → keys · Space = play/pause · O = overview · click a small screen to jump to it</span>
+  </div>
+  <div class="caption">
+    <span class="step-no" id="stepNo">OVERVIEW</span>
+    <div>
+      <div class="cap-title" id="capTitle"></div>
+      <div class="cap-text" id="capText"></div>
+      <div class="cap-do" id="capDo"></div>
+    </div>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+
+  <div id="stage"></div>
+
+<script>
+// Remove any stale root-scope service worker left by the old console-only deployment.
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function (regs) {
+    var stale = regs.filter(function (r) { return new URL(r.scope).pathname === '/'; });
+    if (!stale.length) return;
+    Promise.all(stale.map(function (r) { return r.unregister(); }))
+      .then(function () { return window.caches ? caches.keys() : []; })
+      .then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); })
+      .then(function () { if (!sessionStorage.getItem('kw_sw_cleaned')) { sessionStorage.setItem('kw_sw_cleaned', '1'); location.reload(); } });
+  }).catch(function () {});
+}
+(function () {
+  var W = 1280, H = 800;
+  var APPS = {
+    household: { name: 'Customer', sub: 'Call · WhatsApp · quote · Home Memory', base: '/app/household/' },
+    console:   { name: 'Service Centre Console', sub: 'Frost & Wave Service Point, Kukatpally', base: '/app/console/' },
+    field:     { name: 'Technician', sub: 'Visit plan · debrief · OTP close', base: '/app/field/' }
+  };
+  var ORDER = ['household', 'console', 'field'];
+
+  // Follows "Prototype: a live call on stage" in the end-to-end flow document (beats 1-8, then memory).
+  var STEPS = [
+    { app: null, title: 'One call, three screens',
+      text: 'A household calls its own service centre. One agent answers in the centre’s name, fixes what is safe to fix, and books the centre’s own technician with everything already known.',
+      doText: 'Press “Play guided demo”, or use Next.' },
+    { app: 'household', hash: '#/call', title: 'Beat 1 — The household calls the centre',
+      text: 'Keepwell answers in the centre’s name, says the call may be recorded, and asks which appliance.',
+      doText: 'Click “Start Call” (or “Play Scripted C03 (Hindi)”).' },
+    { app: 'console', hash: '#/stage', title: 'Beats 2–6 — The agent works the case',
+      text: 'Two consent questions, switch to video, appliance identified from the sticker, one safe fix tried and it fails, diagnosis re-runs with that evidence, then a technician and window are booked.',
+      doText: 'Click “Play C03 Stage Call” (about 25 seconds).' },
+    { app: 'console', hash: '', title: 'Beat 7 — The centre can reassign',
+      text: 'The case card shows what was learned and what was already tried. Reassigning logs a reason, which becomes training signal.',
+      doText: 'Open a case, click “Reassign”, pick another technician, Confirm (10-second Undo).' },
+    { app: 'household', hash: '#/quotes/demo-token', title: 'The household approves the quote',
+      text: 'Estimate, then firm quote, then approval. Labour, a verified catalogue part and 18% GST are itemised. Payment never closes the job.',
+      doText: 'Click “Approve quote”.' },
+    { app: 'field', hash: '', title: 'Beat 8 — The technician arrives prepared',
+      text: 'The visit plan shows what the household already tried. A spoken debrief becomes verified parts; anything unverified is flagged “Needs checking”. Only the household’s OTP closes the job.',
+      doText: 'Sign in as tech1.c_fw@keepwell.demo, open the job brief.' },
+    { app: 'household', hash: '#/home/demo-token', title: 'The appliance remembers',
+      text: 'Every repair is stored against the appliance, keyed by brand and serial number, so any centre can see its history. The household sees warranty status and a Care Index.',
+      doText: 'Look at the washer’s warranty and Care Index.' },
+    { app: null, title: 'The whole loop',
+      text: 'Call → case card → safe fix → visit plan → technician → quote → OTP close → appliance memory.',
+      doText: 'Press Back to replay any step, or click a screen to explore it.' }
+  ];
+
+  var stage = document.getElementById('stage');
+  var panes = {};
+  ORDER.forEach(function (key) {
+    var a = APPS[key];
+    var p = document.createElement('div');
+    p.className = 'pane';
+    p.innerHTML = '<div class="label">' + a.name + ' <small>' + a.sub + '</small></div>' +
+      '<iframe allow="microphone; camera; geolocation" title="' + a.name + '"></iframe>' +
+      '<div class="shield" title="Click to focus"></div>';
+    var f = p.querySelector('iframe');
+    f.src = a.base;
+    p.querySelector('.shield').addEventListener('click', function () { goApp(key); });
+    f.addEventListener('load', function () {
+      try { f.contentWindow.addEventListener('pointerdown', pauseAuto, true); } catch (e) {}
+    });
+    stage.appendChild(p);
+    panes[key] = { el: p, frame: f, hash: '' };
+  });
+
+  var idx = 0, timer = null, playing = false, DURATION = 11000, started = 0, raf = null;
+
+  function layout() {
+    var sw = stage.clientWidth, sh = stage.clientHeight, gap = 14;
+    var step = STEPS[idx];
+    var narrow = sw < 900;
+    ORDER.forEach(function (key) {
+      var p = panes[key].el, s, x, y;
+      if (!step.app) {                                   // overview: 2x2
+        s = Math.min((sw - gap * 4) / 3 / W, (sh - gap * 2) / H);
+        var i = ORDER.indexOf(key);
+        var gx = (sw - (3 * W * s + gap * 2)) / 2, gy = (sh - H * s) / 2;
+        x = gx + i * (W * s + gap); y = gy;
+        p.classList.remove('dim', 'active');
+      } else if (key === step.app) {                     // focused: big
+        var availW = narrow ? sw - gap * 2 : sw * 0.77;
+        s = Math.min(availW / W, (sh - gap * 2) / H);
+        x = narrow ? (sw - W * s) / 2 : gap; y = (sh - H * s) / 2;
+        p.classList.add('active'); p.classList.remove('dim');
+      } else {                                           // others: thumbnails on the right
+        var others = ORDER.filter(function (k) { return k !== step.app; });
+        var j = others.indexOf(key);
+        var colW = sw * 0.77 + gap * 2;
+        s = Math.min((sw - colW - gap) / W, (sh - gap * 3) / 2 / H);
+        x = colW; y = gap + j * (H * s + gap);
+        if (narrow) { s = 0.0001; x = 0; y = 0; p.style.visibility = 'hidden'; } else { p.style.visibility = 'visible'; }
+        p.classList.add('dim'); p.classList.remove('active');
+      }
+      if (!narrow || !step.app || key === step.app) p.style.visibility = 'visible';
+      p.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+      p.style.zIndex = key === step.app ? 5 : 1;
+    });
+    document.body.classList.toggle('overview', !step.app);
+  }
+
+  function openScreen(key, hash) {
+    if (hash === undefined || hash === null) return;
+    var pane = panes[key];
+    if (pane.hash === hash && pane.opened) return;
+    pane.hash = hash; pane.opened = true;
+    // A changed query string forces a real reload, so the app re-reads its start route from the fragment.
+    pane.frame.src = APPS[key].base + '?r=' + Date.now() + hash;
+  }
+
+  function render() {
+    var s = STEPS[idx];
+    document.getElementById('stepNo').textContent = idx === 0 || idx === STEPS.length - 1 ? 'OVERVIEW' : 'STEP ' + idx + ' OF ' + (STEPS.length - 2);
+    document.getElementById('capTitle').textContent = s.title;
+    document.getElementById('capText').textContent = s.text;
+    document.getElementById('capDo').textContent = s.doText ? '👉 ' + s.doText : '';
+    Array.prototype.forEach.call(document.querySelectorAll('.dot'), function (d, i) {
+      d.className = 'dot' + (i === idx ? ' on' : (i < idx ? ' done' : ''));
+    });
+    if (s.app) openScreen(s.app, s.hash);
+    layout();
+    history.replaceState(null, '', '#step' + idx);
+  }
+
+  function go(i) {
+    idx = Math.max(0, Math.min(STEPS.length - 1, i));
+    render();
+    if (playing) schedule();
+  }
+  function goApp(key) {                                   // click a thumbnail/pane: focus that app
+    var i = STEPS.findIndex(function (s) { return s.app === key; });
+    pauseAuto();
+    if (i >= 0) go(i);
+  }
+
+  function schedule() {
+    clearTimeout(timer); cancelAnimationFrame(raf);
+    started = Date.now();
+    (function tick() {
+      var pct = Math.min(1, (Date.now() - started) / DURATION);
+      document.getElementById('bar').style.width = (pct * 100) + '%';
+      if (playing && pct < 1) raf = requestAnimationFrame(tick);
+    })();
+    timer = setTimeout(function () {
+      if (idx >= STEPS.length - 1) { pauseAuto(); return; }
+      go(idx + 1);
+    }, DURATION);
+  }
+  function startAuto() { playing = true; document.getElementById('play').textContent = '⏸ Pause'; if (idx >= STEPS.length - 1) idx = 0; render(); schedule(); }
+  function pauseAuto() { if (!playing) return; playing = false; clearTimeout(timer); cancelAnimationFrame(raf); document.getElementById('play').textContent = '▶ Resume demo'; }
+
+  var dots = document.getElementById('dots');
+  STEPS.forEach(function (s, i) {
+    var d = document.createElement('button'); d.className = 'dot'; d.title = s.title;
+    d.addEventListener('click', function () { pauseAuto(); go(i); });
+    dots.appendChild(d);
+  });
+  document.getElementById('play').addEventListener('click', function () { playing ? pauseAuto() : startAuto(); });
+  document.getElementById('next').addEventListener('click', function () { pauseAuto(); go(idx + 1); });
+  document.getElementById('prev').addEventListener('click', function () { pauseAuto(); go(idx - 1); });
+  document.getElementById('ov').addEventListener('click', function () { pauseAuto(); go(0); });
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { pauseAuto(); go(idx + 1); }
+    else if (e.key === 'ArrowLeft') { pauseAuto(); go(idx - 1); }
+    else if (e.key === ' ') { e.preventDefault(); playing ? pauseAuto() : startAuto(); }
+    else if (e.key === 'o' || e.key === 'O') { pauseAuto(); go(0); }
+  });
+  window.addEventListener('resize', layout);
+
+  function fromHash() { var m = /#step(\d+)/.exec(location.hash); if (m) { idx = Math.min(STEPS.length - 1, +m[1]); render(); } }
+  window.addEventListener('hashchange', fromHash);
+  fromHash(); render();
+})();
+</script>
+</body>
+</html>

@@ -5,113 +5,6 @@
   },
   "hosting": [
     {
-      "target": "console",
-      "public": "apps/console/build/web",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "headers": [
-        {
-          "source": "**",
-          "headers": [
-            {
-              "key": "X-Content-Type-Options",
-              "value": "nosniff"
-            },
-            {
-              "key": "X-Frame-Options",
-              "value": "SAMEORIGIN"
-            },
-            {
-              "key": "Referrer-Policy",
-              "value": "strict-origin-when-cross-origin"
-            },
-            {
-              "key": "Permissions-Policy",
-              "value": "microphone=(self), camera=(self), geolocation=(self)"
-            }
-          ]
-        },
-        {
-          "source": "/@(index.html|flutter_bootstrap.js|flutter_service_worker.js|manifest.json|version.json)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "no-cache, no-store, must-revalidate"
-            }
-          ]
-        },
-        {
-          "source": "**/*.@(js|wasm|css|ttf|otf|woff|woff2|png|jpg|jpeg|svg|webp|ico)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31536000, immutable"
-            }
-          ]
-        }
-      ],
-      "rewrites": [
-        {
-          "source": "/v1/**",
-          "run": {
-            "serviceId": "kw-api",
-            "region": "asia-south1"
-          }
-        },
-        {
-          "source": "/healthz",
-          "run": {
-            "serviceId": "kw-api",
-            "region": "asia-south1"
-          }
-        },
-        {
-          "source": "/readyz",
-          "run": {
-            "serviceId": "kw-api",
-            "region": "asia-south1"
-          }
-        },
-        {
-          "source": "/openapi.json",
-          "run": {
-            "serviceId": "kw-api",
-            "region": "asia-south1"
-          }
-        },
-        {
-          "source": "/mcp{,/**}",
-          "run": {
-            "serviceId": "kw-api",
-            "region": "asia-south1"
-          }
-        },
-        {
-          "source": "/app/household/**",
-          "destination": "/app/household/index.html"
-        },
-        {
-          "source": "/app/console/**",
-          "destination": "/app/console/index.html"
-        },
-        {
-          "source": "/app/field/**",
-          "destination": "/app/field/index.html"
-        },
-        {
-          "source": "/app/brand/**",
-          "destination": "/app/brand/index.html"
-        },
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
-    {
       "target": "field",
       "public": "apps/field/build/web",
       "ignore": [
@@ -373,6 +266,140 @@
             "serviceId": "kw-api",
             "region": "asia-south1"
           }
+        },
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "hub",
+      "public": "apps/hub/public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin"
+            },
+            {
+              "key": "Permissions-Policy",
+              "value": "microphone=(self), camera=(self), geolocation=(self)"
+            }
+          ]
+        },
+        {
+          "source": "/",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/@(index.html|flutter_bootstrap.js|flutter_service_worker.js|manifest.json|version.json)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(ttf|otf|woff|woff2|png|jpg|jpeg|svg|webp|ico)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000, immutable"
+            }
+          ]
+        },
+        {
+          "source": "/flutter_service_worker.js",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(js|mjs|wasm|json|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "/v1/**",
+          "run": {
+            "serviceId": "kw-api",
+            "region": "asia-south1"
+          }
+        },
+        {
+          "source": "/healthz",
+          "run": {
+            "serviceId": "kw-api",
+            "region": "asia-south1"
+          }
+        },
+        {
+          "source": "/readyz",
+          "run": {
+            "serviceId": "kw-api",
+            "region": "asia-south1"
+          }
+        },
+        {
+          "source": "/openapi.json",
+          "run": {
+            "serviceId": "kw-api",
+            "region": "asia-south1"
+          }
+        },
+        {
+          "source": "/mcp{,/**}",
+          "run": {
+            "serviceId": "kw-api",
+            "region": "asia-south1"
+          }
+        },
+        {
+          "source": "/app/household/**",
+          "destination": "/app/household/index.html"
+        },
+        {
+          "source": "/app/console/**",
+          "destination": "/app/console/index.html"
+        },
+        {
+          "source": "/app/field/**",
+          "destination": "/app/field/index.html"
+        },
+        {
+          "source": "/app/brand/**",
+          "destination": "/app/brand/index.html"
         },
         {
           "source": "**",

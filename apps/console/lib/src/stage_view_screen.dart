@@ -597,7 +597,7 @@ class _StageViewScreenState extends State<StageViewScreen> {
                   title:
                       'Nothing happening — start a C03 Stage Demo or Test Call',
                   body:
-                      'Connects live to ${ctrl.config.liveWsUrl} and animates transcript, consent gates, self-fix, diagnosis re-run, and 6-factor scoring.',
+                      'Watch the agent work a live case: transcript, consent questions, safe fix, diagnosis re-run and technician scoring.',
                   action: FilledButton.icon(
                     onPressed: _playC03StageCall,
                     icon: const Icon(Icons.play_arrow_rounded),

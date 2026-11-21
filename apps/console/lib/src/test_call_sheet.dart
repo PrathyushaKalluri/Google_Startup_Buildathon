@@ -308,7 +308,7 @@ class _TestCallSheetState extends State<TestCallSheet> {
                         ? 'Listening for live captions…'
                         : 'Place a live test call',
                     body:
-                        'Connects to ${widget.controller.config.liveWsUrl} for real-time voice/video triage.',
+                        'Real-time voice and video triage with the agent.',
                   )
                 : ListView.separated(
                     itemCount: _captions.length,

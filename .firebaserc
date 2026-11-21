@@ -5,9 +5,6 @@
   "targets": {
     "gen-lang-client-0527907563": {
       "hosting": {
-        "console": [
-          "kw-console-0527"
-        ],
         "field": [
           "kw-field-0527"
         ],
@@ -16,6 +13,9 @@
         ],
         "brand": [
           "kw-brand-0527"
+        ],
+        "hub": [
+          "kw-console-0527"
         ]
       }
     }
