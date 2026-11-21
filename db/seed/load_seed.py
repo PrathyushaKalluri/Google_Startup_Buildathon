@@ -53,6 +53,7 @@ def load_seed_postgres(admin_dsn: Optional[str] = None) -> Dict[str, int]:
             cur.execute(schema_sql)
             # Ensure kw_app is a non-superuser login role with NO RLS bypass
             cur.execute("ALTER ROLE kw_app WITH LOGIN PASSWORD 'kw_app_dev' NOSUPERUSER NOBYPASSRLS;")
+            cur.execute("GRANT kw_app TO CURRENT_USER;")
             cur.execute("SET search_path = kw, public;")
 
             for entry in manifest:

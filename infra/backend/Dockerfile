@@ -42,7 +42,7 @@ COPY --from=builder /opt/venv /opt/venv
 COPY services ./services
 COPY db ./db
 COPY kb ./kb
-COPY input/dataset ./input/dataset
+COPY input ./input
 
 RUN chown -R kwuser:kwuser /app
 

@@ -16,6 +16,33 @@ CONSOLE_FW = {"Authorization": "Bearer demo:console.c_fw@keepwell.demo"}
 
 def run_smoke() -> int:
     base_url = os.getenv("KW_SMOKE_URL", "").rstrip("/")
+    if base_url:
+        import httpx
+
+        with httpx.Client(base_url=base_url, timeout=45.0) as hc:
+            assert hc.get("/healthz").status_code == 200
+            assert hc.get("/readyz").status_code == 200
+            print(f"SMOKE 1/7 PASS (REMOTE {base_url}): /healthz and /readyz")
+            assert hc.get("/v1/tickets").status_code == 401
+            assert hc.get("/v1/tickets", headers=CONSOLE_FW).status_code == 200
+            print("SMOKE 2/7 PASS (REMOTE): Auth enforcement")
+            rep = hc.post("/v1/admin/demo/replay-call", headers=PLATFORM)
+            assert rep.status_code == 200 and len(rep.json().get("events", [])) >= 15
+            print(f"SMOKE 3/7 PASS (REMOTE): C03 replay ({len(rep.json()['events'])} events)")
+            m = hc.post("/v1/admin/demo/play-case", headers=PLATFORM, json={"case_id": "C09"}).json()
+            assert m["ticket_id"]
+            print(f"SMOKE 4/7 PASS (REMOTE): Message case C09 -> ticket {m['ticket_id']}")
+            b = hc.post("/v1/admin/demo/play-case", headers=PLATFORM, json={"case_id": "C18"}).json()
+            assert b["status"] == "declined" and b["declined_reason"]
+            print("SMOKE 5/7 PASS (REMOTE): Brand authority decline C18")
+            reb = hc.post("/v1/admin/projection/rebuild", headers=PLATFORM)
+            assert reb.status_code == 200 and reb.json()["counts"]["tickets"] > 0
+            print("SMOKE 6/7 PASS (REMOTE): Projection rebuild")
+            ov = hc.get("/v1/centre/overview", headers=CONSOLE_FW)
+            assert ov.status_code == 200 and "fvr_14d" in ov.json()
+            print(f"SMOKE 7/7 PASS (REMOTE): Dashboard overview (fvr_14d={ov.json()['fvr_14d']}) [target={base_url}]")
+            return 0
+
     client = TestClient(app)
 
     # 1. Health & Ready

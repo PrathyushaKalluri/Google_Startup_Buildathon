@@ -1,23 +1,24 @@
 {
   "projects": {
-    "default": "keepwell-demo-placeholder"
+    "default": "gen-lang-client-0527907563"
   },
   "targets": {
-    "keepwell-demo-placeholder": {
+    "gen-lang-client-0527907563": {
       "hosting": {
         "console": [
-          "keepwell-console"
+          "kw-console-0527"
         ],
         "field": [
-          "keepwell-field"
+          "kw-field-0527"
         ],
         "household": [
-          "keepwell-household"
+          "kw-household-0527"
         ],
         "brand": [
-          "keepwell-brand"
+          "kw-brand-0527"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

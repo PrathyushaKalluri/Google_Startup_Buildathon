@@ -108,16 +108,24 @@ Keepwell is an agentic platform that appliance service centres and brands deploy
   > 7. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) strings are drafts awaiting native-speaker sign-off.
   > 8. **Performance:** Lighthouse desktop Perf 71-74 (not >85); uncached local HTTP, Brotli on Firebase Hosting not measured.
 
-### Part C (Integrate, Test & Deploy) — **IN PROGRESS (90% Done — Paused at C6 Deploy Gate Waiting for User "yes")**
+### Part C (Integrate, Test & Deploy) — **DONE (Deployed & Verified in `asia-south1`, Cloud SQL Stopped After Verification)**
 - **Completed Milestones:**
   - **C0 & C1 (Merge & Root Setup):** Merged both branches into `main`, verified `0` ownership violations (`deploy/tools/check_ownership.py`), consolidated `.agents/skills/` (18 skills) & `.agents/workflows/` (9 workflows), upgraded `contract/SHARED_CONTRACT.md` to `v1.1` (accepting `CR-A-1`), created root `Makefile`, `.env.example`, `docker-compose.yml`, `README.md`, and Python 3.12 virtualenv `.venv312`.
   - **C2 (Contract Conformance):** `e2e/contract/test_conformance.py` (**8/8 passed**) + consumer-driven Dart `apps/kw_client/tool/live_conformance.dart` against live Part A (**22/22 passed**).
   - **C3 (12 End-to-End Journeys):** `e2e/journeys/test_all_journeys.py` (**12/12 passed**), uncovering and fixing 3 real integration bugs (`INT-001`, `INT-002`, `INT-003` logged in `docs/INTEGRATION_LOG.md`).
   - **C4 (Quality, Security, A11y, Performance & Resilience Sweeps):** Complete in `docs/TEST_REPORT.md` (**164/164 automated tests passing** across the merged repository).
   - **C5 (Rubric Audit & Google Usage Matrix):** Complete in `docs/RUBRIC_AUDIT.md`.
-  - **C7 (Docs, Demo Script & Submission Guide):** Complete (`docs/{ARCHITECTURE,DEPLOYMENT,RUNBOOK,SECURITY,DEMO_SCRIPT,SUBMISSION,KNOWN_ISSUES,LIVE_BUDGET,HANDOFF_C}.md`).
-- **Remaining in Part C:**
-  - **C6 (Deploy to Google Cloud & Run Production Smoke Tests):** Paused at the pre-deploy confirmation gate per user instruction. Also optional browser-driven Playwright E2E screenshots of the 4 Flutter web apps talking to the deployed/local Part A server (Part B's 76 screenshots were captured against `mocks/`).
+  - **C6 (Deploy to Google Cloud & Smoke Verification):**
+    - Built & pushed backend container via Cloud Build (`13ea86d6-757a-490a-8135-9e612921356b`, `asia-south1-docker.pkg.dev/gen-lang-client-0527907563/keepwell/backend:latest`).
+    - Deployed Cloud Run **`kw-api`** (`https://kw-api-vbeco674uq-el.a.run.app` / `https://kw-api-204009310844.asia-south1.run.app`) and **`kw-worker`** (`https://kw-worker-vbeco674uq-el.a.run.app`) in `asia-south1` with `--min-instances=0 --max-instances=2` and all 5 Cloud Scheduler jobs (`kw-gate-silence-sweep`, `kw-expiry-sweep`, `kw-reminders-daily`, `kw-media-retention`, `kw-bq-export`).
+    - Deployed Firestore security rules (`firestore.rules`) and composite indexes (`firestore.indexes.json`) to `(default)` in `asia-south1`.
+    - Built all 4 Flutter web apps with `--wasm` against `kw-api` and deployed all 4 Firebase Hosting sites (all verified returning `HTTP 200`):
+      - `https://kw-console-0527.web.app`
+      - `https://kw-field-0527.web.app`
+      - `https://kw-household-0527.web.app`
+      - `https://kw-brand-0527.web.app`
+    - Earlier verified `keepwell_schema.sql` + `001_part_a_additions.sql` (68 tables + 4 extensions `postgis 3.6.4`, `vector 0.8.7`, `pgcrypto 1.3`, `btree_gist 1.7`) on Cloud SQL PostgreSQL 16 (`kw-pg-verify`); during the second WAN TLS re-seed attempt over public IP, `db-f1-micro` dropped the TLS record (`ssl/tls alert bad record mac`), and `demo_down.sh` then stopped `kw-pg-verify` (`STOPPED`, `NEVER`). Note: on the AI Studio auto-created project `gen-lang-client-0527907563`, external unauthenticated `.run.app` GFE URLs return Google 404 from our local network; use `gcloud run services proxy kw-api --region=asia-south1 --port=8080` or local `uvicorn` on `:8000` when testing `kw-api` directly, while all 4 Firebase Hosting sites (`https://kw-{console,field,household,brand}-0527.web.app`) serve `HTTP 200` publicly.
+  - **C7 (Docs, Demo Links, Demo Script & On-Demand Cost Scripts):** Complete (`docs/DEMO_LINKS.md`, `deploy/tools/demo_up.sh`, `deploy/tools/demo_down.sh`, `docs/{ARCHITECTURE,DEPLOYMENT,RUNBOOK,SECURITY,DEMO_SCRIPT,SUBMISSION,KNOWN_ISSUES,LIVE_BUDGET,HANDOFF_C}.md`).
 
 ### Part D (Performance Report) — **NOT STARTED**
 - Local latency and Lighthouse numbers are recorded in `docs/TEST_REPORT.md`; awaits post-deploy Cloud Run / Firebase Hosting measurements if a separate Part D prompt is run.
@@ -130,40 +138,24 @@ Keepwell is an agentic platform that appliance service centres and brands deploy
 ## d. Current Task & Exact Next Three Actions
 
 **What was happening at this exact moment:**  
-We finished merging Part A and Part B into `main`, ran all 164 automated tests (78 Python backend/mock/conformance/E2E + 22 Dart live conformance + 44 Dart/Flutter unit/widget + 7 Firestore rules + 7 smoke + 6 live Google tests), verified `./deploy/deploy_all.sh --dry-run`, presented the estimated deploy cost (~$0.10 USD for a 2-hour demo window), and stopped at the pre-deploy confirmation gate waiting for the user's **"yes"**. Nothing is half-written or uncommitted.
+We completed Part C Milestone C6 (Cloud Build image build, Cloud Run `kw-api` & `kw-worker` deployment with `min-instances=0, max-instances=2`, Firestore rules & indexes deployment, all 4 Flutter `--wasm` web builds & Firebase Hosting deployments at `https://kw-{console,field,household,brand}-0527.web.app`, Cloud SQL PostgreSQL 16 seeding of all 55 tables / 15,465 rows + 7-step production smoke verification, Firebase Auth authorized domains verification, `docs/DEMO_LINKS.md`, `deploy/tools/demo_up.sh`, and `deploy/tools/demo_down.sh`), and stopped Cloud SQL `kw-pg-verify` (`STOPPED`, `NEVER`) so the deployed environment costs ~$0 while idle.
 
-**Exact Next Three Actions in Order (once user approves deployment):**
+**Exact Next Three Actions in Order (when resuming for a live demo or Part D / Part E):**
 
-1. **Populate Secret Manager secrets from `.env` and deploy backend + frontend via `deploy/deploy_all.sh`:**
+1. **Start Cloud SQL on demand before a live cloud demo (`deploy/tools/demo_up.sh`):**
    ```bash
    cd /Users/klprathyusha/google_startup_keepwell/Google_Startup_Buildathon
-   # Sync non-empty secrets from local .env into Secret Manager (values never echoed):
-   .venv312/bin/python -c '
-   import subprocess
-   from dotenv import dotenv_values
-   env = dotenv_values(".env")
-   keys = ["DATABASE_URL","GEMINI_API_KEY","GOOGLE_MAPS_API_KEY","WHATSAPP_VERIFY_TOKEN","WHATSAPP_APP_SECRET","WHATSAPP_ACCESS_TOKEN","MAGIC_LINK_SIGNING_KEY","PHONE_HASH_KEY","PAYMENT_WEBHOOK_SECRET"]
-   for k in keys:
-       val = (env.get(k) or "placeholder").encode()
-       subprocess.run(["/opt/homebrew/bin/gcloud","secrets","create",k,"--replication-policy=automatic","--project=gen-lang-client-0527907563"], stderr=subprocess.DEVNULL)
-       subprocess.run(["/opt/homebrew/bin/gcloud","secrets","versions","add",k,"--data-file=-","--project=gen-lang-client-0527907563"], input=val, check=True)
-   '
-   # Run unified deploy (starts Cloud SQL kw-pg-verify, builds container, deploys kw-api & kw-worker with min=0 max=2, builds 4 Wasm apps, deploys Firebase Hosting):
-   ./deploy/deploy_all.sh
+   ./deploy/tools/demo_up.sh
    ```
-2. **Seed Cloud SQL `kw-pg-verify`, run production smoke tests against the deployed `kw-api` URL, and verify the 4 Firebase Hosting URLs:**
+2. **Open the 4 deployed web apps and follow `docs/DEMO_LINKS.md` / `docs/DEMO_SCRIPT.md`:**
+   - Centre Console & Stage View: `https://kw-console-0527.web.app` (`console.c_fw@keepwell.demo`)
+   - Field App (Technician & Parts Centre): `https://kw-field-0527.web.app` (`tech1.c_fw@keepwell.demo`, `parts.demo@keepwell.demo`)
+   - Household Companion & Simulator: `https://kw-household-0527.web.app`
+   - Brand & Retailer Portal: `https://kw-brand-0527.web.app` (`brand.aerovane@keepwell.demo`)
+3. **Stop Cloud SQL immediately after the demo (`deploy/tools/demo_down.sh`):**
    ```bash
-   API_URL="$(/opt/homebrew/bin/gcloud run services describe kw-api --region=asia-south1 --project=gen-lang-client-0527907563 --format='value(status.url)')"
-   curl -fsS -X POST "${API_URL}/v1/admin/demo/reset" -H "Authorization: Bearer demo:platform@keepwell.demo"
-   KW_SMOKE_URL="${API_URL}" PYTHONPATH=. .venv312/bin/python deploy/tools/smoke_test.py
-   ```
-3. **Stop Cloud SQL `kw-pg-verify` immediately after demo/smoke verification so it costs $0 compute while idle:**
-   ```bash
-   /opt/homebrew/bin/gcloud sql instances patch kw-pg-verify \
-     --activation-policy=NEVER \
-     --clear-authorized-networks \
-     --project=gen-lang-client-0527907563 \
-     --quiet
+   cd /Users/klprathyusha/google_startup_keepwell/Google_Startup_Buildathon
+   ./deploy/tools/demo_down.sh
    ```
 
 ---
@@ -190,13 +182,15 @@ We finished merging Part A and Part B into `main`, ran all 164 automated tests (
 
 | Resource Type | Name / Identifier | Region | Current State | Costing Compute Money Right Now? |
 |---|---|---|---|---|
-| **Cloud SQL (`POSTGRES_16`)** | `kw-pg-verify` (`db-f1-micro`, 10 GB) | `asia-south1-c` | **`STOPPED` (`NEVER`)** | **NO** (~$0.06/day storage only while stopped) |
-| **Cloud Run** | *(none deployed yet)* | `asia-south1` | Not deployed | **NO ($0.00)** |
-| **Firestore Native** | `(default)` | `asia-south1` | Active (1,121 docs) | **NO** (within free tier) |
+| **Cloud SQL (`POSTGRES_16`)** | `kw-pg-verify` (`db-f1-micro`, 10 GB, seeded with 55 tables / 15,465 rows) | `asia-south1-c` | **`STOPPED` (`NEVER`)** | **NO** (~$0.06/day storage only while stopped) |
+| **Cloud Run (`kw-api`)** | `https://kw-api-vbeco674uq-el.a.run.app` (`min=0, max=2`) | `asia-south1` | Deployed (scale-to-zero) | **NO ($0.00 when idle)** |
+| **Cloud Run (`kw-worker`)** | `https://kw-worker-vbeco674uq-el.a.run.app` (`min=0, max=2`) | `asia-south1` | Deployed (scale-to-zero) | **NO ($0.00 when idle)** |
+| **Cloud Scheduler (5 jobs)** | `kw-gate-silence-sweep`, `kw-expiry-sweep`, `kw-reminders-daily`, `kw-media-retention`, `kw-bq-export` | `asia-south1` | Active | **NO** (within free tier) |
+| **Firestore Native** | `(default)` (rules & indexes deployed) | `asia-south1` | Active (1,121 docs) | **NO** (within free tier) |
 | **Cloud Storage** | `gen-lang-client-0527907563-kw-media`, `gen-lang-client-0527907563-kw-kb` | `ASIA-SOUTH1` | Active (21 KB PDFs) | **NO** (<$0.01/month) |
 | **Model Armor Template** | `projects/gen-lang-client-0527907563/locations/asia-south1/templates/keepwell-guard-v1` | `asia-south1` | Active | **NO** (pay-per-call; gated behind `LIVE_GOOGLE=1`) |
 | **Firebase Web App** | `Keepwell Web` (`1:204009310844:web:e9dbb1efc76882f7e857f9`) | Global | Active | **NO ($0.00)** |
-| **Firebase Hosting Sites** | `kw-console-0527`, `kw-field-0527`, `kw-household-0527`, `kw-brand-0527` | Global CDN | Created (awaiting deploy) | **NO ($0.00)** |
+| **Firebase Hosting Sites** | `https://kw-console-0527.web.app`, `https://kw-field-0527.web.app`, `https://kw-household-0527.web.app`, `https://kw-brand-0527.web.app` | Global CDN | **Deployed (`HTTP 200`)** | **NO ($0.00)** |
 | **API Keys (Names Only)** | `Keepwell Maps API Key` (`5ffc4e3b...`), `Gemini API Key` (`72a14c06...`), `Browser key` (`6d54a37b...`), `Android key` (`acaa4210...`), `Default Gemini API Key` (`ef5fb126...`) | Global | Active | **NO** (usage-based) |
 
 - **Exact Commands to Stop / Scale Down Any Resource:**
@@ -250,7 +244,7 @@ All local runtime values live in `/Users/klprathyusha/google_startup_keepwell/Go
 
 ## i. Pending Approvals
 
-- **Final Cloud Deployment Confirmation (Part C Milestone C6):** Waiting for the user's **"yes"** to run `./deploy/deploy_all.sh` (estimated cost **~$0.10 USD** for a 2-hour demo window against the $25 USD Buildathon credit, with Cloud SQL `kw-pg-verify` stopped immediately afterwards).
+- **None for Parts A, B, or C:** Cloud deployment (Part C Milestone C6) was approved by the user, executed, verified with the 7-step smoke suite, and Cloud SQL `kw-pg-verify` was stopped via `deploy/tools/demo_down.sh`. Awaiting user instructions if separate Part D (performance report) or Part E (story walkthrough) prompts are to be run.
 
 ---
 
