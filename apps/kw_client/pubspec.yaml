@@ -1,0 +1,16 @@
+name: kw_client
+description: Keepwell pure-Dart API client, domain models, Live Call WebSocket client, auth helpers, and live feed repositories.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  http: ^1.2.2
+  web_socket_channel: ^3.0.1
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.25.0

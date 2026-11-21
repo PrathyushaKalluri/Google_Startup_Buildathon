@@ -1,0 +1,82 @@
+{
+  "dialer": {
+    "pcmChunksSentBinary": 31,
+    "chunkSizeBytesDistinct": [
+      1280
+    ],
+    "chunkMs": [
+      40
+    ],
+    "bridgeStats": {
+      "sentPcmChunks": 31,
+      "sentPcmBytes": 39680,
+      "playedPcmChunks": 10,
+      "playedPcmBytes": 28800,
+      "flushes": 22,
+      "sentVideoFrames": 0,
+      "lastVideoWidth": 0,
+      "lastVideoHeight": 0,
+      "lastVideoBytes": 0,
+      "muted": false,
+      "speakerOn": true,
+      "echoCancellation": true,
+      "noiseSuppression": true
+    },
+    "serverBinaryFramesReceived": 5,
+    "serverTextFramesReceived": 70
+  },
+  "mute": {
+    "clicked": true,
+    "chunksDuringMute": 0,
+    "chunksBefore": 31
+  },
+  "video": {
+    "hasVideoEl": true,
+    "videoWidth": 640,
+    "videoHeight": 480,
+    "hasSrcObject": true,
+    "stats": {
+      "sentPcmChunks": 31,
+      "sentPcmBytes": 39680,
+      "playedPcmChunks": 18,
+      "playedPcmBytes": 51840,
+      "flushes": 46,
+      "sentVideoFrames": 6,
+      "lastVideoWidth": 640,
+      "lastVideoHeight": 480,
+      "lastVideoBytes": 7230,
+      "muted": true,
+      "speakerOn": true,
+      "echoCancellation": true,
+      "noiseSuppression": true
+    },
+    "jpegFramesSent": 6,
+    "frames": [
+      {
+        "valid": true,
+        "bytes": 7631,
+        "height": 480,
+        "width": 640
+      },
+      {
+        "valid": true,
+        "bytes": 7681,
+        "height": 480,
+        "width": 640
+      },
+      {
+        "valid": true,
+        "bytes": 7228,
+        "height": 480,
+        "width": 640
+      },
+      {
+        "valid": true,
+        "bytes": 6188,
+        "height": 480,
+        "width": 640
+      }
+    ],
+    "maxLongEdge": 640
+  }
+}

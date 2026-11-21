@@ -1,0 +1,412 @@
+[
+  {
+    "id": "e738f7eb-ec31-552a-a10c-6059c79884b2",
+    "quote_id": "192af43c-699b-5547-9c07-ef5ce85037a4",
+    "amount_paise": 378000,
+    "status": "created",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Aerovane Authorised Service, Gachibowli",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "3780.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:10:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "07286d32-c2cf-5766-a420-59c89e1c9cc7",
+    "case_id": "C01"
+  },
+  {
+    "id": "612c1d2d-b520-5bed-9dde-3a313047b8c0",
+    "quote_id": "5f4d47ab-eafb-50f7-bf3b-3e7d0f15fb21",
+    "amount_paise": 378000,
+    "status": "pending",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=3780.00&cu=INR&tr=612c1d2d-b52",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:11:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "ee1869c6-359f-5ef2-877c-5a7d82dfb5bf",
+    "case_id": "C02"
+  },
+  {
+    "id": "22afdae2-b612-5dd2-a075-5cb8ca04f0de",
+    "quote_id": "45bc2d63-8c0c-52a4-b640-3239b0f90c85",
+    "amount_paise": 241000,
+    "status": "paid",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "AquaCare RO and Geyser Services, Manikonda",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "2410.00"
+      }
+    },
+    "payment_ref": "PAYREF-C04-9921",
+    "created_at": "2026-11-21T08:12:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": "2026-11-21T08:12:00+05:30",
+    "ticket_id": "96490f68-6c14-5eb6-bd74-87ab441f57b4",
+    "case_id": "C04"
+  },
+  {
+    "id": "63eb2e69-7dab-5186-a19d-d237b0c51157",
+    "quote_id": "97f21711-5d22-5b2e-bbed-8be919a2c8ad",
+    "amount_paise": 178000,
+    "status": "failed",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=1780.00&cu=INR&tr=63eb2e69-7da",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:13:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "0ac562aa-4eb5-5678-9232-90ca069cb4fd",
+    "case_id": "C06"
+  },
+  {
+    "id": "44c178b4-e86c-51cb-89b8-f8c460833df4",
+    "quote_id": "858bc6d1-297c-5c26-abd5-37a2c4a4d16c",
+    "amount_paise": 118500,
+    "status": "expired",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Cool Craft Appliance Services, Madhapur",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "1185.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:14:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "2133e93c-8708-5e4a-b58a-ce8906c8cb61",
+    "case_id": "C08"
+  },
+  {
+    "id": "114cc34e-087f-5a73-845f-746e2308ec84",
+    "quote_id": "507d306f-d147-5e7a-adcb-e5a441550997",
+    "amount_paise": 241000,
+    "status": "created",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=2410.00&cu=INR&tr=114cc34e-087",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:15:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "52b6c3a2-ad9a-5002-a8da-54509e0f4c2b",
+    "case_id": "C09"
+  },
+  {
+    "id": "3f13f586-4ff0-5c83-bf00-c837cfdbd0b5",
+    "quote_id": "64089798-0935-55b7-b731-435b8e65a034",
+    "amount_paise": 140000,
+    "status": "pending",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Frost and Wave Service Point, Kukatpally",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "1400.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:16:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "cf02032f-1b39-57d1-851a-c5bb6ea8a4f3",
+    "case_id": "C10"
+  },
+  {
+    "id": "9d546609-0f33-515c-9701-c4b819774cdc",
+    "quote_id": "957fb9bb-d6d2-5ce3-8c67-324fb29347bd",
+    "amount_paise": 364000,
+    "status": "paid",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=3640.00&cu=INR&tr=9d546609-0f3",
+    "google_pay": null,
+    "payment_ref": "PAYREF-C13-9921",
+    "created_at": "2026-11-21T08:17:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": "2026-11-21T08:17:00+05:30",
+    "ticket_id": "7c08afa9-3ceb-577e-ab41-5bb270dcd2d5",
+    "case_id": "C13"
+  },
+  {
+    "id": "2b665644-58a6-5a89-8b34-d5809a8c25a9",
+    "quote_id": "f3771be0-8b2f-5996-bccf-eac336d3daa8",
+    "amount_paise": 118500,
+    "status": "failed",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Cool Craft Appliance Services, Madhapur",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "1185.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:18:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "1748ba54-35e4-5f1e-8e9c-742479738efa",
+    "case_id": "C14"
+  },
+  {
+    "id": "a091efcd-b7d1-5f51-8492-7bdf51d7924f",
+    "quote_id": "3d9f9258-0f7b-5cc0-bcd2-fa0887e973b4",
+    "amount_paise": 223500,
+    "status": "expired",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=2235.00&cu=INR&tr=a091efcd-b7d",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:19:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "b56c5782-5f14-5ae9-bb50-a99f5850d12e",
+    "case_id": "C03"
+  },
+  {
+    "id": "33290180-4129-5a39-9723-93d18d7cb87f",
+    "quote_id": "bb4923a9-66ca-5cad-86bb-741e46bdde30",
+    "amount_paise": 179500,
+    "status": "created",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Heatwell Authorised Service, Banjara Hills",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "1795.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:20:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "4e27f9c1-3f53-50af-9d75-70982fd58f13",
+    "case_id": "C05"
+  },
+  {
+    "id": "008a147f-698e-5d72-bd27-ca3f52627919",
+    "quote_id": "68bc17cf-fddf-5aad-824b-5a6ebdaff287",
+    "amount_paise": 378000,
+    "status": "pending",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=3780.00&cu=INR&tr=008a147f-698",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:21:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "12b19a2c-8f74-5431-93e6-adca1db4a482",
+    "case_id": "C11"
+  },
+  {
+    "id": "6e9fc586-39c3-559b-b648-7df338d31a24",
+    "quote_id": "4e922e16-2287-5abb-ba0a-1fd6706bc52d",
+    "amount_paise": 220000,
+    "status": "paid",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Lakeshore Service Centre, Jubilee Hills",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "2200.00"
+      }
+    },
+    "payment_ref": "PAYREF-C12-9921",
+    "created_at": "2026-11-21T08:22:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": "2026-11-21T08:22:00+05:30",
+    "ticket_id": "adf67cc5-9310-5ed5-b894-3c976c6f533d",
+    "case_id": "C12"
+  },
+  {
+    "id": "099dbe2b-fdbd-53ea-a582-09da078f33e6",
+    "quote_id": "b06aa3c4-5baa-590c-9aed-ccb791e99464",
+    "amount_paise": 143000,
+    "status": "failed",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=1430.00&cu=INR&tr=099dbe2b-fdb",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:23:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "b524b46f-a629-56ea-8921-77b35d1569de",
+    "case_id": "C15"
+  },
+  {
+    "id": "1abbb8e3-a051-5528-a733-ac7b255e561f",
+    "quote_id": "56ecf60f-a495-55f1-a83d-5dc311b3027d",
+    "amount_paise": 118500,
+    "status": "expired",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Aerovane Authorised Service, Gachibowli",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "1185.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:24:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "610f4ad5-7f40-5fed-929e-7b807eb33dc8",
+    "case_id": "C16"
+  },
+  {
+    "id": "792fb5bb-b9bb-5d20-ba42-8943444e179b",
+    "quote_id": "95c84244-da0c-5f63-9036-a1db3886dec6",
+    "amount_paise": 171000,
+    "status": "created",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=1710.00&cu=INR&tr=792fb5bb-b9b",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:25:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "bb541a9c-50fc-518c-a0b4-9687346355bc",
+    "case_id": "C17"
+  },
+  {
+    "id": "fea116c4-7cdc-5bda-accc-2d9e50b276d1",
+    "quote_id": "7d7e494c-e4c6-575f-af2d-f1ab00846b6c",
+    "amount_paise": 394000,
+    "status": "pending",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "Cool Craft Appliance Services, Madhapur",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "3940.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:26:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "c461b214-baf3-5df8-b5b7-b4d089ea6f36",
+    "case_id": "C18"
+  },
+  {
+    "id": "218252b1-6955-54ab-9cc1-e475bf8541f2",
+    "quote_id": "973e1654-a605-53a2-abbf-875350efed6b",
+    "amount_paise": 179500,
+    "status": "paid",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=1795.00&cu=INR&tr=218252b1-695",
+    "google_pay": null,
+    "payment_ref": "PAYREF-C19-9921",
+    "created_at": "2026-11-21T08:27:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": "2026-11-21T08:27:00+05:30",
+    "ticket_id": "4e624da0-7197-5b3d-bdf6-5fc65583910b",
+    "case_id": "C19"
+  },
+  {
+    "id": "efb80ba8-e8d6-577c-b853-d69b4e06a6ed",
+    "quote_id": "a1b18a7a-1fbe-52fb-a0ad-deeb6ba4f795",
+    "amount_paise": 178000,
+    "status": "failed",
+    "method": "google_pay",
+    "upi_intent_url": null,
+    "google_pay": {
+      "environment": "TEST",
+      "merchant_name": "InstallPro Mounting Services, Tolichowki",
+      "merchant_id": "BCR2DN4TKEEPWELL",
+      "gateway": "example",
+      "gateway_merchant_id": "exampleGatewayMerchantId",
+      "transaction_info": {
+        "currency_code": "INR",
+        "total_price_status": "FINAL",
+        "total_price": "1780.00"
+      }
+    },
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:28:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "a862260e-bbf7-5f98-a692-1d7a946f91bf",
+    "case_id": "C07"
+  },
+  {
+    "id": "a30c3804-0fb5-5e47-aa2b-ee789e836df4",
+    "quote_id": "9757d44a-a303-5985-8580-aeb15e67f5a4",
+    "amount_paise": 223500,
+    "status": "expired",
+    "method": "upi_intent",
+    "upi_intent_url": "upi://pay?pa=keepwell@okaxis&pn=Keepwell&am=2235.00&cu=INR&tr=a30c3804-0fb",
+    "google_pay": null,
+    "payment_ref": null,
+    "created_at": "2026-11-21T08:29:00+05:30",
+    "expires_at": "2026-11-21T23:59:59+05:30",
+    "paid_at": null,
+    "ticket_id": "8ce760de-8c7b-52a5-bd03-f3c064271f04",
+    "case_id": "C20"
+  }
+]

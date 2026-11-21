@@ -1,0 +1,11 @@
+{
+  "name": "Keepwell Field",
+  "short_name": "Keepwell Field",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0B57D0",
+  "description": "Keepwell Field — Technician and Parts Centre operations shell.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}

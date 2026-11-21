@@ -1,0 +1,14 @@
+name: keepwell_apps_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - kw_ui
+  - kw_ui/example
+  - kw_client
+  - console
+  - field
+  - household
+  - brand

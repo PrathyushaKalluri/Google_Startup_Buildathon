@@ -1,0 +1,841 @@
+[
+  {
+    "case_id": "C01",
+    "ticket_id": "07286d32-c2cf-5766-a420-59c89e1c9cc7",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_av",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_name": "Aerovane Authorised Service, Gachibowli",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "హలో, నేను రమేష్ బాబు, కొండాపూర్ ఆర్కిడ్ మెడోస్ నుంచి మాట్లాడుతున్నాను. మా బెడ్రూమ్ ఏసీ నుంచి నీళ్లు కారుతున్నాయి. నిన్న ",
+    "inbox_event": {
+      "case_id": "C01",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 58169 70581",
+      "sender_profile_name": "Ramesh Babu",
+      "to_number": "+91 56224 37552",
+      "messages": [
+        {
+          "id": "evt.14003475414530",
+          "timestamp": "1795224146",
+          "timestamp_iso": "2026-11-21T06:52:26+05:30",
+          "type": "audio",
+          "audio": {
+            "file": "C01/01_voice.ogg",
+            "mime_type": "audio/ogg; codecs=opus",
+            "voice": true,
+            "duration_s": 14.6
+          }
+        },
+        {
+          "id": "evt.82555676714578",
+          "timestamp": "1795224257",
+          "timestamp_iso": "2026-11-21T06:54:17+05:30",
+          "type": "image",
+          "image": {
+            "file": "C01/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "ila undi"
+          }
+        },
+        {
+          "id": "evt.15825565120159",
+          "timestamp": "1795224337",
+          "timestamp_iso": "2026-11-21T06:55:37+05:30",
+          "type": "image",
+          "image": {
+            "file": "C01/03_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C02",
+    "ticket_id": "ee1869c6-359f-5ef2-877c-5a7d82dfb5bf",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_av",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_name": "Aerovane Authorised Service, Gachibowli",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "hi, AC cooling nahi kar raha properly since 4-5 days. Pehle weak tha ab almost nothing. pipe pe ice bhi dikh raha hai. d",
+    "inbox_event": {
+      "case_id": "C02",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 50596 13788",
+      "sender_profile_name": "Priyanka Menon",
+      "to_number": "+91 56224 37552",
+      "messages": [
+        {
+          "id": "evt.56688543347362",
+          "timestamp": "1795225209",
+          "timestamp_iso": "2026-11-21T07:10:09+05:30",
+          "type": "text",
+          "text": {
+            "body": "hi, AC cooling nahi kar raha properly since 4-5 days. Pehle weak tha ab almost nothing. pipe pe ice bhi dikh raha hai. display pe error aa raha hai see photo"
+          }
+        },
+        {
+          "id": "evt.54612511376219",
+          "timestamp": "1795225306",
+          "timestamp_iso": "2026-11-21T07:11:46+05:30",
+          "type": "image",
+          "image": {
+            "file": "C02/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "E6 aa raha hai"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C04",
+    "ticket_id": "96490f68-6c14-5eb6-bd74-87ab441f57b4",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_aq",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_name": "AquaCare RO and Geyser Services, Manikonda",
+    "urgency_class": "planned",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "RO water chala uppaga untondi andi, taste kuda maarindi. TDS meter lo 612 vastondi. 4 nelalu mundu filters marchaaru anu",
+    "inbox_event": {
+      "case_id": "C04",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 56532 81718",
+      "sender_profile_name": "Venkata Lakshmi",
+      "to_number": "+91 50104 63940",
+      "messages": [
+        {
+          "id": "evt.48233938819597",
+          "timestamp": "1795227000",
+          "timestamp_iso": "2026-11-21T07:40:00+05:30",
+          "type": "text",
+          "text": {
+            "body": "RO water chala uppaga untondi andi, taste kuda maarindi. TDS meter lo 612 vastondi. 4 nelalu mundu filters marchaaru anukunta. service ki randi"
+          }
+        },
+        {
+          "id": "evt.76272523167045",
+          "timestamp": "1795227078",
+          "timestamp_iso": "2026-11-21T07:41:18+05:30",
+          "type": "image",
+          "image": {
+            "file": "C04/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "TDS"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C06",
+    "ticket_id": "0ac562aa-4eb5-5678-9232-90ca069cb4fd",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_ls",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_name": "Lakeshore Service Centre, Jubilee Hills",
+    "urgency_class": "urgent",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "Fridge lo freezer motham ice aipoyindi andi. fridge side cooling ledu, milk kuda spoil ayyindi. photo pettanu chudandi",
+    "inbox_event": {
+      "case_id": "C06",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 59853 84126",
+      "sender_profile_name": "Harika Reddy",
+      "to_number": "+91 50866 46234",
+      "messages": [
+        {
+          "id": "evt.72720519011769",
+          "timestamp": "1795228521",
+          "timestamp_iso": "2026-11-21T08:05:21+05:30",
+          "type": "text",
+          "text": {
+            "body": "Fridge lo freezer motham ice aipoyindi andi. fridge side cooling ledu, milk kuda spoil ayyindi. photo pettanu chudandi"
+          }
+        },
+        {
+          "id": "evt.88943645413363",
+          "timestamp": "1795228582",
+          "timestamp_iso": "2026-11-21T08:06:22+05:30",
+          "type": "image",
+          "image": {
+            "file": "C06/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C08",
+    "ticket_id": "2133e93c-8708-5e4a-b58a-ce8906c8cb61",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_name": "Cool Craft Appliance Services, Madhapur",
+    "urgency_class": "planned",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "haan, service karwana hai. 3 AC hain ghar mein, teeno ki. Sunday morning ya Monday kabhi bhi chalega. lift hai, parking ",
+    "inbox_event": {
+      "case_id": "C08",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 59441 83505",
+      "sender_profile_name": "Meera Nair",
+      "to_number": "+91 53921 25456",
+      "messages": [
+        {
+          "id": "evt.60854604529739",
+          "timestamp": "1795227921",
+          "timestamp_iso": "2026-11-21T07:55:21+05:30",
+          "type": "text",
+          "text": {
+            "body": "haan, service karwana hai. 3 AC hain ghar mein, teeno ki. Sunday morning ya Monday kabhi bhi chalega. lift hai, parking basement mein"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C09",
+    "ticket_id": "52b6c3a2-ad9a-5002-a8da-54509e0f4c2b",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_zn",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_name": "Zenith Care Hub, Kondapur",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "Hello. AC in the bedroom is not cooling much, takes hours and smells. I'm a tenant here, landlord said just get it check",
+    "inbox_event": {
+      "case_id": "C09",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": false,
+      "from_phone": "+91 57283 24498",
+      "sender_profile_name": "Tenant (Rohit)",
+      "to_number": "+91 56556 55089",
+      "messages": [
+        {
+          "id": "evt.77278759599960",
+          "timestamp": "1795230036",
+          "timestamp_iso": "2026-11-21T08:30:36+05:30",
+          "type": "text",
+          "text": {
+            "body": "Hello. AC in the bedroom is not cooling much, takes hours and smells. I'm a tenant here, landlord said just get it checked and he will pay if needed. Don't know the model, sticker photo attached"
+          }
+        },
+        {
+          "id": "evt.68744992359293",
+          "timestamp": "1795230103",
+          "timestamp_iso": "2026-11-21T08:31:43+05:30",
+          "type": "image",
+          "image": {
+            "file": "C09/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "sticker"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C10",
+    "ticket_id": "cf02032f-1b39-57d1-851a-c5bb6ea8a4f3",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_fw",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_name": "Frost and Wave Service Point, Kukatpally",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "fridge not working pls come",
+    "inbox_event": {
+      "case_id": "C10",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": false,
+      "from_phone": "+91 53943 33143",
+      "sender_profile_name": "Unknown",
+      "to_number": "+91 59885 77764",
+      "messages": [
+        {
+          "id": "evt.72588102544216",
+          "timestamp": "1795230728",
+          "timestamp_iso": "2026-11-21T08:42:08+05:30",
+          "type": "text",
+          "text": {
+            "body": "fridge not working pls come"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C13",
+    "ticket_id": "7c08afa9-3ceb-577e-ab41-5bb270dcd2d5",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_name": "Cool Craft Appliance Services, Madhapur",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "washing machine lid ki problem undi. lid close chesina kuda machine start avvatledu, beep vastundi. model WC TL 70 maybe",
+    "inbox_event": {
+      "case_id": "C13",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 55075 99038",
+      "sender_profile_name": "Shilpa Rao",
+      "to_number": "+91 53921 25456",
+      "messages": [
+        {
+          "id": "evt.45064977922763",
+          "timestamp": "1795233001",
+          "timestamp_iso": "2026-11-21T09:20:01+05:30",
+          "type": "text",
+          "text": {
+            "body": "washing machine lid ki problem undi. lid close chesina kuda machine start avvatledu, beep vastundi. model WC TL 70 maybe? not sure. label photo pettanu"
+          }
+        },
+        {
+          "id": "evt.74637079461842",
+          "timestamp": "1795233071",
+          "timestamp_iso": "2026-11-21T09:21:11+05:30",
+          "type": "image",
+          "image": {
+            "file": "C13/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C14",
+    "ticket_id": "1748ba54-35e4-5f1e-8e9c-742479738efa",
+    "trigger": "household_message",
+    "channel": "whatsapp",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_name": "Cool Craft Appliance Services, Madhapur",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "AC ka gas khatam hai shayad, thanda nahi ho raha 3 din se. aur fridge ka gasket phat gaya hai neeche se, door band nahi ",
+    "inbox_event": {
+      "case_id": "C14",
+      "trigger": "household_message",
+      "channel": "whatsapp",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 51129 91301",
+      "sender_profile_name": "Faisal Ahmed",
+      "to_number": "+91 53921 25456",
+      "messages": [
+        {
+          "id": "evt.95839813316894",
+          "timestamp": "1795233810",
+          "timestamp_iso": "2026-11-21T09:33:30+05:30",
+          "type": "text",
+          "text": {
+            "body": "AC ka gas khatam hai shayad, thanda nahi ho raha 3 din se. aur fridge ka gasket phat gaya hai neeche se, door band nahi hota ekdum. dono dekhne hain ek hi visit mein ho jaye to better"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C03",
+    "ticket_id": "b56c5782-5f14-5ae9-bb50-a99f5850d12e",
+    "trigger": "household_call",
+    "channel": "voice",
+    "centre_key": "c_fw",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_name": "Frost and Wave Service Point, Kukatpally",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": true,
+    "summary": "नमस्ते, मेरी वॉशिंग मशीन में पानी नहीं निकल रहा है। स्क्रीन पर E21 आ रहा है। कल रात से कपड़े अंदर ही भीगे पड़े हैं। मशीन",
+    "inbox_event": {
+      "case_id": "C03",
+      "trigger": "household_call",
+      "channel": "voice",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 50971 16577",
+      "sender_profile_name": "Sunita Sharma",
+      "to_number": "+91 53536 70650",
+      "messages": [
+        {
+          "id": "evt.69472989476340",
+          "timestamp": "1795226147",
+          "timestamp_iso": "2026-11-21T07:25:47+05:30",
+          "type": "call",
+          "call": {
+            "direction": "inbound",
+            "dialled_number": "+91 53536 70650",
+            "caller_number": "+91 50971 16577",
+            "answered": true,
+            "recording": {
+              "file": "C03/01_call.ogg",
+              "mime_type": "audio/ogg; codecs=opus",
+              "duration_s": 15.9
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C05",
+    "ticket_id": "4e27f9c1-3f53-50af-9d75-70982fd58f13",
+    "trigger": "household_call",
+    "channel": "voice",
+    "centre_key": "c_hw",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_name": "Heatwell Authorised Service, Banjara Hills",
+    "urgency_class": "safety",
+    "safety_flag": true,
+    "stage_candidate": false,
+    "summary": "भैया, गीज़र में दिक्कत है। नल को छूते हैं तो हल्का करंट लगता है। कल बेटे को भी लगा। हमने गीज़र बंद कर दिया है। जल्दी किस",
+    "inbox_event": {
+      "case_id": "C05",
+      "trigger": "household_call",
+      "channel": "voice",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 54244 17862",
+      "sender_profile_name": "Rajesh Agarwal",
+      "to_number": "+91 50852 00863",
+      "messages": [
+        {
+          "id": "evt.73159045231042",
+          "timestamp": "1795223895",
+          "timestamp_iso": "2026-11-21T06:48:15+05:30",
+          "type": "call",
+          "call": {
+            "direction": "inbound",
+            "dialled_number": "+91 50852 00863",
+            "caller_number": "+91 54244 17862",
+            "answered": true,
+            "recording": {
+              "file": "C05/01_call.ogg",
+              "mime_type": "audio/ogg; codecs=opus",
+              "duration_s": 13.0
+            }
+          }
+        },
+        {
+          "id": "evt.64415036918251",
+          "timestamp": "1795224023",
+          "timestamp_iso": "2026-11-21T06:50:23+05:30",
+          "type": "image",
+          "image": {
+            "file": "C05/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "photo sent afterwards on WhatsApp"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C11",
+    "ticket_id": "12b19a2c-8f74-5431-93e6-adca1db4a482",
+    "trigger": "household_call",
+    "channel": "voice",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_name": "Cool Craft Appliance Services, Madhapur",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "Hi, my split AC at home in Shamshabad is not cooling. It blows warm air after a few minutes. The unit is about two years",
+    "inbox_event": {
+      "case_id": "C11",
+      "trigger": "household_call",
+      "channel": "voice",
+      "number_known_to_keepwell": false,
+      "from_phone": "+91 54462 75971",
+      "sender_profile_name": "Naveen",
+      "to_number": "+91 56509 70841",
+      "messages": [
+        {
+          "id": "evt.56479348427437",
+          "timestamp": "1795231950",
+          "timestamp_iso": "2026-11-21T09:02:30+05:30",
+          "type": "call",
+          "call": {
+            "direction": "inbound",
+            "dialled_number": "+91 56509 70841",
+            "caller_number": "+91 54462 75971",
+            "answered": true,
+            "recording": {
+              "file": "C11/01_call.ogg",
+              "mime_type": "audio/ogg; codecs=opus",
+              "duration_s": 12.8
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C12",
+    "ticket_id": "adf67cc5-9310-5ed5-b894-3c976c6f533d",
+    "trigger": "household_call",
+    "channel": "voice",
+    "centre_key": "c_ls",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_name": "Lakeshore Service Centre, Jubilee Hills",
+    "urgency_class": "urgent",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "మీరు మొన్ననే వాషింగ్ మెషీన్ బాగు చేశారు కదా. మళ్లీ అదే సమస్య వచ్చింది. నీళ్లు బయటకు పోవడం లేదు. ఇది రెండోసారి. దయచేసి ఈస",
+    "inbox_event": {
+      "case_id": "C12",
+      "trigger": "household_call",
+      "channel": "voice",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 52674 02028",
+      "sender_profile_name": "Srinivas Goud",
+      "to_number": "+91 59576 48547",
+      "messages": [
+        {
+          "id": "evt.87402869118158",
+          "timestamp": "1795232445",
+          "timestamp_iso": "2026-11-21T09:10:45+05:30",
+          "type": "call",
+          "call": {
+            "direction": "inbound",
+            "dialled_number": "+91 59576 48547",
+            "caller_number": "+91 52674 02028",
+            "answered": true,
+            "recording": {
+              "file": "C12/01_call.ogg",
+              "mime_type": "audio/ogg; codecs=opus",
+              "duration_s": 11.7
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C15",
+    "ticket_id": "b524b46f-a629-56ea-8921-77b35d1569de",
+    "trigger": "household_call",
+    "channel": "voice",
+    "centre_key": "c_ls",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_name": "Lakeshore Service Centre, Jubilee Hills",
+    "urgency_class": "safety",
+    "safety_flag": true,
+    "stage_candidate": false,
+    "summary": "मशीन चलाते ही जलने जैसी बदबू आ रही है और मोटर के पास से धुआं भी निकला। मैंने स्विच बंद कर दिया है। अब क्या करूं?",
+    "inbox_event": {
+      "case_id": "C15",
+      "trigger": "household_call",
+      "channel": "voice",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 52440 95112",
+      "sender_profile_name": "Pooja Singh",
+      "to_number": "+91 59576 48547",
+      "messages": [
+        {
+          "id": "evt.80918287376455",
+          "timestamp": "1795234273",
+          "timestamp_iso": "2026-11-21T09:41:13+05:30",
+          "type": "call",
+          "call": {
+            "direction": "inbound",
+            "dialled_number": "+91 59576 48547",
+            "caller_number": "+91 52440 95112",
+            "answered": true,
+            "recording": {
+              "file": "C15/01_call.ogg",
+              "mime_type": "audio/ogg; codecs=opus",
+              "duration_s": 11.0
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C16",
+    "ticket_id": "610f4ad5-7f40-5fed-929e-7b807eb33dc8",
+    "trigger": "household_call",
+    "channel": "voice",
+    "centre_key": "c_av",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_name": "Aerovane Authorised Service, Gachibowli",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "ఏసీ బయట యూనిట్ లోంచి శబ్దం వస్తోంది, ఫ్యాన్ తిరగడం లేదు. కొంచెం సేపు ఆన్ చేస్తే వేడిగా అవుతుంది, చల్లదనం రావడం లేదు. రెం",
+    "inbox_event": {
+      "case_id": "C16",
+      "trigger": "household_call",
+      "channel": "voice",
+      "number_known_to_keepwell": true,
+      "from_phone": "+91 53219 81003",
+      "sender_profile_name": "Ganesh Yadav",
+      "to_number": "+91 57986 43261",
+      "messages": [
+        {
+          "id": "evt.39139771490871",
+          "timestamp": "1795235116",
+          "timestamp_iso": "2026-11-21T09:55:16+05:30",
+          "type": "call",
+          "call": {
+            "direction": "inbound",
+            "dialled_number": "+91 57986 43261",
+            "caller_number": "+91 53219 81003",
+            "answered": true,
+            "recording": {
+              "file": "C16/01_call.ogg",
+              "mime_type": "audio/ogg; codecs=opus",
+              "duration_s": 11.3
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case_id": "C17",
+    "ticket_id": "bb541a9c-50fc-518c-a0b4-9687346355bc",
+    "trigger": "brand_forward",
+    "channel": "brand_api",
+    "centre_key": "c_zn",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_name": "Zenith Care Hub, Kondapur",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "Freezer full of frost, fridge section warm, display shows dF. Customer says unit is under warranty.",
+    "inbox_event": {
+      "case_id": "C17",
+      "trigger": "brand_forward",
+      "channel": "brand_api",
+      "number_known_to_keepwell": true,
+      "payload": {
+        "kind": "brand_request",
+        "brand": "zenith",
+        "ref": "ZN-CRM-2026-0481923",
+        "complaint": "Freezer full of frost, fridge section warm, display shows dF. Customer says unit is under warranty.",
+        "reported_via": "brand call centre",
+        "claimed_warranty": "in_warranty",
+        "priority_hint": "normal",
+        "brand_note": "Customer asked for the nearest authorised centre. Serial on record: ZN23FI0902218.",
+        "received_at": "2026-11-21T08:20:00+05:30",
+        "customer": {
+          "name": "Sandeep Kulkarni",
+          "phone": "+91 57575 13774"
+        },
+        "source": {
+          "channel": "brand_api",
+          "system_id": "zenith-integration"
+        }
+      }
+    }
+  },
+  {
+    "case_id": "C18",
+    "ticket_id": "c461b214-baf3-5df8-b5b7-b4d089ea6f36",
+    "trigger": "brand_forward",
+    "channel": "brand_api",
+    "centre_key": "c_cc",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_name": "Cool Craft Appliance Services, Madhapur",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "AC cooling very weak since 3 days, claims warranty",
+    "inbox_event": {
+      "case_id": "C18",
+      "trigger": "brand_forward",
+      "channel": "brand_api",
+      "number_known_to_keepwell": false,
+      "payload": {
+        "kind": "brand_request",
+        "brand": "aerovane",
+        "ref": "AV-SRQ-557019",
+        "complaint": "AC cooling very weak since 3 days, claims warranty",
+        "reported_via": "brand app",
+        "claimed_warranty": "in_warranty",
+        "priority_hint": "normal",
+        "brand_note": "Forwarded to Cool Craft Appliance Services for scheduling.",
+        "received_at": "2026-11-21T08:50:00+05:30",
+        "customer": {
+          "name": "Deepak Chowdary",
+          "phone": "+91 58028 98021"
+        },
+        "source": {
+          "channel": "brand_api",
+          "system_id": "aerovane-integration"
+        }
+      }
+    }
+  },
+  {
+    "case_id": "C19",
+    "ticket_id": "4e624da0-7197-5b3d-bdf6-5fc65583910b",
+    "trigger": "brand_forward",
+    "channel": "brand_api",
+    "centre_key": "c_hw",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_name": "Heatwell Authorised Service, Banjara Hills",
+    "urgency_class": "standard",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "No hot water since morning. Heating light does not come on. In warranty.",
+    "inbox_event": {
+      "case_id": "C19",
+      "trigger": "brand_forward",
+      "channel": "brand_api",
+      "number_known_to_keepwell": true,
+      "payload": {
+        "kind": "brand_request",
+        "brand": "heatwell",
+        "ref": "HW-WC-2026-31877",
+        "complaint": "No hot water since morning. Heating light does not come on. In warranty.",
+        "reported_via": "brand website form",
+        "claimed_warranty": "in_warranty",
+        "priority_hint": "normal",
+        "brand_note": "Customer earlier serviced at Heatwell Authorised Service, Banjara Hills (c_hw). Routed to AquaCare RO and Geyser Services on capacity.",
+        "received_at": "2026-11-21T08:35:00+05:30",
+        "customer": {
+          "name": "Ananya Das",
+          "phone": "+91 58866 01996"
+        },
+        "source": {
+          "channel": "brand_api",
+          "system_id": "heatwell-integration"
+        }
+      }
+    }
+  },
+  {
+    "case_id": "C07",
+    "ticket_id": "a862260e-bbf7-5f98-a692-1d7a946f91bf",
+    "trigger": "retailer_handover",
+    "channel": "retailer_api",
+    "centre_key": "c_ip",
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d",
+    "centre_name": "InstallPro Mounting Services, Tolichowki",
+    "urgency_class": "planned",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "Outdoor unit on external ledge, 9th floor. Customer pinned location on WhatsApp.",
+    "inbox_event": {
+      "case_id": "C07",
+      "trigger": "retailer_handover",
+      "channel": "retailer_api",
+      "number_known_to_keepwell": false,
+      "payload": {
+        "kind": "retailer_handover",
+        "retailer": "Digital Plaza Electronics",
+        "store_code": "DPE-HTC-02",
+        "order_ref": "DP-ORD-2026-884412",
+        "requested_job": "installation",
+        "preferred_window": "Sunday morning",
+        "notes": "Outdoor unit on external ledge, 9th floor. Customer pinned location on WhatsApp.",
+        "location": {
+          "lat": 17.4447,
+          "lon": 78.3795,
+          "name": "Raintree Towers, HITEC City"
+        },
+        "received_at": "2026-11-21T08:14:00+05:30",
+        "customer": {
+          "name": "Anand Iyer",
+          "phone": "+91 51759 78669"
+        },
+        "attachments": [
+          {
+            "file": "C07/01_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "invoice (attached by the retailer)"
+          },
+          {
+            "file": "C07/02_photo.jpg",
+            "mime_type": "image/jpeg",
+            "caption": "carton label (attached by the retailer)"
+          }
+        ],
+        "source": {
+          "channel": "retailer_api",
+          "system_id": "retailer-integration"
+        }
+      }
+    }
+  },
+  {
+    "case_id": "C20",
+    "ticket_id": "8ce760de-8c7b-52a5-bd03-f3c064271f04",
+    "trigger": "retailer_handover",
+    "channel": "retailer_api",
+    "centre_key": "c_fw",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_name": "Frost and Wave Service Point, Kukatpally",
+    "urgency_class": "planned",
+    "safety_flag": false,
+    "stage_candidate": false,
+    "summary": "Front-load washer delivered yesterday, needs inlet and outlet connection and a demo.",
+    "inbox_event": {
+      "case_id": "C20",
+      "trigger": "retailer_handover",
+      "channel": "retailer_api",
+      "number_known_to_keepwell": true,
+      "payload": {
+        "kind": "retailer_handover",
+        "retailer": "Sri Sai Electronics, Kukatpally",
+        "store_code": "SSE-KPHB-01",
+        "order_ref": "SSE-ORD-77120",
+        "requested_job": "installation",
+        "preferred_window": "Monday evening",
+        "notes": "Front-load washer delivered yesterday, needs inlet and outlet connection and a demo.",
+        "received_at": "2026-11-21T09:15:00+05:30",
+        "customer": {
+          "name": "Mahesh Raj",
+          "phone": "+91 58800 49668"
+        },
+        "source": {
+          "channel": "retailer_api",
+          "system_id": "retailer-integration"
+        }
+      }
+    }
+  }
+]

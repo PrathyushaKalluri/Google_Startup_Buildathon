@@ -1,0 +1,240 @@
+{
+  "b6e4fcc8-4d47-549e-9c24-98421184bbd1": [
+    {
+      "id": "6966b812-5bdb-5101-9f89-c0267da88e83",
+      "direction": "in",
+      "type": "text",
+      "text": "హలో, నేను రమేష్ బాబు, కొండాపూర్ ఆర్కిడ్ మెడోస్ నుంచి మాట్లాడుతున్నాను. మా బెడ్రూమ్ ఏసీ నుంచి నీళ్లు కారుతున్నాయి. నిన్న రాత్రి నుంచి గోడ మొత్తం తడిసిపోయింది. ఏసీ ఇంకా వారంటీలో ఉంది. దయచేసి ఎవరినైనా పంపండి.",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:10:00+05:30",
+      "ticket_id": "07286d32-c2cf-5766-a420-59c89e1c9cc7",
+      "status": "delivered"
+    },
+    {
+      "id": "61bcb02a-43c7-5715-bacb-7de89c0801d4",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Priyanka Menon, Aerovane Authorised Service, Gachibowli received your request. Technician Vikram Naidu is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:10:00+05:30",
+      "ticket_id": "07286d32-c2cf-5766-a420-59c89e1c9cc7",
+      "status": "read"
+    },
+    {
+      "id": "ca496fae-3a19-507f-b9ab-28c1dc23243d",
+      "direction": "in",
+      "type": "text",
+      "text": "hi, AC cooling nahi kar raha properly since 4-5 days. Pehle weak tha ab almost nothing. pipe pe ice bhi dikh raha hai. display pe error aa raha hai see photo",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:11:00+05:30",
+      "ticket_id": "ee1869c6-359f-5ef2-877c-5a7d82dfb5bf",
+      "status": "delivered"
+    },
+    {
+      "id": "4cd8b2ea-4610-5c9c-b73f-d3f081cdf1c6",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Priyanka Menon, Aerovane Authorised Service, Gachibowli received your request. Technician Vikram Naidu is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:11:00+05:30",
+      "ticket_id": "ee1869c6-359f-5ef2-877c-5a7d82dfb5bf",
+      "status": "read"
+    }
+  ],
+  "03cf1731-ecdb-5ac1-955d-292ba749c64f": [
+    {
+      "id": "9b1dddaa-bbe3-5c00-a22b-385571b6748b",
+      "direction": "in",
+      "type": "text",
+      "text": "RO water chala uppaga untondi andi, taste kuda maarindi. TDS meter lo 612 vastondi. 4 nelalu mundu filters marchaaru anukunta. service ki randi",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:12:00+05:30",
+      "ticket_id": "96490f68-6c14-5eb6-bd74-87ab441f57b4",
+      "status": "delivered"
+    },
+    {
+      "id": "0d60a336-8f06-556a-8b5a-acff3608ed2d",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Venkata Lakshmi, AquaCare RO and Geyser Services, Manikonda received your request. Technician Salman Singh is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:12:00+05:30",
+      "ticket_id": "96490f68-6c14-5eb6-bd74-87ab441f57b4",
+      "status": "read"
+    }
+  ],
+  "82d51946-09e3-5167-befe-5a9979847dfb": [
+    {
+      "id": "4e362585-b7dd-55c2-a69f-9a2fc6595d67",
+      "direction": "in",
+      "type": "text",
+      "text": "Fridge lo freezer motham ice aipoyindi andi. fridge side cooling ledu, milk kuda spoil ayyindi. photo pettanu chudandi",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:13:00+05:30",
+      "ticket_id": "0ac562aa-4eb5-5678-9232-90ca069cb4fd",
+      "status": "delivered"
+    },
+    {
+      "id": "a213198e-4338-5372-b847-ad192f4ee9ff",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Harika Reddy, Lakeshore Service Centre, Jubilee Hills received your request. Technician Bharath Naidu is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:13:00+05:30",
+      "ticket_id": "0ac562aa-4eb5-5678-9232-90ca069cb4fd",
+      "status": "read"
+    }
+  ],
+  "3fd5f0f7-456b-58ad-90ac-a58e5010e0a1": [
+    {
+      "id": "f7232cc9-945a-5f15-9897-3b7b3901235b",
+      "direction": "in",
+      "type": "text",
+      "text": "haan, service karwana hai. 3 AC hain ghar mein, teeno ki. Sunday morning ya Monday kabhi bhi chalega. lift hai, parking basement mein",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:14:00+05:30",
+      "ticket_id": "2133e93c-8708-5e4a-b58a-ce8906c8cb61",
+      "status": "delivered"
+    },
+    {
+      "id": "2f4f604d-1194-5d0f-9f84-0659396bdcdd",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Meera Nair, Cool Craft Appliance Services, Madhapur received your request. Technician Suresh Patel is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:14:00+05:30",
+      "ticket_id": "2133e93c-8708-5e4a-b58a-ce8906c8cb61",
+      "status": "read"
+    }
+  ],
+  "5901df67-e286-513d-8ebe-e3b64f23d548": [
+    {
+      "id": "b9ad4600-59bf-510a-ae42-27042198e238",
+      "direction": "in",
+      "type": "text",
+      "text": "Hello. AC in the bedroom is not cooling much, takes hours and smells. I'm a tenant here, landlord said just get it checked and he will pay if needed. Don't know the model, sticker photo attached",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:15:00+05:30",
+      "ticket_id": "52b6c3a2-ad9a-5002-a8da-54509e0f4c2b",
+      "status": "delivered"
+    },
+    {
+      "id": "20e9bcdc-802c-59a9-9227-588992ec5076",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Sravani Goud, Zenith Care Hub, Kondapur received your request. Technician Jagan Mudiraj is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:15:00+05:30",
+      "ticket_id": "52b6c3a2-ad9a-5002-a8da-54509e0f4c2b",
+      "status": "read"
+    }
+  ],
+  "7dd8578a-bf9e-5a8b-a2f4-6dd6879253ff": [
+    {
+      "id": "adfe3964-b834-5442-93ea-83202ca3e9cf",
+      "direction": "in",
+      "type": "text",
+      "text": "fridge not working pls come",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:16:00+05:30",
+      "ticket_id": "cf02032f-1b39-57d1-851a-c5bb6ea8a4f3",
+      "status": "delivered"
+    },
+    {
+      "id": "d88a5c52-e272-57c6-8286-ba8b36217e64",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Anusha Joshi, Frost and Wave Service Point, Kukatpally received your request. Technician Ramesh Yadav is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:16:00+05:30",
+      "ticket_id": "cf02032f-1b39-57d1-851a-c5bb6ea8a4f3",
+      "status": "read"
+    }
+  ],
+  "9641ff7e-2eb0-5c56-baec-f6c1c014e078": [
+    {
+      "id": "3f104365-1cdb-5124-9fe2-e740174640d3",
+      "direction": "in",
+      "type": "text",
+      "text": "washing machine lid ki problem undi. lid close chesina kuda machine start avvatledu, beep vastundi. model WC TL 70 maybe? not sure. label photo pettanu",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:17:00+05:30",
+      "ticket_id": "7c08afa9-3ceb-577e-ab41-5bb270dcd2d5",
+      "status": "delivered"
+    },
+    {
+      "id": "cae06b4a-0243-549d-b6d1-ab2397b16a63",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Shilpa Rao, Cool Craft Appliance Services, Madhapur received your request. Technician Suresh Patel is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:17:00+05:30",
+      "ticket_id": "7c08afa9-3ceb-577e-ab41-5bb270dcd2d5",
+      "status": "read"
+    }
+  ],
+  "12ef4dc9-19ed-52fa-b805-221de2822c2e": [
+    {
+      "id": "0942fbd9-2d40-5ef4-a2be-bfe0ad646099",
+      "direction": "in",
+      "type": "text",
+      "text": "AC ka gas khatam hai shayad, thanda nahi ho raha 3 din se. aur fridge ka gasket phat gaya hai neeche se, door band nahi hota ekdum. dono dekhne hain ek hi visit mein ho jaye to better",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:18:00+05:30",
+      "ticket_id": "1748ba54-35e4-5f1e-8e9c-742479738efa",
+      "status": "delivered"
+    },
+    {
+      "id": "9f93dab0-2c0c-58fa-9f3f-ae1c9282e204",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Faisal Ahmed, Cool Craft Appliance Services, Madhapur received your request. Technician Suresh Patel is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:18:00+05:30",
+      "ticket_id": "1748ba54-35e4-5f1e-8e9c-742479738efa",
+      "status": "read"
+    }
+  ],
+  "73820ebd-f82d-5923-bbb4-2b946e32d242": [
+    {
+      "id": "f8480b9e-34bf-5972-a861-de6a52ddf858",
+      "direction": "in",
+      "type": "text",
+      "text": "नमस्ते, मेरी वॉशिंग मशीन में पानी नहीं निकल रहा है। स्क्रीन पर E21 आ रहा है। कल रात से कपड़े अंदर ही भीगे पड़े हैं। मशीन की वारंटी शायद अभी अभी खत्म हुई है। प्लीज़ किसी को भेज दीजिए।",
+      "media_url": null,
+      "template": null,
+      "at": "2026-11-21T07:19:00+05:30",
+      "ticket_id": "b56c5782-5f14-5ae9-bb50-a99f5850d12e",
+      "status": "delivered"
+    },
+    {
+      "id": "a69fa4b5-065b-51cf-bd9b-296f3c226b8b",
+      "direction": "out",
+      "type": "text",
+      "text": "Namaste Sunita Sharma, Frost and Wave Service Point, Kukatpally received your request. Technician Ramesh Yadav is scheduled for 14:00-16:00.",
+      "media_url": null,
+      "template": "booking_confirmed",
+      "at": "2026-11-21T08:19:00+05:30",
+      "ticket_id": "b56c5782-5f14-5ae9-bb50-a99f5850d12e",
+      "status": "read"
+    }
+  ]
+}

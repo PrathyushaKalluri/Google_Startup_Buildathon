@@ -1,0 +1,130 @@
+{
+  "case_id": "C03",
+  "ticket_id": "b56c5782-5f14-5ae9-bb50-a99f5850d12e",
+  "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+  "centre_key": "c_fw",
+  "centre_name": "Frost and Wave Service Point, Kukatpally",
+  "household_id": "73820ebd-f82d-5923-bbb4-2b946e32d242",
+  "household_name": "Sunita Sharma",
+  "caller_number": "+91 50971 16577",
+  "appliance": {
+    "id": "c7af202d-e16a-5cf2-bfe3-2ebed3aecedb",
+    "brand": "Wavecrest",
+    "category_code": "washing_machine",
+    "model_code": "WC-FL85",
+    "serial_masked": "WC24****120",
+    "identity_status": "verified",
+    "purchase_date": "2024-10-30",
+    "warranty_end": "2026-10-30"
+  },
+  "opening_hi": "नमस्ते, मेरी वॉशिंग मशीन में पानी नहीं निकल रहा है। स्क्रीन पर E21 आ रहा है। कल रात से कपड़े अंदर ही भीगे पड़े हैं। मशीन की वारंटी शायद अभी अभी खत्म हुई है। प्लीज़ किसी को भेज दीजिए।",
+  "opening_en": "Hello, my washing machine is not draining water. Screen shows E21. Clothes have been soaking since last night.",
+  "safe_fix_code": "SF-WM-DRAINFILTER-WC",
+  "safe_fix_title": "Clean the drain pump filter (Wavecrest)",
+  "part_no": "WC-WM-DPUMP",
+  "part_name": "Drain pump",
+  "candidates": [
+    {
+      "technician_id": "f1a2eab1-4725-5051-a086-91dfa3175734",
+      "name": "Ramesh Yadav",
+      "rank": 1,
+      "score": 89.5,
+      "score_breakdown": {
+        "fix_confidence": 27.5,
+        "parts_readiness": 23.0,
+        "time_to_visit": 17.5,
+        "route_cost": 12.5,
+        "reliability": 4.5,
+        "household_fit": 4.5
+      },
+      "slot_start": "2026-11-21T14:00:00+05:30",
+      "slot_end": "2026-11-21T16:00:00+05:30",
+      "outcome": "chosen",
+      "chosen_by": "agent",
+      "override_reason": null,
+      "why": "Highest fix confidence for Wavecrest with part available at centre and matching language."
+    },
+    {
+      "technician_id": "77047c7f-8f83-5d0d-b8cf-4e038366f8ed",
+      "name": "Murali Singh",
+      "rank": 2,
+      "score": 81.0,
+      "score_breakdown": {
+        "fix_confidence": 24.0,
+        "parts_readiness": 21.0,
+        "time_to_visit": 16.0,
+        "route_cost": 11.5,
+        "reliability": 4.5,
+        "household_fit": 4.0
+      },
+      "slot_start": "2026-11-21T16:00:00+05:30",
+      "slot_end": "2026-11-21T18:00:00+05:30",
+      "outcome": "not_chosen",
+      "chosen_by": "agent",
+      "override_reason": null,
+      "why": "Later slot window and slightly lower historical FTF on this fault family."
+    },
+    {
+      "technician_id": "9a380ac9-be8c-554e-b0d5-6034d54f5981",
+      "name": "Shiva Prasad",
+      "rank": 3,
+      "score": 74.5,
+      "score_breakdown": {
+        "fix_confidence": 21.5,
+        "parts_readiness": 19.0,
+        "time_to_visit": 15.0,
+        "route_cost": 11.0,
+        "reliability": 4.0,
+        "household_fit": 4.0
+      },
+      "slot_start": "2026-11-22T10:00:00+05:30",
+      "slot_end": "2026-11-22T12:00:00+05:30",
+      "outcome": "not_chosen",
+      "chosen_by": "agent",
+      "override_reason": null,
+      "why": "Next-day availability only."
+    }
+  ],
+  "quote": {
+    "id": "3d9f9258-0f7b-5cc0-bcd2-fa0887e973b4",
+    "version": 1,
+    "quote_type": "estimate",
+    "lines": [
+      {
+        "kind": "visit_fee",
+        "description": "Visit and inspection",
+        "amount_paise": 45000,
+        "payer": "household"
+      },
+      {
+        "kind": "labour",
+        "description": "Fault repair labour",
+        "amount_paise": 55000,
+        "payer": "household"
+      },
+      {
+        "kind": "part",
+        "description": "Drain pump (WC-WM-DPUMP)",
+        "amount_paise": 123500,
+        "payer": "household"
+      }
+    ],
+    "total_paise": 223500,
+    "household_paise": 223500,
+    "covered_paise": 0,
+    "approved_at": null,
+    "approval_method": null
+  },
+  "visit": {
+    "id": "f5c5944d-1a9b-5b7a-ad36-fc713194ee23",
+    "technician_id": "f1a2eab1-4725-5051-a086-91dfa3175734",
+    "planned_start": "2026-11-21T14:00:00+05:30",
+    "planned_end": "2026-11-21T16:00:00+05:30",
+    "check_in_at": "2026-11-21T08:19:00+05:30",
+    "check_out_at": null,
+    "outcome": null,
+    "closure_confirmed_at": null,
+    "rating": null
+  },
+  "magic_token": "kwm_e2af3d74f1e1ded5"
+}

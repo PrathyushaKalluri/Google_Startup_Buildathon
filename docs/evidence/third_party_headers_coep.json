@@ -1,0 +1,72 @@
+{
+  "none": {
+    "info": {
+      "crossOriginIsolated": false,
+      "payJsLoaded": true,
+      "fontsStatus": true,
+      "fontFaces": 1,
+      "lookerFrameBlocked": false
+    },
+    "failed": [
+      "https://maps.googleapis.com/maps/api/staticmap?center=Hyderabad&zoom=1 :: net::ERR_BLOCKED_BY_ORB"
+    ],
+    "consoleErr": [],
+    "frames": [
+      "http://127.0.0.1:56666/",
+      "https://datastudio.google.com/embed/reporting/00000000-0000-",
+      "https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1sH",
+      "https://pay.google.com/gp/p/ui/payframe?origin=http%3A%2F%2F",
+      "about:blank",
+      "about:blank",
+      "https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LcE_6MU",
+      "about:blank",
+      "about:blank"
+    ]
+  },
+  "credentialless": {
+    "info": {
+      "crossOriginIsolated": false,
+      "payJsLoaded": true,
+      "fontsStatus": true,
+      "fontFaces": 1,
+      "lookerFrameBlocked": false
+    },
+    "failed": [
+      "https://www.google.com/maps?q=Hyderabad&output=embed :: net::ERR_BLOCKED_BY_RESPONSE",
+      "https://maps.googleapis.com/maps/api/staticmap?center=Hyderabad&zoom=1 :: net::ERR_BLOCKED_BY_ORB",
+      "https://pay.google.com/gp/p/ui/payframe?origin=http%3A%2F%2F127.0.0.1% :: net::ERR_BLOCKED_BY_RESPONSE",
+      "https://lookerstudio.google.com/embed/reporting/00000000-0000-0000-000 :: net::ERR_BLOCKED_BY_RESPONSE"
+    ],
+    "consoleErr": [],
+    "frames": [
+      "http://127.0.0.1:56689/",
+      "chrome-error://chromewebdata/",
+      "chrome-error://chromewebdata/",
+      "chrome-error://chromewebdata/"
+    ]
+  },
+  "require-corp": {
+    "info": {
+      "crossOriginIsolated": false,
+      "payJsLoaded": true,
+      "fontsStatus": true,
+      "fontFaces": 1,
+      "lookerFrameBlocked": false
+    },
+    "failed": [
+      "https://www.google.com/maps?q=Hyderabad&output=embed :: net::ERR_BLOCKED_BY_RESPONSE",
+      "https://maps.googleapis.com/maps/api/staticmap?center=Hyderabad&zoom=1 :: net::ERR_BLOCKED_BY_RESPONSE.NotSameOriginAfterDefaultedToSameOriginByCoep",
+      "https://pay.google.com/gp/p/ui/payframe?origin=http%3A%2F%2F127.0.0.1% :: net::ERR_BLOCKED_BY_RESPONSE",
+      "https://lookerstudio.google.com/embed/reporting/00000000-0000-0000-000 :: net::ERR_BLOCKED_BY_RESPONSE"
+    ],
+    "consoleErr": [
+      "Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameOriginAfterDefaultedToSameOriginByCoep"
+    ],
+    "frames": [
+      "http://127.0.0.1:56701/",
+      "chrome-error://chromewebdata/",
+      "chrome-error://chromewebdata/",
+      "chrome-error://chromewebdata/"
+    ]
+  }
+}

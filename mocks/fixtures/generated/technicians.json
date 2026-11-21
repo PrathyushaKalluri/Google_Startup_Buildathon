@@ -1,0 +1,2844 @@
+[
+  {
+    "id": "40dae476-8aaf-5aef-8046-5429d2c35681",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "name": "Vikram Naidu",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.360919,
+      "lat": 17.447241
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 3
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.667,
+      "on_time_rate": 1.0,
+      "jobs_completed": 6
+    }
+  },
+  {
+    "id": "8742ff0f-7595-5727-b147-c891049e4f4b",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "name": "Balaji Chary",
+    "languages": [
+      "te",
+      "ta",
+      "en"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.384264,
+      "lat": 17.451377
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 3
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 0.8,
+      "jobs_completed": 10
+    }
+  },
+  {
+    "id": "49c77504-3ce3-5222-b134-e464774ed7df",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "name": "Ganesh Rao",
+    "languages": [
+      "te",
+      "ta",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.362006,
+      "lat": 17.474128
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 3
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.875,
+      "on_time_rate": 1.0,
+      "jobs_completed": 16
+    }
+  },
+  {
+    "id": "2478d63f-0868-5c64-8271-879104018657",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "name": "Ganesh Chary",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.330864,
+      "lat": 17.39424
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.857,
+      "on_time_rate": 0.714,
+      "jobs_completed": 14
+    }
+  },
+  {
+    "id": "d7221ee8-3238-5465-90f7-55039b4385c8",
+    "centre_id": "104db10d-cf58-540e-b1b1-ceb7874ba528",
+    "centre_key": "c_av",
+    "name": "Balaji Babu",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.331161,
+      "lat": 17.398121
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 3
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 2
+      },
+      {
+        "brand": "Aerovane",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 3
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 1.0,
+      "jobs_completed": 12
+    }
+  },
+  {
+    "id": "f000a624-38f5-5928-8d10-15c34f4d05fb",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "name": "Jagan Mudiraj",
+    "languages": [
+      "te",
+      "hi",
+      "ur"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.345314,
+      "lat": 17.496358
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.956,
+      "on_time_rate": 0.767,
+      "jobs_completed": 26
+    }
+  },
+  {
+    "id": "c7a0790d-6c3a-51a2-8943-40a06687a78c",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "name": "Santosh Kumar",
+    "languages": [
+      "te",
+      "hi",
+      "ur"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.365604,
+      "lat": 17.457205
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.878,
+      "on_time_rate": 0.939,
+      "jobs_completed": 24
+    }
+  },
+  {
+    "id": "2847e184-08cb-54c5-aebe-c315fae5a837",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "name": "Arjun Mudiraj",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.325122,
+      "lat": 17.381884
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 3
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 2
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.878,
+      "on_time_rate": 0.878,
+      "jobs_completed": 12
+    }
+  },
+  {
+    "id": "05179667-34b3-5c60-999a-d33f27d3c875",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "name": "Anil Shaik",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "car",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.365604,
+      "lat": 17.457205
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.796,
+      "on_time_rate": 0.712,
+      "jobs_completed": 18
+    }
+  },
+  {
+    "id": "4bd838c9-9a5b-598f-a04e-6d08bc0c57b8",
+    "centre_id": "cd48115c-1d4c-56d1-aa81-54e3d615236b",
+    "centre_key": "c_zn",
+    "name": "Anil Verma",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "bike",
+    "safety_certs": [],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.365604,
+      "lat": 17.457205
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 3
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 2
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 2
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 1
+      },
+      {
+        "brand": "Zenith",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.0,
+      "on_time_rate": 0.5,
+      "jobs_completed": 4
+    }
+  },
+  {
+    "id": "f1a2eab1-4725-5051-a086-91dfa3175734",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_key": "c_fw",
+    "name": "Ramesh Yadav",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.312778,
+      "lat": 17.473777
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "door",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "compressor",
+        "level": 3
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 1.0,
+      "jobs_completed": 2
+    }
+  },
+  {
+    "id": "77047c7f-8f83-5d0d-b8cf-4e038366f8ed",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_key": "c_fw",
+    "name": "Murali Singh",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.398466,
+      "lat": 17.492042
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "door",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 3
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 1.0,
+      "jobs_completed": 4
+    }
+  },
+  {
+    "id": "9a380ac9-be8c-554e-b0d5-6034d54f5981",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_key": "c_fw",
+    "name": "Shiva Prasad",
+    "languages": [
+      "te",
+      "hi"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.398466,
+      "lat": 17.492042
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "door",
+        "level": 5
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.5,
+      "on_time_rate": 1.0,
+      "jobs_completed": 4
+    }
+  },
+  {
+    "id": "d4c4db85-b2b3-5d79-9ff6-2f2f3334d094",
+    "centre_id": "f1c5b94d-56f5-55db-9b31-8b6f844af952",
+    "centre_key": "c_fw",
+    "name": "Ramesh Shaik",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.398466,
+      "lat": 17.492042
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "door",
+        "level": 3
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "sensor",
+        "level": 3
+      },
+      {
+        "brand": "Frostline",
+        "category_code": "refrigerator",
+        "fault_class": "compressor",
+        "level": 2
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "1b5b0622-bd79-5f63-ac3b-b630ddf8e5d0",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_key": "c_cc",
+    "name": "Suresh Patel",
+    "languages": [
+      "te",
+      "hi",
+      "ur"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.333758,
+      "lat": 17.384231
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 1.0,
+      "jobs_completed": 4
+    }
+  },
+  {
+    "id": "5c5ac571-26b3-5a17-9a28-53d18104f544",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_key": "c_cc",
+    "name": "Vikram Raj",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.353223,
+      "lat": 17.375667
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.804,
+      "on_time_rate": 0.882,
+      "jobs_completed": 26
+    }
+  },
+  {
+    "id": "433e6382-80f4-517a-bfa6-3f6f8171e643",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_key": "c_cc",
+    "name": "Yadagiri Shaik",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "car",
+    "safety_certs": [
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.390528,
+      "lat": 17.446363
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.889,
+      "on_time_rate": 0.812,
+      "jobs_completed": 44
+    }
+  },
+  {
+    "id": "79781e2c-320e-5cff-80c2-8d9d53c1fa1d",
+    "centre_id": "9a38f5cb-0133-52d7-bfab-151e24a7dca0",
+    "centre_key": "c_cc",
+    "name": "Yadagiri Reddy",
+    "languages": [
+      "te",
+      "hi"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "bike",
+    "safety_certs": [],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.394443,
+      "lat": 17.449833
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.5,
+      "on_time_rate": 1.0,
+      "jobs_completed": 8
+    }
+  },
+  {
+    "id": "2b40c3b8-65cf-5c64-89b4-62d0e5ed3f5a",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_key": "c_aq",
+    "name": "Salman Singh",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "electrical"
+    ],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.383673,
+      "lat": 17.403397
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "quality",
+        "level": 5
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "water",
+        "level": 4
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 0.886,
+      "jobs_completed": 14
+    }
+  },
+  {
+    "id": "69c2caca-8e6d-5e79-b5ac-de8cf04c9f1a",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_key": "c_aq",
+    "name": "Shiva Patel",
+    "languages": [
+      "te",
+      "hi",
+      "ur"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "electrical"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.364145,
+      "lat": 17.385265
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "quality",
+        "level": 5
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "water",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 4
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.6,
+      "on_time_rate": 0.85,
+      "jobs_completed": 10
+    }
+  },
+  {
+    "id": "ef38b630-af96-5e33-96f5-c95453335e82",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_key": "c_aq",
+    "name": "Mahesh Rao",
+    "languages": [
+      "te",
+      "hi",
+      "ur"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "electrical"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.375926,
+      "lat": 17.396311
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "quality",
+        "level": 4
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "water",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.792,
+      "on_time_rate": 0.389,
+      "jobs_completed": 16
+    }
+  },
+  {
+    "id": "736d8d94-4285-5297-89b4-50804f6a4d02",
+    "centre_id": "4347bd3d-1925-5374-aa34-75318750a2db",
+    "centre_key": "c_aq",
+    "name": "Ganesh Reddy",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.403089,
+      "lat": 17.388186
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "quality",
+        "level": 2
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "service",
+        "level": 3
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Purelo",
+        "category_code": "water_purifier",
+        "fault_class": "water",
+        "level": 1
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 4
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 4
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 1.0,
+      "jobs_completed": 4
+    }
+  },
+  {
+    "id": "3a520590-f777-5518-9602-8480973ff9ab",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "name": "Afsar Goud",
+    "languages": [
+      "te",
+      "ta",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.354699,
+      "lat": 17.495238
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.933,
+      "on_time_rate": 1.0,
+      "jobs_completed": 30
+    }
+  },
+  {
+    "id": "6840388c-40b7-5701-ad00-dd25d03c1c5b",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "name": "Raju Kumar",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "electrical",
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.354699,
+      "lat": 17.495238
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 3
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.933,
+      "on_time_rate": 0.933,
+      "jobs_completed": 30
+    }
+  },
+  {
+    "id": "ec64a65d-73bf-5f37-95a1-9717876485b2",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "name": "Shiva Raj",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "electrical",
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.317955,
+      "lat": 17.488997
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.648,
+      "on_time_rate": 0.955,
+      "jobs_completed": 24
+    }
+  },
+  {
+    "id": "826ab80d-e60e-52dd-b4d2-ed30da7e4715",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "name": "Salman Kumar",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.360164,
+      "lat": 17.464582
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.771,
+      "on_time_rate": 0.771,
+      "jobs_completed": 14
+    }
+  },
+  {
+    "id": "498684c3-945e-5731-9f77-f815bbbdc235",
+    "centre_id": "5f2f0307-14f3-5d94-9675-cff9fffd3e4e",
+    "centre_key": "c_mh",
+    "name": "Yadagiri Prasad",
+    "languages": [
+      "te",
+      "hi",
+      "ur"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.362329,
+      "lat": 17.478172
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 1
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.653,
+      "on_time_rate": 0.913,
+      "jobs_completed": 20
+    }
+  },
+  {
+    "id": "c99fd5e3-8d4d-59fe-89cc-71d8b146fa7f",
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d",
+    "centre_key": "c_ip",
+    "name": "Lokesh Singh",
+    "languages": [
+      "te",
+      "ta",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas",
+      "work_at_height"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.346973,
+      "lat": 17.415611
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 5
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "deb4316c-9541-5920-aa70-bf32761c0e7a",
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d",
+    "centre_key": "c_ip",
+    "name": "Kiran Yadav",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "gas",
+      "work_at_height"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.461487,
+      "lat": 17.419459
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "472b7885-966e-5f7e-bfb4-f6c650c18bd8",
+    "centre_id": "ce26d0ba-c7d5-5f00-abb0-865f6f20c20d",
+    "centre_key": "c_ip",
+    "name": "Suresh Rao",
+    "languages": [
+      "te",
+      "hi"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "bike",
+    "safety_certs": [
+      "gas",
+      "work_at_height"
+    ],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.35055,
+      "lat": 17.390155
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "drainage",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "sensor",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "mechanical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "compressor",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "settings",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "air_conditioner",
+        "fault_class": "install",
+        "level": 3
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "70b6f4c8-fad5-5825-9eca-3593e9160481",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_key": "c_ls",
+    "name": "Bharath Naidu",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "car",
+    "safety_certs": [
+      "electrical",
+      "gas"
+    ],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.396686,
+      "lat": 17.439547
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "water",
+        "level": 3
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "mechanical",
+        "level": 3
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 3
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.688,
+      "on_time_rate": 1.0,
+      "jobs_completed": 8
+    }
+  },
+  {
+    "id": "8df222ba-c995-5397-8a8e-39c8b2ebdc49",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_key": "c_ls",
+    "name": "Venkat Rao",
+    "languages": [
+      "te",
+      "ta",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "electrical",
+      "gas"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.381947,
+      "lat": 17.437431
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 5
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "water",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "electrical",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "mechanical",
+        "level": 4
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.611,
+      "on_time_rate": 0.806,
+      "jobs_completed": 8
+    }
+  },
+  {
+    "id": "9856d696-fef4-5687-8369-36f33de6a169",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_key": "c_ls",
+    "name": "Dinesh Chary",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "electrical",
+      "gas"
+    ],
+    "active": false,
+    "status": "available",
+    "last_location": {
+      "lon": 78.479213,
+      "lat": 17.45489
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 4
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "water",
+        "level": 3
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "mechanical",
+        "level": 5
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "29e7ef41-d073-54af-998a-3431fb1a292d",
+    "centre_id": "f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814",
+    "centre_key": "c_ls",
+    "name": "Jagan Goud",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "09:00",
+    "shift_end": "18:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [],
+    "active": true,
+    "status": "on_job",
+    "last_location": {
+      "lon": 78.407319,
+      "lat": 17.43572
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "drainage",
+        "level": 3
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "door",
+        "level": 2
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "water",
+        "level": 1
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Wavecrest",
+        "category_code": "washing_machine",
+        "fault_class": "mechanical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "cooling",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "electrical",
+        "level": 2
+      },
+      {
+        "brand": "Generic",
+        "category_code": "refrigerator",
+        "fault_class": "mechanical",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.0,
+      "on_time_rate": 1.0,
+      "jobs_completed": 2
+    }
+  },
+  {
+    "id": "43b0bd28-317c-56b4-b119-95d441103e14",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_key": "c_hw",
+    "name": "Pavan Babu",
+    "languages": [
+      "te",
+      "hi",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "car",
+    "safety_certs": [
+      "electrical"
+    ],
+    "active": true,
+    "status": "travelling",
+    "last_location": {
+      "lon": 78.411501,
+      "lat": 17.436356
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "safety",
+        "level": 3
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "c92ad931-e2cd-585b-b030-e513dbf4764b",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_key": "c_hw",
+    "name": "Ravi Mudiraj",
+    "languages": [
+      "te",
+      "en"
+    ],
+    "shift_start": "08:30",
+    "shift_end": "17:30",
+    "vehicle_type": "car",
+    "safety_certs": [
+      "electrical"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.478137,
+      "lat": 17.427248
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "safety",
+        "level": 4
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 0.84,
+      "on_time_rate": 0.88,
+      "jobs_completed": 0
+    }
+  },
+  {
+    "id": "2ecfe19f-66b4-5e92-9717-95dc1c06ad17",
+    "centre_id": "f14f733d-238c-5f57-8236-50d484d6f5f4",
+    "centre_key": "c_hw",
+    "name": "Dinesh Patel",
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "shift_start": "10:00",
+    "shift_end": "19:00",
+    "vehicle_type": "scooter",
+    "safety_certs": [
+      "electrical"
+    ],
+    "active": true,
+    "status": "available",
+    "last_location": {
+      "lon": 78.446992,
+      "lat": 17.411267
+    },
+    "last_ping_at": "2026-11-21T08:15:00+05:30",
+    "skills": [
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "heating",
+        "level": 2
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "leak",
+        "level": 4
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "service",
+        "level": 5
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "electrical",
+        "level": 3
+      },
+      {
+        "brand": "Heatwell",
+        "category_code": "water_heater",
+        "fault_class": "safety",
+        "level": 2
+      }
+    ],
+    "metrics": {
+      "first_time_fix_rate": 1.0,
+      "on_time_rate": 0.0,
+      "jobs_completed": 2
+    }
+  }
+]

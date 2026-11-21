@@ -1,0 +1,11 @@
+{
+  "name": "Keepwell Household",
+  "short_name": "Keepwell",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0B57D0",
+  "description": "Zero sign-in household surfaces for Keepwell service centres.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
