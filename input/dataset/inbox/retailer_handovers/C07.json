@@ -1,0 +1,35 @@
+{
+  "kind": "retailer_handover",
+  "retailer": "Digital Plaza Electronics",
+  "store_code": "DPE-HTC-02",
+  "order_ref": "DP-ORD-2026-884412",
+  "requested_job": "installation",
+  "preferred_window": "Sunday morning",
+  "notes": "Outdoor unit on external ledge, 9th floor. Customer pinned location on WhatsApp.",
+  "location": {
+    "lat": 17.4447,
+    "lon": 78.3795,
+    "name": "Raintree Towers, HITEC City"
+  },
+  "received_at": "2026-11-21T08:14:00+05:30",
+  "customer": {
+    "name": "Anand Iyer",
+    "phone": "+91 51759 78669"
+  },
+  "attachments": [
+    {
+      "file": "C07/01_photo.jpg",
+      "mime_type": "image/jpeg",
+      "caption": "invoice (attached by the retailer)"
+    },
+    {
+      "file": "C07/02_photo.jpg",
+      "mime_type": "image/jpeg",
+      "caption": "carton label (attached by the retailer)"
+    }
+  ],
+  "source": {
+    "channel": "retailer_api",
+    "system_id": "retailer-integration"
+  }
+}

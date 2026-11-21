@@ -1,0 +1,19 @@
+{
+  "kind": "brand_request",
+  "brand": "heatwell",
+  "ref": "HW-WC-2026-31877",
+  "complaint": "No hot water since morning. Heating light does not come on. In warranty.",
+  "reported_via": "brand website form",
+  "claimed_warranty": "in_warranty",
+  "priority_hint": "normal",
+  "brand_note": "Customer earlier serviced at Heatwell Authorised Service, Banjara Hills (c_hw). Routed to AquaCare RO and Geyser Services on capacity.",
+  "received_at": "2026-11-21T08:35:00+05:30",
+  "customer": {
+    "name": "Ananya Das",
+    "phone": "+91 58866 01996"
+  },
+  "source": {
+    "channel": "brand_api",
+    "system_id": "heatwell-integration"
+  }
+}

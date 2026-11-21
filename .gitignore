@@ -22,7 +22,6 @@ firestore-debug.log
 *.secret
 *.secret.*
 service-account*.json
-input/
 node_modules/
 storage/
 storage_part_a/

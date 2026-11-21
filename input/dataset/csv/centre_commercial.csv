@@ -1,0 +1,10 @@
+centre_id,commission_terms,payout_ref
+104db10d-cf58-540e-b1b1-ceb7874ba528,"{""keepwell_fee_pct"": 10, ""payout_cycle_days"": 7}",acct_ref_c_av
+cd48115c-1d4c-56d1-aa81-54e3d615236b,"{""keepwell_fee_pct"": 10, ""payout_cycle_days"": 7}",acct_ref_c_zn
+f1c5b94d-56f5-55db-9b31-8b6f844af952,"{""keepwell_fee_pct"": 12, ""payout_cycle_days"": 7}",acct_ref_c_fw
+9a38f5cb-0133-52d7-bfab-151e24a7dca0,"{""keepwell_fee_pct"": 15, ""payout_cycle_days"": 7}",acct_ref_c_cc
+4347bd3d-1925-5374-aa34-75318750a2db,"{""keepwell_fee_pct"": 15, ""payout_cycle_days"": 7}",acct_ref_c_aq
+5f2f0307-14f3-5d94-9675-cff9fffd3e4e,"{""keepwell_fee_pct"": 15, ""payout_cycle_days"": 7}",acct_ref_c_mh
+ce26d0ba-c7d5-5f00-abb0-865f6f20c20d,"{""keepwell_fee_pct"": 12, ""payout_cycle_days"": 7}",acct_ref_c_ip
+f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814,"{""keepwell_fee_pct"": 12, ""payout_cycle_days"": 7}",acct_ref_c_ls
+f14f733d-238c-5f57-8236-50d484d6f5f4,"{""keepwell_fee_pct"": 10, ""payout_cycle_days"": 7}",acct_ref_c_hw

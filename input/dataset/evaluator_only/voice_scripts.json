@@ -1,0 +1,51 @@
+{
+  "C01/01_voice.ogg": {
+    "kind": "audio",
+    "language": "te",
+    "speaker_voice": "te_m",
+    "background": "room_fan",
+    "transcript_original_script": "హలో, నేను రమేష్ బాబు, కొండాపూర్ ఆర్కిడ్ మెడోస్ నుంచి మాట్లాడుతున్నాను. మా బెడ్రూమ్ ఏసీ నుంచి నీళ్లు కారుతున్నాయి. నిన్న రాత్రి నుంచి గోడ మొత్తం తడిసిపోయింది. ఏసీ ఇంకా వారంటీలో ఉంది. దయచేసి ఎవరినైనా పంపండి."
+  },
+  "C03/01_call.ogg": {
+    "kind": "call",
+    "language": "hi",
+    "speaker_voice": "hi_f",
+    "background": "street_light",
+    "transcript_original_script": "नमस्ते, मेरी वॉशिंग मशीन में पानी नहीं निकल रहा है। स्क्रीन पर E21 आ रहा है। कल रात से कपड़े अंदर ही भीगे पड़े हैं। मशीन की वारंटी शायद अभी अभी खत्म हुई है। प्लीज़ किसी को भेज दीजिए।"
+  },
+  "C05/01_call.ogg": {
+    "kind": "call",
+    "language": "hi",
+    "speaker_voice": "hi_m",
+    "background": "room_fan",
+    "transcript_original_script": "भैया, गीज़र में दिक्कत है। नल को छूते हैं तो हल्का करंट लगता है। कल बेटे को भी लगा। हमने गीज़र बंद कर दिया है। जल्दी किसी को भेजिए, बच्चों का मामला है।"
+  },
+  "C11/01_call.ogg": {
+    "kind": "call",
+    "language": "en",
+    "speaker_voice": "en_m",
+    "background": "street_light",
+    "transcript_original_script": "Hi, my split AC at home in Shamshabad is not cooling. It blows warm air after a few minutes. The unit is about two years old. Can somebody come today?"
+  },
+  "C12/01_call.ogg": {
+    "kind": "call",
+    "language": "te",
+    "speaker_voice": "te_m",
+    "background": "room_fan",
+    "transcript_original_script": "మీరు మొన్ననే వాషింగ్ మెషీన్ బాగు చేశారు కదా. మళ్లీ అదే సమస్య వచ్చింది. నీళ్లు బయటకు పోవడం లేదు. ఇది రెండోసారి. దయచేసి ఈసారి సరిగ్గా చూడండి."
+  },
+  "C15/01_call.ogg": {
+    "kind": "call",
+    "language": "hi",
+    "speaker_voice": "hi_f",
+    "background": "street_light",
+    "transcript_original_script": "मशीन चलाते ही जलने जैसी बदबू आ रही है और मोटर के पास से धुआं भी निकला। मैंने स्विच बंद कर दिया है। अब क्या करूं?"
+  },
+  "C16/01_call.ogg": {
+    "kind": "call",
+    "language": "te",
+    "speaker_voice": "te_m",
+    "background": "traffic",
+    "transcript_original_script": "ఏసీ బయట యూనిట్ లోంచి శబ్దం వస్తోంది, ఫ్యాన్ తిరగడం లేదు. కొంచెం సేపు ఆన్ చేస్తే వేడిగా అవుతుంది, చల్లదనం రావడం లేదు. రెండు రోజులుగా ఇలాగే ఉంది."
+  }
+}

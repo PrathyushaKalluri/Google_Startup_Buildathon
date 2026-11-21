@@ -1,0 +1,19 @@
+{
+  "kind": "brand_request",
+  "brand": "aerovane",
+  "ref": "AV-SRQ-557019",
+  "complaint": "AC cooling very weak since 3 days, claims warranty",
+  "reported_via": "brand app",
+  "claimed_warranty": "in_warranty",
+  "priority_hint": "normal",
+  "brand_note": "Forwarded to Cool Craft Appliance Services for scheduling.",
+  "received_at": "2026-11-21T08:50:00+05:30",
+  "customer": {
+    "name": "Deepak Chowdary",
+    "phone": "+91 58028 98021"
+  },
+  "source": {
+    "channel": "brand_api",
+    "system_id": "aerovane-integration"
+  }
+}

@@ -1,0 +1,19 @@
+id,centre_id,channel,number_ref,provider_ref,status
+6f294454-b372-5971-9779-f0540fd21643,104db10d-cf58-540e-b1b1-ceb7874ba528,voice,+91 57986 43261,tel-c_av,active
+2e6d0f3b-d50e-59f0-abda-99db00f9220c,104db10d-cf58-540e-b1b1-ceb7874ba528,whatsapp,+91 56224 37552,wa-c_av,active
+17d1c0d0-e26d-569e-b7be-1bdc30e25339,cd48115c-1d4c-56d1-aa81-54e3d615236b,voice,+91 59841 40159,tel-c_zn,active
+2dc2790b-1ca7-5c36-b150-e1f3f8a1c431,cd48115c-1d4c-56d1-aa81-54e3d615236b,whatsapp,+91 56556 55089,wa-c_zn,active
+48339b6a-136a-533f-8f28-c592320c14f2,f1c5b94d-56f5-55db-9b31-8b6f844af952,voice,+91 53536 70650,tel-c_fw,active
+f364f93b-7f9e-5e16-8765-a3079c43a0ba,f1c5b94d-56f5-55db-9b31-8b6f844af952,whatsapp,+91 59885 77764,wa-c_fw,active
+dca7811a-d556-5245-9741-a438d6a3bb4f,9a38f5cb-0133-52d7-bfab-151e24a7dca0,voice,+91 56509 70841,tel-c_cc,active
+fee19e35-d316-5afc-9a9d-71fdb890c94a,9a38f5cb-0133-52d7-bfab-151e24a7dca0,whatsapp,+91 53921 25456,wa-c_cc,active
+16f95608-d101-5386-92ec-5429c9863393,4347bd3d-1925-5374-aa34-75318750a2db,voice,+91 52007 40412,tel-c_aq,active
+9ae39469-94ca-55eb-8305-5d2e70a4815d,4347bd3d-1925-5374-aa34-75318750a2db,whatsapp,+91 50104 63940,wa-c_aq,active
+67a39472-6713-5783-afd6-9fe4ec7a6c82,5f2f0307-14f3-5d94-9675-cff9fffd3e4e,voice,+91 55802 10503,tel-c_mh,active
+51fa7244-eac1-5d05-9bdb-bec3b469ada9,5f2f0307-14f3-5d94-9675-cff9fffd3e4e,whatsapp,+91 52807 86488,wa-c_mh,active
+a4dbf51e-dcf3-56b3-8a02-394ba32c1c27,ce26d0ba-c7d5-5f00-abb0-865f6f20c20d,voice,+91 56855 97018,tel-c_ip,active
+ad107f62-e279-5825-810e-6794a7eb6b70,ce26d0ba-c7d5-5f00-abb0-865f6f20c20d,whatsapp,+91 51156 73520,wa-c_ip,active
+25931ab7-fd38-5a28-99e3-9897af2c5684,f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814,voice,+91 59576 48547,tel-c_ls,active
+1bc30364-797c-5454-a6ba-564fcaf791ce,f16a39a6-cf7d-5d7b-8a6b-0fabfb2ab814,whatsapp,+91 50866 46234,wa-c_ls,active
+b968a779-c17d-5268-a0bc-884455b57a91,f14f733d-238c-5f57-8236-50d484d6f5f4,voice,+91 50852 00863,tel-c_hw,active
+5f29c62f-0a83-5e93-a4ec-96cf1ee8e4c1,f14f733d-238c-5f57-8236-50d484d6f5f4,whatsapp,+91 53842 96072,wa-c_hw,active

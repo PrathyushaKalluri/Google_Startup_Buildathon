@@ -1,0 +1,900 @@
+[
+ {
+  "table": "brand",
+  "rows": 7,
+  "columns": [
+   "id",
+   "name",
+   "forwarding_enabled",
+   "created_at"
+  ]
+ },
+ {
+  "table": "appliance_category",
+  "rows": 5,
+  "columns": [
+   "code",
+   "name"
+  ]
+ },
+ {
+  "table": "category_norm",
+  "rows": 5,
+  "columns": [
+   "id",
+   "category_code",
+   "service_interval_months",
+   "typical_life_years",
+   "valid_from",
+   "valid_to"
+  ]
+ },
+ {
+  "table": "appliance_model",
+  "rows": 21,
+  "columns": [
+   "id",
+   "brand_id",
+   "category_code",
+   "model_code",
+   "series",
+   "year_from",
+   "specs",
+   "created_at"
+  ]
+ },
+ {
+  "table": "rate_card",
+  "rows": 168,
+  "columns": [
+   "id",
+   "category_code",
+   "job_type",
+   "complexity_band",
+   "visit_fee_paise",
+   "labour_paise",
+   "valid_from",
+   "valid_to"
+  ]
+ },
+ {
+  "table": "kb_document",
+  "rows": 21,
+  "columns": [
+   "id",
+   "title",
+   "brand_id",
+   "category_code",
+   "model_series",
+   "doc_type",
+   "language",
+   "version_year",
+   "valid_to",
+   "authority",
+   "audience",
+   "storage_uri",
+   "file_search_store",
+   "file_search_doc",
+   "rights_status",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "coverage_plan",
+  "rows": 10,
+  "columns": [
+   "id",
+   "kind",
+   "provider_name",
+   "brand_id",
+   "terms_doc_id",
+   "covers",
+   "created_at"
+  ]
+ },
+ {
+  "table": "safe_fix_catalogue",
+  "rows": 14,
+  "columns": [
+   "id",
+   "code",
+   "category_code",
+   "brand_id",
+   "model_series",
+   "fault_family",
+   "title",
+   "symptom_terms",
+   "steps",
+   "step_count",
+   "est_minutes",
+   "reversible",
+   "needs_tools",
+   "opens_panel",
+   "manual_doc_id",
+   "manual_page",
+   "worst_case",
+   "reviewer_name",
+   "reviewer_role",
+   "reviewed_on",
+   "review_due",
+   "status",
+   "created_at"
+  ]
+ },
+ {
+  "table": "urgency_rule",
+  "rows": 12,
+  "columns": [
+   "id",
+   "code",
+   "class",
+   "category_code",
+   "description",
+   "condition",
+   "protective_message",
+   "source",
+   "active",
+   "created_at"
+  ]
+ },
+ {
+  "table": "service_centre",
+  "rows": 9,
+  "columns": [
+   "id",
+   "name",
+   "address_line",
+   "pincode",
+   "location",
+   "service_pincodes",
+   "categories",
+   "hours",
+   "default_language",
+   "onboarding_status",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "centre_commercial",
+  "rows": 9,
+  "columns": [
+   "centre_id",
+   "commission_terms",
+   "payout_ref"
+  ]
+ },
+ {
+  "table": "centre_channel",
+  "rows": 18,
+  "columns": [
+   "id",
+   "centre_id",
+   "channel",
+   "number_ref",
+   "provider_ref",
+   "status"
+  ]
+ },
+ {
+  "table": "centre_brand_authorisation",
+  "rows": 24,
+  "columns": [
+   "id",
+   "centre_id",
+   "brand_id",
+   "level",
+   "valid_from",
+   "valid_to",
+   "evidence_ref"
+  ]
+ },
+ {
+  "table": "centre_capacity",
+  "rows": 76,
+  "columns": [
+   "id",
+   "centre_id",
+   "category_code",
+   "job_type",
+   "daily_slots",
+   "urgent_holdback"
+  ]
+ },
+ {
+  "table": "centre_price",
+  "rows": 696,
+  "columns": [
+   "id",
+   "centre_id",
+   "category_code",
+   "job_type",
+   "complexity_band",
+   "visit_fee_paise",
+   "labour_paise",
+   "valid_from",
+   "valid_to"
+  ]
+ },
+ {
+  "table": "retailer",
+  "rows": 5,
+  "columns": [
+   "id",
+   "name",
+   "city",
+   "created_at"
+  ]
+ },
+ {
+  "table": "technician",
+  "rows": 37,
+  "columns": [
+   "id",
+   "centre_id",
+   "name",
+   "phone_enc",
+   "phone_hash",
+   "languages",
+   "shift_start",
+   "shift_end",
+   "route_anchor_type",
+   "route_anchor",
+   "vehicle_type",
+   "tool_kit",
+   "identity_verified",
+   "safety_certs",
+   "active",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "technician_skill",
+  "rows": 534,
+  "columns": [
+   "id",
+   "technician_id",
+   "centre_id",
+   "brand_id",
+   "category_code",
+   "fault_class",
+   "level",
+   "certified_on",
+   "certificate_ref"
+  ]
+ },
+ {
+  "table": "technician_metrics",
+  "rows": 89,
+  "columns": [
+   "technician_id",
+   "category_code",
+   "period_end",
+   "jobs",
+   "first_time_fix_rate",
+   "on_time_rate",
+   "repeat_visit_rate_30d",
+   "acceptance_rate",
+   "avg_quote_variance_pct",
+   "computed_at",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "parts_centre",
+  "rows": 8,
+  "columns": [
+   "id",
+   "name",
+   "address_line",
+   "pincode",
+   "location",
+   "hours",
+   "pickup_supported",
+   "delivery_supported",
+   "fill_rate",
+   "stock_accuracy",
+   "active",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "parts_centre_brand",
+  "rows": 48,
+  "columns": [
+   "parts_centre_id",
+   "brand_id",
+   "is_authorised"
+  ]
+ },
+ {
+  "table": "part_catalogue",
+  "rows": 144,
+  "columns": [
+   "id",
+   "brand_id",
+   "part_no",
+   "name",
+   "kind",
+   "substitution_group",
+   "mrp_paise",
+   "warranty_months"
+  ]
+ },
+ {
+  "table": "part_compatibility",
+  "rows": 337,
+  "columns": [
+   "part_id",
+   "model_id",
+   "revision"
+  ]
+ },
+ {
+  "table": "stock",
+  "rows": 829,
+  "columns": [
+   "id",
+   "holder_type",
+   "holder_id",
+   "centre_id",
+   "part_id",
+   "quantity",
+   "as_of",
+   "source",
+   "confidence"
+  ]
+ },
+ {
+  "table": "community",
+  "rows": 12,
+  "columns": [
+   "id",
+   "name",
+   "pincode",
+   "location",
+   "contact_ref",
+   "created_at"
+  ]
+ },
+ {
+  "table": "household",
+  "rows": 165,
+  "columns": [
+   "id",
+   "phone_enc",
+   "phone_hash",
+   "phone_verified_at",
+   "verified_via",
+   "language",
+   "address_line",
+   "pincode",
+   "location",
+   "location_verified",
+   "community_id",
+   "access_notes",
+   "preferred_slots",
+   "status",
+   "merged_into_id",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "household_member",
+  "rows": 297,
+  "columns": [
+   "id",
+   "household_id",
+   "name",
+   "phone_enc",
+   "phone_hash",
+   "role",
+   "may_raise_ticket",
+   "created_at"
+  ]
+ },
+ {
+  "table": "household_centre_link",
+  "rows": 246,
+  "columns": [
+   "household_id",
+   "centre_id",
+   "first_contact_at",
+   "last_served_at",
+   "contact_count"
+  ]
+ },
+ {
+  "table": "appliance",
+  "rows": 341,
+  "columns": [
+   "id",
+   "household_id",
+   "category_code",
+   "brand_id",
+   "model_id",
+   "model_text",
+   "serial_no",
+   "purchase_date",
+   "purchase_source",
+   "invoice_file_ref",
+   "install_date",
+   "installed_by",
+   "warranty_start",
+   "warranty_end",
+   "coverage_plan_id",
+   "usage_profile",
+   "room",
+   "care_index",
+   "care_index_reasons",
+   "care_index_updated_at",
+   "last_service_at",
+   "last_served_centre_id",
+   "next_due_at",
+   "serial_norm",
+   "identity_status",
+   "merged_into_id",
+   "first_seen_via",
+   "first_seen_centre_id",
+   "status",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "external_ref",
+  "rows": 844,
+  "columns": [
+   "id",
+   "entity_type",
+   "entity_id",
+   "ref_type",
+   "ref_norm",
+   "owner_type",
+   "owner_id",
+   "verified",
+   "first_seen_at"
+  ]
+ },
+ {
+  "table": "scoring_config",
+  "rows": 4,
+  "columns": [
+   "id",
+   "kind",
+   "name",
+   "weights",
+   "params",
+   "valid_from",
+   "created_by"
+  ]
+ },
+ {
+  "table": "brand_referral",
+  "rows": 42,
+  "columns": [
+   "id",
+   "centre_id",
+   "brand_id",
+   "brand_request_ref",
+   "received_at",
+   "payload",
+   "claimed_entitlement",
+   "authority_checked",
+   "household_contacted_at",
+   "status"
+  ]
+ },
+ {
+  "table": "retailer_handover",
+  "rows": 7,
+  "columns": [
+   "id",
+   "centre_id",
+   "retailer_id",
+   "order_ref",
+   "invoice_no",
+   "purchase_date",
+   "requested_job",
+   "payload",
+   "received_at",
+   "status"
+  ]
+ },
+ {
+  "table": "ticket",
+  "rows": 395,
+  "columns": [
+   "id",
+   "centre_id",
+   "household_id",
+   "appliance_id",
+   "job_type",
+   "raw_inputs",
+   "case_card",
+   "safety_flag",
+   "safety_reason",
+   "entitlement",
+   "coverage_plan_id",
+   "visit_address",
+   "visit_location",
+   "status",
+   "first_visit_by",
+   "created_at",
+   "updated_at",
+   "closed_at",
+   "trigger",
+   "channel",
+   "brand_referral_id",
+   "retailer_handover_id",
+   "origin_reminder_id",
+   "urgency_class",
+   "needed_by",
+   "resolution",
+   "closure_otp_ref",
+   "closure_confirmed_at"
+  ]
+ },
+ {
+  "table": "conversation",
+  "rows": 434,
+  "columns": [
+   "id",
+   "centre_id",
+   "ticket_id",
+   "household_id",
+   "channel",
+   "modality",
+   "parent_conversation_id",
+   "language",
+   "started_at",
+   "ended_at",
+   "end_reason",
+   "recording_consent",
+   "transcript_uri",
+   "summary"
+  ]
+ },
+ {
+  "table": "urgency_assessment",
+  "rows": 369,
+  "columns": [
+   "id",
+   "centre_id",
+   "ticket_id",
+   "class",
+   "rule_codes",
+   "facts",
+   "assessed_by",
+   "reason",
+   "protective_steps_sent",
+   "created_at"
+  ]
+ },
+ {
+  "table": "consent_gate",
+  "rows": 440,
+  "columns": [
+   "id",
+   "centre_id",
+   "ticket_id",
+   "conversation_id",
+   "gate",
+   "asked_at",
+   "answer",
+   "answered_at",
+   "choice",
+   "not_asked_reason"
+  ]
+ },
+ {
+  "table": "clarifying_qa",
+  "rows": 660,
+  "columns": [
+   "id",
+   "centre_id",
+   "ticket_id",
+   "conversation_id",
+   "seq",
+   "question",
+   "answer",
+   "answer_source",
+   "asked_at"
+  ]
+ },
+ {
+  "table": "diagnosis_session",
+  "rows": 39,
+  "columns": [
+   "id",
+   "centre_id",
+   "ticket_id",
+   "conversation_id",
+   "provider",
+   "model",
+   "link_route",
+   "started_at",
+   "ended_at",
+   "duration_s",
+   "video_on",
+   "compression_on",
+   "resumptions",
+   "frames_consent",
+   "end_reason",
+   "observations"
+  ]
+ },
+ {
+  "table": "diagnosis_media",
+  "rows": 13,
+  "columns": [
+   "id",
+   "centre_id",
+   "session_id",
+   "kind",
+   "storage_uri",
+   "retain_until",
+   "created_at"
+  ]
+ },
+ {
+  "table": "fix_attempt",
+  "rows": 118,
+  "columns": [
+   "id",
+   "centre_id",
+   "ticket_id",
+   "catalogue_id",
+   "conversation_id",
+   "session_id",
+   "offered_at",
+   "started_at",
+   "ended_at",
+   "steps_done",
+   "outcome",
+   "household_report",
+   "observed_on_video"
+  ]
+ },
+ {
+  "table": "appliance_event",
+  "rows": 817,
+  "columns": [
+   "id",
+   "appliance_id",
+   "event_type",
+   "occurred_at",
+   "ticket_id",
+   "details",
+   "centre_id",
+   "visibility"
+  ]
+ },
+ {
+  "table": "quote",
+  "rows": 497,
+  "columns": [
+   "id",
+   "ticket_id",
+   "version",
+   "quote_type",
+   "valid_until",
+   "approved_at",
+   "approval_channel",
+   "approval_ref",
+   "created_at",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "quote_line",
+  "rows": 1747,
+  "columns": [
+   "id",
+   "quote_id",
+   "line_type",
+   "description",
+   "part_id",
+   "quantity",
+   "amount_paise",
+   "payer",
+   "plan_id",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "visit",
+  "rows": 395,
+  "columns": [
+   "id",
+   "ticket_id",
+   "technician_id",
+   "centre_id",
+   "planned_start",
+   "planned_end",
+   "is_return_visit",
+   "parent_visit_id",
+   "check_in_at",
+   "check_in_location",
+   "check_out_at",
+   "checklist",
+   "outcome",
+   "outcome_notes",
+   "root_cause_confirmed",
+   "closure_otp_ref",
+   "closure_confirmed_at",
+   "rating",
+   "created_at",
+   "updated_at"
+  ]
+ },
+ {
+  "table": "technician_availability",
+  "rows": 551,
+  "columns": [
+   "id",
+   "technician_id",
+   "centre_id",
+   "slot_start",
+   "slot_end",
+   "status",
+   "held_until",
+   "visit_id"
+  ]
+ },
+ {
+  "table": "visit_part_used",
+  "rows": 137,
+  "columns": [
+   "id",
+   "visit_id",
+   "part_id",
+   "serial_no",
+   "quantity",
+   "source_type",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "reservation",
+  "rows": 6,
+  "columns": [
+   "id",
+   "centre_id",
+   "part_id",
+   "quantity",
+   "holder_type",
+   "holder_id",
+   "visit_id",
+   "ready_by",
+   "status",
+   "created_at"
+  ]
+ },
+ {
+  "table": "route",
+  "rows": 353,
+  "columns": [
+   "id",
+   "technician_id",
+   "route_date",
+   "batched",
+   "optimiser",
+   "planned_travel_min",
+   "actual_travel_min",
+   "created_at",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "route_stop",
+  "rows": 362,
+  "columns": [
+   "route_id",
+   "seq",
+   "visit_id",
+   "planned_arrival",
+   "actual_arrival",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "settlement_line",
+  "rows": 970,
+  "columns": [
+   "id",
+   "ticket_id",
+   "party_type",
+   "party_id",
+   "direction",
+   "amount_paise",
+   "status",
+   "payment_ref",
+   "due_at",
+   "settled_at",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "feedback",
+  "rows": 245,
+  "columns": [
+   "id",
+   "ticket_id",
+   "visit_id",
+   "from_type",
+   "rating",
+   "reason_codes",
+   "comment",
+   "is_dispute",
+   "resolution",
+   "created_at",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "reminder",
+  "rows": 166,
+  "columns": [
+   "id",
+   "household_id",
+   "appliance_id",
+   "reminder_type",
+   "due_on",
+   "template_name",
+   "whatsapp_category",
+   "status",
+   "scheduled_at",
+   "sent_at",
+   "delivered_at",
+   "read_at",
+   "action_taken",
+   "ticket_id",
+   "created_at",
+   "centre_id"
+  ]
+ },
+ {
+  "table": "experience_case",
+  "rows": 674,
+  "columns": [
+   "id",
+   "source_visit_id",
+   "brand_id",
+   "category_code",
+   "model_series",
+   "pincode",
+   "symptom_text",
+   "error_code",
+   "root_cause",
+   "parts",
+   "duration_min",
+   "cost_paise",
+   "outcome",
+   "verified_by_technician",
+   "embedding",
+   "created_at",
+   "self_fix_tried"
+  ]
+ },
+ {
+  "table": "consent_ledger",
+  "rows": 993,
+  "columns": [
+   "id",
+   "subject_type",
+   "subject_id",
+   "purpose",
+   "scope_centre_id",
+   "notice_version",
+   "granted_at",
+   "channel",
+   "withdrawn_at",
+   "evidence"
+  ]
+ }
+]

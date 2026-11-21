@@ -1,0 +1,18 @@
+{
+  "kind": "retailer_handover",
+  "retailer": "Sri Sai Electronics, Kukatpally",
+  "store_code": "SSE-KPHB-01",
+  "order_ref": "SSE-ORD-77120",
+  "requested_job": "installation",
+  "preferred_window": "Monday evening",
+  "notes": "Front-load washer delivered yesterday, needs inlet and outlet connection and a demo.",
+  "received_at": "2026-11-21T09:15:00+05:30",
+  "customer": {
+    "name": "Mahesh Raj",
+    "phone": "+91 58800 49668"
+  },
+  "source": {
+    "channel": "retailer_api",
+    "system_id": "retailer-integration"
+  }
+}

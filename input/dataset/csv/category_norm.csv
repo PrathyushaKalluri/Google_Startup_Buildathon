@@ -1,0 +1,6 @@
+id,category_code,service_interval_months,typical_life_years,valid_from,valid_to
+8aa65975-ce07-5720-9832-3ad1b4836ed6,air_conditioner,6,10,2025-09-01,\N
+a87b7a22-cb57-5ed3-b0a7-dd504aec9a5f,refrigerator,12,12,2025-09-01,\N
+ae97ecb3-a02b-525f-a19b-d8968538214a,washing_machine,12,9,2025-09-01,\N
+52aa5f14-3367-5f35-b88e-0fedad352e6c,water_purifier,4,8,2025-09-01,\N
+271ad862-bc9a-51cb-b416-c289947ff3f9,water_heater,12,8,2025-09-01,\N

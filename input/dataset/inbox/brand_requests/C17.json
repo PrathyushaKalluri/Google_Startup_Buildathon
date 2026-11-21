@@ -1,0 +1,19 @@
+{
+  "kind": "brand_request",
+  "brand": "zenith",
+  "ref": "ZN-CRM-2026-0481923",
+  "complaint": "Freezer full of frost, fridge section warm, display shows dF. Customer says unit is under warranty.",
+  "reported_via": "brand call centre",
+  "claimed_warranty": "in_warranty",
+  "priority_hint": "normal",
+  "brand_note": "Customer asked for the nearest authorised centre. Serial on record: ZN23FI0902218.",
+  "received_at": "2026-11-21T08:20:00+05:30",
+  "customer": {
+    "name": "Sandeep Kulkarni",
+    "phone": "+91 57575 13774"
+  },
+  "source": {
+    "channel": "brand_api",
+    "system_id": "zenith-integration"
+  }
+}

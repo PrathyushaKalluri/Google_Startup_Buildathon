@@ -1,0 +1,160 @@
+"""Layer 6: the safe-fix catalogue and the urgency rules (data only; rows are built by build_safe_fixes / build_urgency_rules).
+Every fix obeys the threshold in the design document: reversible, worst case is no change, no tools, nothing opened except a cover the
+maker's manual names for the household, one sentence and about two minutes per step, six steps at most, checkable, named reviewer.
+Excluded and never listed: factory reset, firmware, battery removal, parts, mains wiring, anything inside the unit."""
+from common import *
+
+REVIEWERS = {
+    "av": ("Imran Qureshi", "Senior technician, Aerovane authorised service"),
+    "zn": ("S. Padmavathi", "Service lead, Zenith authorised service"),
+    "wc": ("K. Anjaiah", "Senior technician, Wavecrest authorised service"),
+    "fl": ("M. Suresh Babu", "Refrigeration lead technician"),
+    "pl": ("R. Divya", "Water-purifier service lead"),
+    "hw": ("V. Narasimha Rao", "Electrical safety trained technician, Heatwell authorised service"),
+    "kw": ("Dr. L. Varalakshmi", "Keepwell technical reviewer"),
+}
+
+FIXES = [
+ dict(code="SF-AC-FILTER-AV", cat="air_conditioner", brand="aerovane", fam="cooling", rev="av", manual="av_manual", panel=True, minutes=10,
+      title="Clean the washable air filters (Aerovane)", symptoms=["weak cooling", "airflow weak", "smell when started"],
+      steps=[("Switch the AC off with the remote and then at the wall switch.", "The display is dark."),
+             ("Lift the front panel gently until it stays open (the manual's 'open the front grille' step).", "The panel holds by itself."),
+             ("Slide each mesh filter straight out.", "Both filters are in your hands."),
+             ("Rinse them under a tap with plain water, no hot water, and shake off the water.", "Water runs clear."),
+             ("Dry them in shade for 10 minutes, slide them back and close the panel.", "The panel clicks shut."),
+             ("Switch on and set cooling mode; wait 15 minutes.", "Airflow is stronger.")],
+      worst="Filters are put back wet; the household is told to dry them first.", stop="An error code shows after switching on, or the panel does not open freely.", due="2027-03-30", reviewed="2026-09-28"),
+ dict(code="SF-AC-FILTER-ZN", cat="air_conditioner", brand="zenith", fam="cooling", rev="zn", manual="zn_ac_manual", panel=True, minutes=10,
+      title="Clean the washable air filters (Zenith)", symptoms=["weak cooling", "airflow weak", "smell when started"],
+      steps=[("Switch the AC off with the remote and then at the wall switch.", "The display is dark."),
+             ("Open the front panel from the two side notches as the manual shows.", "The panel holds by itself."),
+             ("Lift each filter out of its slot.", "Both filters are out."),
+             ("Rinse them under a tap with plain water and shake off the water.", "Water runs clear."),
+             ("Dry them in shade for 10 minutes, refit and close the panel.", "The panel clicks shut."),
+             ("Switch on, set cooling mode and wait 15 minutes.", "Airflow is stronger.")],
+      worst="Filters are put back wet; the household is told to dry them first.", stop="An error code shows after switching on, or a filter is torn.", due="2027-03-30", reviewed="2026-09-28"),
+ dict(code="SF-AC-DRAINLOOK", cat="air_conditioner", brand=None, fam="drainage", rev="kw", manual="kw_safe_fix_catalogue", panel=False, minutes=6,
+      title="Look at the drain hose from the floor", symptoms=["water dripping indoors", "wall wet", "water from front panel"],
+      steps=[("Switch the AC off at the wall switch and put a towel or bucket under the leak.", "The unit is off."),
+             ("Standing on the floor, follow the thin drain hose from the unit to where it leaves the wall.", "You can see the hose."),
+             ("Check that the hose has no kink and that its end is lower than the unit.", "No kink, end is lower."),
+             ("Run the AC for 30 minutes and watch the leak point.", "Dripping stops.")],
+      worst="Nothing changes; the household is told to leave the AC off.", stop="The hose cannot be seen without a ladder, or water is near a switchboard.", due="2027-03-30", reviewed="2026-09-30"),
+ dict(code="SF-AC-RESET", cat="air_conditioner", brand=None, fam="electrical", rev="kw", manual="kw_safe_fix_catalogue", panel=False, minutes=5,
+      title="Switch the AC off at the MCB for two minutes", symptoms=["error code", "not responding to remote", "communication error"],
+      steps=[("Switch the AC off with the remote.", "The display is dark."),
+             ("Switch off its MCB or wall switch and wait two minutes.", "Two minutes have passed."),
+             ("Switch the MCB back on and start the AC.", "The unit starts normally.")],
+      worst="Nothing changes.", stop="An error code shows again after the restart, or the MCB trips.", due="2026-10-02", reviewed="2026-04-02", status="review_due"),
+ dict(code="SF-WM-DRAINFILTER-WC", cat="washing_machine", brand="wavecrest", fam="drainage", rev="wc", manual="wc_washer_manual", panel=True, minutes=12,
+      title="Clean the drain pump filter (Wavecrest)", symptoms=["will not drain", "E21", "water stays in drum"],
+      steps=[("Switch the machine off and pull the plug out of the socket.", "The plug is out."),
+             ("Place a flat tray and towels in front of the machine and open the small filter cover at the bottom right.", "The cover is open."),
+             ("Turn the filter a quarter turn left slowly and let the water drain into the tray.", "Water stops flowing."),
+             ("Take out lint, coins and clips, and rinse the filter.", "The filter is clean."),
+             ("Refit the filter fully, close the cover and wipe the floor.", "The cover is closed."),
+             ("Plug in and run a drain or spin cycle.", "The drum empties.")],
+      worst="A little water on the floor; the household is told to stop if the filter will not turn.", stop="Water leaks from the cover, or the filter will not turn.", due="2027-03-30", reviewed="2026-10-12"),
+ dict(code="SF-WM-DRAINFILTER-ZN", cat="washing_machine", brand="zenith", fam="drainage", rev="zn", manual="zn_fridge_washer", panel=True, minutes=12,
+      title="Clean the drain pump filter (Zenith AquaFlow)", symptoms=["will not drain", "water stays in drum"],
+      steps=[("Switch the machine off and pull the plug out of the socket.", "The plug is out."),
+             ("Open the lower service flap and place a tray under it.", "The flap is open."),
+             ("Turn the filter left slowly and let the water drain.", "Water stops flowing."),
+             ("Remove lint and coins; rinse the filter.", "The filter is clean."),
+             ("Refit the filter and close the flap.", "The flap is closed."),
+             ("Plug in and run a drain cycle.", "The drum empties.")],
+      worst="A little water on the floor.", stop="Water leaks from the flap, or the filter will not turn.", due="2027-03-30", reviewed="2026-10-12"),
+ dict(code="SF-WM-LID", cat="washing_machine", brand="wavecrest", fam="door", rev="wc", manual="wc_washer_manual", panel=False, minutes=5,
+      title="Clear the lid and press it shut", symptoms=["lid error", "will not start", "beeps"],
+      steps=[("Switch the machine off at the wall and remove anything caught under the lid edge.", "The lid edge is clear."),
+             ("Close the lid and press down firmly at the centre until you hear a click.", "You heard a click."),
+             ("Switch on and press start.", "The cycle starts.")],
+      worst="Nothing changes.", stop="The lid hook is broken, or the machine smells of burning.", due="2027-03-30", reviewed="2026-10-12"),
+ dict(code="SF-WM-HOSE", cat="washing_machine", brand=None, fam="drainage", rev="kw", manual="kw_safe_fix_catalogue", panel=False, minutes=8,
+      title="Check the outlet hose for a kink", symptoms=["will not drain", "water drains slowly", "repeat drain complaint"],
+      steps=[("Switch the machine off and pull the plug out.", "The plug is out."),
+             ("Look along the outlet hose from the side without moving the machine.", "You can see the hose."),
+             ("If it is bent sharply, straighten it by hand.", "The hose runs in a smooth curve."),
+             ("Make sure the hose end is not pushed deep into the standpipe.", "The end sits loose above the water line."),
+             ("Plug in and run a drain cycle.", "The drum empties.")],
+      worst="Nothing changes.", stop="The machine has to be moved to see the hose, or water leaks from the hose.", due="2027-03-30", reviewed="2026-09-30"),
+ dict(code="SF-FR-SEAL-FL", cat="refrigerator", brand="frostline", fam="cooling", rev="fl", manual="fl_fridge_manual", panel=False, minutes=8,
+      title="Check the door seal, vents and thermostat (Frostline)", symptoms=["frost", "warm interior", "freezer iced over"],
+      steps=[("Close the door on a sheet of paper and pull it out; check the paper grips all the way round.", "The paper grips."),
+             ("Look inside for items blocking the air vents at the back.", "Vents are clear."),
+             ("Check that the thermostat dial is at the mid setting.", "Dial is at the mid setting."),
+             ("Leave the door shut for two hours and check the temperature again.", "It recovers.")],
+      worst="Nothing changes.", stop="The compressor does not start, or food is at risk.", due="2027-03-30", reviewed="2026-10-05"),
+ dict(code="SF-FR-SEAL-ZN", cat="refrigerator", brand="zenith", fam="cooling", rev="zn", manual="zn_fridge_washer", panel=False, minutes=8,
+      title="Check the door seal, vents and thermostat (Zenith)", symptoms=["frost", "dF", "warm interior"],
+      steps=[("Close the door on a sheet of paper and pull it out; check the paper grips all the way round.", "The paper grips."),
+             ("Look inside for items blocking the air vents.", "Vents are clear."),
+             ("Check the display set-point is at the recommended setting.", "Set-point is correct."),
+             ("Leave the door shut for two hours and check again.", "It recovers.")],
+      worst="Nothing changes.", stop="The compressor does not start, or food is at risk.", due="2027-03-30", reviewed="2026-10-05"),
+ dict(code="SF-ANY-POWER", cat="refrigerator", brand=None, fam="electrical", rev="kw", manual="kw_safe_fix_catalogue", panel=False, minutes=5,
+      title="Check the plug and socket", symptoms=["does not switch on", "no power", "not working"],
+      steps=[("Check that the plug is pushed in fully.", "The plug is seated."),
+             ("Plug a lamp or phone charger into the same socket.", "It works."),
+             ("Look at the MCB for this circuit.", "The MCB is up.")],
+      worst="Nothing changes.", stop="The MCB trips again, or there is a burning smell.", due="2027-03-30", reviewed="2026-09-30"),
+ dict(code="SF-RO-FLOW", cat="water_purifier", brand="purelo", fam="service", rev="pl", manual="pl_ro_manual", panel=False, minutes=8,
+      title="Check the inlet tap and adaptor, then flush", symptoms=["low flow", "no water"],
+      steps=[("Check that the water inlet tap is fully open.", "The tap is open."),
+             ("Check that the power adaptor is plugged in and its light is on.", "The light is on."),
+             ("Run the purifier tap for two minutes as the manual says.", "Flow returns.")],
+      worst="Nothing changes.", stop="Water leaks at a cartridge.", due="2027-03-30", reviewed="2026-10-08"),
+ dict(code="SF-GY-SWITCH", cat="water_heater", brand="heatwell", fam="heating", rev="hw", manual="hw_geyser_manual", panel=False, minutes=6,
+      title="Check the switch and thermostat setting", symptoms=["no hot water", "indicator light off"],
+      steps=[("Check that the geyser switch is on and its indicator light is lit.", "The light is on."),
+             ("Check that the thermostat dial is at the mid setting.", "Dial is at the mid setting."),
+             ("Wait ten minutes and check that the heating light comes on.", "The heating light is on.")],
+      worst="Nothing changes.", stop="Any shock, tripping or burning smell.", due="2027-03-30", reviewed="2026-10-08"),
+ dict(code="SF-GY-LEGACY", cat="water_heater", brand="heatwell", fam="heating", rev="hw", manual="hw_geyser_manual", panel=False, minutes=6,
+      title="Reset the geyser by switching off for a minute (withdrawn)", symptoms=["no hot water"],
+      steps=[("Switch the geyser off.", "Off."), ("Wait one minute.", "Waited."), ("Switch on.", "On.")],
+      worst="Nothing changes.", stop="Any tripping.", due="2026-01-01", reviewed="2025-07-01", status="retired"),
+]
+
+URGENCY_RULES = [
+ dict(code="SAF-SHOCK", cls="safety", cat=None, desc="Any shock or tingling from the appliance, a tap or a body panel", cond={"shock_or_tingling": True},
+      msg="Please keep the appliance and its MCB switched off, do not touch it or any tap connected to it, and keep children away. We are arranging a technician."),
+ dict(code="SAF-SMOKE-BURN", cls="safety", cat=None, desc="Smoke, sparks, melting or a burning smell", cond={"smoke_or_burning_smell": True},
+      msg="Please unplug it or switch it off at the MCB if you can do so without touching it, keep away from it and open a window."),
+ dict(code="SAF-WATER-ELEC", cls="safety", cat=None, desc="Water running onto a switchboard, socket or the appliance's electrics", cond={"water_near_electrics": True},
+      msg="Please switch off the MCB for that circuit and keep away from the wet area."),
+ dict(code="SAF-GAS-SMELL", cls="safety", cat="refrigerator", desc="Chemical or gas smell from a refrigerator", cond={"chemical_smell": True},
+      msg="Please keep flames and switches away, open windows and do not run the refrigerator."),
+ dict(code="URG-FOOD-RISK", cls="urgent", cat="refrigerator", desc="Refrigerator not cooling and food, milk or medicine is at risk", cond={"not_cooling": True, "at_risk": ["food", "milk", "medicine"]},
+      msg="Please keep the door closed and move milk and medicines to a neighbour's refrigerator if you can."),
+ dict(code="URG-VULNERABLE-HEAT", cls="urgent", cat="air_conditioner", desc="No cooling with an infant, an elderly person or a medical need at home", cond={"stopped": True, "at_risk": ["infant", "elderly", "medical"]}, msg=None),
+ dict(code="URG-ACTIVE-LEAK", cls="urgent", cat=None, desc="Active water leak that switching the appliance off does not stop", cond={"leak_continues_when_off": True}, msg="Please close the water inlet tap for the appliance."),
+ dict(code="URG-REPEAT-30D", cls="urgent", cat=None, desc="Same fault again within 30 days of a repair", cond={"repeat_within_days": 30}, msg=None),
+ dict(code="URG-NO-WATER-HEAT", cls="urgent", cat="water_heater", desc="No hot water with an infant or elderly person at home", cond={"stopped": True, "at_risk": ["infant", "elderly"]}, msg=None),
+ dict(code="STD-DEFAULT", cls="standard", cat=None, desc="Working partly, or stopped with nothing at risk", cond={}, msg=None),
+ dict(code="PLN-SERVICE", cls="planned", cat=None, desc="Preventive service", cond={"job_type": "preventive_service"}, msg=None),
+ dict(code="PLN-INSTALL", cls="planned", cat=None, desc="Installation or demo", cond={"job_type": ["installation", "uninstall_reinstall"]}, msg=None),
+]
+
+def build_urgency_rules():
+    for r in URGENCY_RULES:
+        add("urgency_rule", id=uid("urule", r["code"]), code=r["code"], **{"class": r["cls"]}, category_code=r["cat"], description=r["desc"], condition=r["cond"],
+            protective_message=r["msg"], source="keepwell_hypothesis", active=True, created_at=ist(2026, 10, 15, 11))
+
+def build_safe_fixes(pages=None):
+    """pages: {manual_key: page} found after the KB PDFs are built."""
+    pages = pages or {}
+    for f in FIXES:
+        name, role = REVIEWERS[f["rev"]]
+        status = f.get("status", "active")
+        add("safe_fix_catalogue", id=uid("sfix", f["code"]), code=f["code"], category_code=f["cat"], brand_id=uid("brand", f["brand"]) if f["brand"] else None,
+            model_series=None, fault_family=f["fam"], title=f["title"], symptom_terms=pgarray(f["symptoms"]),
+            steps=[{"n": i + 1, "say": s, "check": c} for i, (s, c) in enumerate(f["steps"])], step_count=len(f["steps"]), est_minutes=f["minutes"],
+            reversible=True, needs_tools=False, opens_panel=f["panel"], manual_doc_id=uid("kbdoc", f["manual"]), manual_page=pages.get(f["manual"], 1),
+            worst_case=f["worst"], reviewer_name=name, reviewer_role=role, reviewed_on=dt.date.fromisoformat(f["reviewed"]), review_due=dt.date.fromisoformat(f["due"]),
+            status=status, created_at=ist(2026, 9, 20, 10))
+
+STOP = {f["code"]: f["stop"] for f in FIXES}
+BY_MANUAL = {}
+for _f in FIXES:
+    BY_MANUAL.setdefault(_f["manual"], []).append(_f)
