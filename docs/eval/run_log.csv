@@ -1,0 +1,2 @@
+date,commit,mode,n,urgency_acc_all,safety_recall_all,safety_false_alarms,gate_urgency_ge_90,gate_safety_100
+2026-11-21T07:20,510051e,"rules-only (no model, no DB)",120,93.3,29/29,0,PASS,PASS

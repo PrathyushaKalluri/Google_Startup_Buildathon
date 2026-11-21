@@ -262,3 +262,4 @@ PYTHONPATH=. .venv312/bin/python deploy/tools/smoke_test.py
 
 ### 2. First Message to Send the New Assistant
 Paste the contents of [docs/RESUME_PROMPT.md](docs/RESUME_PROMPT.md).
+- 2026-11-21: Eval report on branch `eval/report` (docs/EVAL_REPORT.md, docs/eval/)

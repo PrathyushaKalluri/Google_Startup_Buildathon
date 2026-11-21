@@ -1,0 +1,112 @@
+{
+ "summary": {
+  "synthetic": {
+   "n": 100,
+   "urgency_acc": 95.0,
+   "urgency_ci": [
+    88.8,
+    97.8
+   ],
+   "safety_recall": "27/27",
+   "safety_ci": [
+    87.5,
+    100.0
+   ],
+   "safety_false_alarms": 0
+  },
+  "dataset": {
+   "n": 20,
+   "urgency_acc": 85.0,
+   "urgency_ci": [
+    64.0,
+    94.8
+   ],
+   "safety_recall": "2/2",
+   "safety_ci": [
+    34.2,
+    100.0
+   ],
+   "safety_false_alarms": 0
+  },
+  "all": {
+   "n": 120,
+   "urgency_acc": 93.3,
+   "urgency_ci": [
+    87.4,
+    96.6
+   ],
+   "safety_recall": "29/29",
+   "safety_ci": [
+    88.3,
+    100.0
+   ],
+   "safety_false_alarms": 0
+  }
+ },
+ "misses": [
+  {
+   "set": "synthetic",
+   "id": "U041",
+   "expected": "urgent",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "synthetic",
+   "id": "U042",
+   "expected": "urgent",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "synthetic",
+   "id": "U043",
+   "expected": "urgent",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "synthetic",
+   "id": "U044",
+   "expected": "urgent",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "synthetic",
+   "id": "U045",
+   "expected": "urgent",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "dataset",
+   "id": "C04",
+   "expected": "planned",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "dataset",
+   "id": "C08",
+   "expected": "planned",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  },
+  {
+   "set": "dataset",
+   "id": "C12",
+   "expected": "urgent",
+   "got": "standard",
+   "exp_safety": false,
+   "got_safety": false
+  }
+ ]
+}
