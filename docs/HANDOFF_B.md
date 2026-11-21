@@ -80,17 +80,21 @@ python3 mocks/firestore/timelapse_c03.py
   - Sign-In, Forwarded Requests with C18 authority-decline visibility, Brand Forward & Retailer Handover forms (`202` response card), FVR-14 Analytics + accessible table + Looker Studio embed/fallback (deferred-loaded).
   - Verified by `apps/brand/test/brand_test.dart` (**4/4 passed**) + `flutter build web --wasm`.
 - **Frontend Infrastructure & Skills (`infra/frontend/`, `.agents/part-b/`):**
-  - `firebase.json` (4 Hosting targets with COOP/COEP headers for WasmGC + emulators), `.firebaserc`, `firestore.rules` (strict Contract §6), `firestore.indexes.json`, `app_check.md`, `@firebase/rules-unit-testing` suite (`test_rules/firestore_rules.test.mjs`, **7/7 passed under Firebase Firestore emulator**, including cross-centre read denial and client write denials), 8 skills + 5 workflows (<40 lines each).
+  - `firebase.json` (4 Hosting targets (nosniff/frame/referrer/permissions headers; COOP/COEP deliberately NOT set, see §3.4) + emulators), `.firebaserc`, `firestore.rules` (strict Contract §6), `firestore.indexes.json`, `app_check.md`, `@firebase/rules-unit-testing` suite (`test_rules/firestore_rules.test.mjs`, **7/7 passed under Firebase Firestore emulator**, including cross-centre read denial and client write denials), 8 skills + 5 workflows (<40 lines each).
 
 ---
 
 ## 3. What Is Not Done (Honest List)
 
-1. **Live Browser AudioWorklet & `<video>` Canvas Encoding:** Tested in real Chrome (`--use-fake-device-for-media-stream --use-fake-ui-for-media-stream`) against the live mock WebSocket (`ws://localhost:8082/v1/live/call`): `navigator.mediaDevices.getUserMedia({audio: true, video: true})` succeeds, the WebSocket connects, exchanges `start`/`ready`/`event`/Hindi `transcript`/`video_link`/`modality`/`go_away` reconnect/binary PCM16 audio frames, and streams 1 fps `video_frame` messages. **Not yet wired via `dart:js_interop`:**
-   - Capturing live microphone PCM16 chunks via `AudioWorklet` onto the WebSocket and decoding/playing incoming 24 kHz PCM16 binary audio frames via Web Audio `AudioContext`.
-   - Binding the live `getUserMedia` `MediaStream` to an HTML `<video>` preview and `<canvas>.toDataURL('image/jpeg')` (currently sends a synthetic placeholder JPEG payload at 1 fps).
-2. **Flutter Web Engine `aria-allowed-attr`:** Lighthouse Accessibility is **100** on `household` and `brand`, and **94** on `console` and `field` (the remaining `aria-allowed-attr` finding comes from Flutter Web's semantics tree on `<flt-semantics>` nodes rather than app widgets; `aria-toggle-field-name` on `field` was fixed and verified).
-3. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) UI chrome strings render cleanly with Noto Sans Devanagari and Noto Sans Telugu glyphs verified in screenshots, and remain drafts ready for native-speaker sign-off.
+1. **Live call path — DONE and proven in Chrome** (fake media devices, live mock WS; evidence `docs/evidence/live_media_e2e.json`, script `apps/tools/e2e_live_media.mjs`): mic via `getUserMedia` (echoCancellation/noiseSuppression/AGC on, settings reported true) -> `AudioWorklet` (`apps/household/web/pcm_worklet.js`) -> 16 kHz mono PCM16, **31 binary chunks of 1,280 bytes (40 ms)** left the page in 6 s; mock's 24 kHz PCM16 played through Web Audio with 60 ms jitter buffer (`playedPcmChunks` 10, 28,800 bytes); playback flushed on barge-in (mic RMS) and on household transcript/interruption signal; mute stops chunks (0 chunks during mute); speaker toggles a GainNode. Video page: real `MediaStream` bound to a `<video>` (640x480, `hasSrcObject` true), canvas -> real JPEG `video_frame` at 1 fps (6 frames/5.5 s, valid JPEG SOF 640x480, 6-7 KB, long edge <= 640); placeholder JPEG removed from live path; ui_hint guides overlay the video. Screenshot: `docs/evidence/video_page_live_preview.png`.
+   - Gaps: no real microphone/camera hardware tested (Chrome fake devices only); the camera-denied "still photo" fallback sends a frame only when a camera frame exists (no file-picker upload yet); the Gemini-side barge-in `interrupted` frame name is not in Contract §7, so flush also triggers on household transcript and mic energy.
+2. **200% text scale / keyboard evidence for the three hero journeys — NOT DONE.** Cloning the journey tests at 2.0 text scale exposed real overflows (list with file:line in `docs/evidence/a11y_200pct_keyboard_findings.md`); the failing clones were not committed. `kw_ui` components pass 200% in en/hi/te. No keyboard-only end-to-end test exists. Must be fixed before claiming WCAG 1.4.4.
+3. **Lighthouse accessibility is now 100 on all four apps** (console/field `aria-allowed-attr` was `aria-expanded` on PopupMenuButton chips; replaced with ActionChip + showMenu and an icon-only language menu).
+4. **Hosting headers:** tested Google Fonts, Google Pay (`pay.js` + payframe), Maps embed and Looker Studio iframe with `docs/evidence/third_party_headers_coep.json` (script `apps/tools/third_party_headers.mjs`). With COEP `credentialless` or `require-corp`, the Pay frame, Maps iframe and Looker iframe were all BLOCKED (`ERR_BLOCKED_BY_RESPONSE`); with no COEP they load. Fix: COOP/COEP removed from `firebase.json`; Flutter wasm runs single-threaded without cross-origin isolation (Lighthouse after numbers below were measured without those headers).
+5. **Config switch:** `KwConfig.fromEnvironment()` now defaults `DEMO_MODE=false` and has NO localhost/placeholder fallbacks unless `DEMO_MODE=true`. `apps/tools/build_all.sh` and `infra/frontend/deploy_frontend.sh --dry-run` added (see §7). Gap: Firebase web config values (`FIREBASE_API_KEY/APP_ID/AUTH_DOMAIN/MESSAGING_SENDER_ID`) are accepted by `KwConfig`, but the apps use Firestore/Auth over REST with the demo-persona auth helper; real Firebase Auth sign-in against Part A is untested.
+6. **Stage view / case board data:** Firestore reads go through `LiveFeedRepository` (`shouldUseFirestore`: emulator host OR `DEMO_MODE=false` + project id) — Console subscribes to `watchFeed` and `watchTickets`, and Stage view mirrors `controller.liveFeed` events. Gaps: ticket detail, mutations and the Stage "Play C03" built-in call still use REST/WS (by contract); Stage view Firestore sync is untested against a populated emulator/real Firestore (no test covers it); the app has no Firebase Auth ID token flow beyond `KwUserSession.idToken` from the demo helper.
+7. **Native-Speaker Copy Review:** Hindi (`hi`) and Telugu (`te`) strings are drafts awaiting native-speaker sign-off.
+8. Performance: Lighthouse desktop Perf 71-74 (not >85); uncached local HTTP, Brotli on Firebase Hosting not measured.
 
 ---
 
@@ -142,11 +146,26 @@ No Contract Change Requests (`contract/CHANGE_REQUESTS.md`) were required — ev
 - **Visual Matrix Screenshots (`docs/design/screenshots/`):** **76 PNGs** captured via Playwright Chromium against live mocks across all 4 apps × 3 widths (`390`, `820`, `1440` px) × 2 themes (`light`, `dark`) × 3 languages (`en`, `hi`, `te`) + 4 Projector Mode Stage View captures (`console_stage_{390,820,1440}_projector_en.png` & `console_stage_1440_projector_hi.png`). Visual inspection caught and fixed: (1) `field` demo-persona jobs fallback in `mocks/rest/server.py`, (2) `ChoiceChip` horizontal `labelPadding` for Devanagari/Telugu nav chips in `apps/household/lib/src/household_app.dart`.
 - **Lighthouse Reports (`docs/design/lighthouse/`, Before JS/CanvasKit vs After `--wasm` + Deferred + Font Preload):**
 
-| App | Perf (Before → After) | A11y | FCP (Before → After) | LCP (Before → After) | TBT (Before → After) | Transfer KB (Before → After) |
-|---|---|---|---|---|---|---|
-| `console` | 54 → **71** (+17) | 94 | 0.6 s → **0.2 s** | 5.5 s → **4.6 s** | 320 ms → **0 ms** | 5,600 → **4,570** (-18.4%) |
-| `field` | 69 → **73** (+4) | 94 | 0.6 s → **0.2 s** | 5.0 s → **4.0 s** | 110 ms → **0 ms** | 4,867 → **3,908** (-19.7%) |
-| `household` | 60 → **75** (+15) | 100 | 0.6 s → **0.2 s** | 5.0 s → **3.9 s** | 250 ms → **0 ms** | 4,874 → **3,861** (-20.8%) |
-| `brand` | 63 → **73** (+10) | 100 | 0.6 s → **0.2 s** | 5.0 s → **4.1 s** | 200 ms → **0 ms** | 4,889 → **3,925** (-19.7%) |
+| App | Perf (Before → Final) | A11y (Before → Final) | LCP (Before → Final) | TBT | Transfer KB (Before → Final) |
+|---|---|---|---|---|---|
+| `console` | 54 → **71** | 94 → **100** | 5.5 s → 4.5 s | 320 → 20 ms | 5,600 → 4,573 |
+| `field` | 69 → **74** | 94 → **100** | 5.0 s → 4.0 s | 110 → 0 ms | 4,867 → 3,908 |
+| `household` | 60 → **74** | 100 → **100** | 5.0 s → 3.9 s | 250 → 10 ms | 4,874 → 3,888 |
+| `brand` | 63 → **74** | 100 → **100** | 5.0 s → 4.0 s | 200 → 0 ms | 4,889 → 3,924 |
 
 - **Rubric Self-Assessment:** See [docs/rubric_B.md](file:///Users/Shared/Files%20From%20e.localized/PDM/Google%20buildathon%20/Google_Startup_Buildathon/docs/rubric_B.md).
+
+
+## 8. Final-Run Check Table
+
+| # | Check | Result | Evidence |
+|---|---|---|---|
+| 1a | Mic capture, 16 kHz PCM16 20-100 ms chunks, playback 24 kHz + jitter + flush, mute, speaker | PASS (Chrome fake devices) | `docs/evidence/live_media_e2e.json` |
+| 1b | Real MediaStream preview, canvas JPEG <=640 px, 1 fps, ui_hint overlay, placeholder removed | PASS (Chrome fake devices) | same + `video_page_live_preview.png` |
+| 1c | Chrome test vs mock WS | PASS | `apps/tools/e2e_live_media.mjs` |
+| 2 | Google Pay/Maps/Looker/Fonts with COOP/COEP | COEP breaks Pay/Maps/Looker -> headers removed; PASS without | `docs/evidence/third_party_headers_coep.json` |
+| 3 | Config only via --dart-define; build_all.sh; deploy dry-run; real-value build | PASS: `build_all.sh` with example values built all 4 (DEMO_MODE=false); grep of `main.dart.js`: 0 `localhost:808x` hits, 0 `keepwell-demo-placeholder`, example API host present in all 4. Note: the demo-persona password string `keepwell-demo-password` remains in `kw_auth` (demo sign-in helper) | `apps/tools/build_all.sh`, `infra/frontend/deploy_frontend.sh` |
+| 4 | Stage/board data via kw_client repositories | PARTIAL (code path added, no populated-Firestore test) | §3.6 |
+| 5a | aria-allowed-attr | PASS (Lighthouse a11y 100 x4) | `docs/design/lighthouse/*.json` |
+| 5b | 200% text scale + keyboard, 3 hero journeys | NOT DONE | `docs/evidence/a11y_200pct_keyboard_findings.md` |
+| 6 | analyze, tests, rules tests, 4 production builds, clean tree | PASS (analyze 0 issues; 58 tests; rules 7/7) | final run |

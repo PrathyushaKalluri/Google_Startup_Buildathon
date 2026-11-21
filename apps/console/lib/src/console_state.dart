@@ -45,10 +45,12 @@ class ConsoleController extends ChangeNotifier {
         LiveFeedRepository(
           config: this.config,
           apiClient: this.apiClient,
+          tokenProvider: () => _session?.idToken,
         );
     if (_session != null) {
       unawaited(loadTickets());
       _startFeedWatch();
+      _startTicketsWatch();
     }
   }
 
@@ -76,6 +78,7 @@ class ConsoleController extends ChangeNotifier {
 
   List<LiveEvent> _liveFeed = const [];
   StreamSubscription<List<LiveEvent>>? _feedSub;
+  StreamSubscription<List<TicketCard>>? _ticketsSub;
 
   KwUserSession? get session => _session;
   bool get isSignedIn => _session != null;
@@ -149,6 +152,7 @@ class ConsoleController extends ChangeNotifier {
     notifyListeners();
     await loadTickets();
     _startFeedWatch();
+    _startTicketsWatch();
   }
 
   Future<void> quickSignInFrostAndWave() =>
@@ -157,12 +161,37 @@ class ConsoleController extends ChangeNotifier {
   void signOut() {
     _feedSub?.cancel();
     _feedSub = null;
+    _ticketsSub?.cancel();
+    _ticketsSub = null;
     _session = null;
     _tickets = const [];
     _selectedTicketId = null;
     _selectedDetail = null;
     _liveFeed = const [];
     notifyListeners();
+  }
+
+  void _startTicketsWatch() {
+    _ticketsSub?.cancel();
+    if (_session == null || !liveFeedRepository.shouldUseFirestore) return;
+    final isPlatform = _session?.role == KwRole.platform;
+    _ticketsSub = liveFeedRepository
+        .watchTickets(
+          centreId: isPlatform ? null : activeCentreId,
+          centreKey: isPlatform ? null : activeCentreKey,
+          pollInterval: const Duration(seconds: 3),
+        )
+        .listen(
+          (cards) {
+            if (cards.isNotEmpty) {
+              _tickets = sortTickets(cards);
+              _loadingTickets = false;
+              _ticketsError = null;
+              notifyListeners();
+            }
+          },
+          onError: (_) {},
+        );
   }
 
   void _startFeedWatch() {

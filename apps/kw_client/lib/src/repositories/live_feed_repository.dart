@@ -16,16 +16,29 @@ class LiveFeedRepository {
     required this.config,
     required this.apiClient,
     KwFirestoreClient? firestoreClient,
-  }) : _firestore = firestoreClient ?? KwFirestoreClient(config: config);
+    KwTokenProvider? tokenProvider,
+  }) : _firestore = firestoreClient ??
+            KwFirestoreClient(
+              config: config,
+              tokenProvider: tokenProvider,
+            );
 
   final KwConfig config;
   final KwApiClient apiClient;
   final KwFirestoreClient _firestore;
 
+  /// True when Firestore reads should be queried directly (either against the
+  /// local emulator or against production Firestore when `DEMO_MODE=false` and
+  /// `FIREBASE_PROJECT_ID` is configured).
+  bool get shouldUseFirestore =>
+      config.useFirestoreEmulator ||
+      (!config.demoMode && config.firebaseProjectId.trim().isNotEmpty);
+
   /// Watches live events in `centres/{centreId}/feed`.
   ///
-  /// Falls back to synthesizing events from the centre's active tickets when
-  /// Firestore is not configured or unreachable.
+  /// Reads directly from Firestore when [shouldUseFirestore] is true (no mock
+  /// REST server needed for live data), falling back to REST only in demo mode
+  /// when Firestore is not configured.
   Stream<List<LiveEvent>> watchFeed(
     String centreId, {
     String? centreKey,
@@ -34,7 +47,7 @@ class LiveFeedRepository {
     return _pollingStream<List<LiveEvent>>(
       pollInterval: pollInterval,
       fetcher: () async {
-        if (config.useFirestoreEmulator) {
+        if (shouldUseFirestore && centreId.isNotEmpty) {
           try {
             final docs = await _firestore.listCollection(
               'centres/$centreId/feed',
@@ -43,7 +56,7 @@ class LiveFeedRepository {
               ..sort((a, b) => b.at.compareTo(a.at));
             return events;
           } catch (_) {
-            // Fall through to REST fallback.
+            if (!config.demoMode) rethrow;
           }
         }
         return _fetchFeedFallbackFromRest(
@@ -65,7 +78,7 @@ class LiveFeedRepository {
     return _pollingStream<List<TicketCard>>(
       pollInterval: pollInterval,
       fetcher: () async {
-        if (config.useFirestoreEmulator &&
+        if (shouldUseFirestore &&
             centreId != null &&
             centreId.isNotEmpty &&
             status == null &&
@@ -74,11 +87,9 @@ class LiveFeedRepository {
             final docs = await _firestore.listCollection(
               'centres/$centreId/tickets',
             );
-            if (docs.isNotEmpty) {
-              return docs.map(TicketCard.fromJson).toList();
-            }
+            return docs.map(TicketCard.fromJson).toList();
           } catch (_) {
-            // Fall through to REST fallback.
+            if (!config.demoMode) rethrow;
           }
         }
         final page = await apiClient.listTickets(
@@ -101,7 +112,7 @@ class LiveFeedRepository {
     return _pollingStream<List<ConversationTurn>>(
       pollInterval: pollInterval,
       fetcher: () async {
-        if (config.useFirestoreEmulator) {
+        if (shouldUseFirestore) {
           try {
             final docs = await _firestore.listCollection(
               'centres/$centreId/conversations/$conversationId/turns',
@@ -110,7 +121,7 @@ class LiveFeedRepository {
               ..sort((a, b) => a.at.compareTo(b.at));
             return turns;
           } catch (_) {
-            // Return empty list if emulator not running.
+            // Return empty list if unavailable.
           }
         }
         return const <ConversationTurn>[];
@@ -126,7 +137,7 @@ class LiveFeedRepository {
     return _pollingStream<List<WhatsAppMessage>>(
       pollInterval: pollInterval,
       fetcher: () async {
-        if (config.useFirestoreEmulator) {
+        if (shouldUseFirestore) {
           try {
             final docs = await _firestore.listCollection(
               'households/$householdId/whatsapp_thread',
@@ -135,7 +146,7 @@ class LiveFeedRepository {
               ..sort((a, b) => a.at.compareTo(b.at));
             return messages;
           } catch (_) {
-            // Return empty list if emulator not running.
+            // Return empty list if unavailable.
           }
         }
         return const <WhatsAppMessage>[];

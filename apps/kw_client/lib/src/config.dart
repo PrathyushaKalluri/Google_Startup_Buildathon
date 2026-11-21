@@ -1,12 +1,18 @@
 /// Runtime configuration for Keepwell client apps.
 ///
-/// Reads compile-time `--dart-define` values matching Contract §4 and defaults
-/// to the local Part B mock servers (`localhost:8081` REST, `localhost:8082` WS).
+/// Reads compile-time `--dart-define` values matching Contract §4.
+/// In release / non-demo builds (`DEMO_MODE=false`, the default), no mock URLs
+/// or placeholder Firebase project IDs are compiled in — values must be passed
+/// via `--dart-define` (see `apps/tools/build_all.sh`).
 class KwConfig {
   const KwConfig({
     this.apiBaseUrl = 'http://localhost:8081/v1',
     this.liveWsUrl = 'ws://localhost:8082/v1/live/call',
     this.firebaseProjectId = 'keepwell-demo',
+    this.firebaseApiKey = '',
+    this.firebaseAppId = '',
+    this.firebaseAuthDomain = '',
+    this.firebaseMessagingSenderId = '',
     this.firestoreEmulatorHost = '',
     this.firebaseAuthEmulatorHost = '',
     this.demoMode = true,
@@ -15,42 +21,61 @@ class KwConfig {
     this.lookerStudioUrl = '',
   });
 
-  /// Constructs configuration from `--dart-define` environment variables.
+  /// Constructs configuration strictly from `--dart-define` environment values.
+  ///
+  /// When `DEMO_MODE=false` (default for production builds), mock `localhost`
+  /// URLs and demo project IDs are never used as fallbacks.
   factory KwConfig.fromEnvironment() {
-    return const KwConfig(
-      apiBaseUrl: String.fromEnvironment(
-        'API_BASE_URL',
-        defaultValue: 'http://localhost:8081/v1',
+    const isDemo = bool.fromEnvironment('DEMO_MODE', defaultValue: false);
+    const rawApi = String.fromEnvironment('API_BASE_URL', defaultValue: '');
+    const rawWs = String.fromEnvironment('LIVE_WS_URL', defaultValue: '');
+    const rawProject =
+        String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: '');
+
+    return KwConfig(
+      apiBaseUrl: rawApi.isNotEmpty
+          ? rawApi
+          : (isDemo ? 'http://localhost:8081/v1' : ''),
+      liveWsUrl: rawWs.isNotEmpty
+          ? rawWs
+          : (isDemo ? 'ws://localhost:8082/v1/live/call' : ''),
+      firebaseProjectId: rawProject.isNotEmpty
+          ? rawProject
+          : (isDemo ? 'keepwell-demo' : ''),
+      firebaseApiKey: const String.fromEnvironment(
+        'FIREBASE_API_KEY',
+        defaultValue: '',
       ),
-      liveWsUrl: String.fromEnvironment(
-        'LIVE_WS_URL',
-        defaultValue: 'ws://localhost:8082/v1/live/call',
+      firebaseAppId: const String.fromEnvironment(
+        'FIREBASE_APP_ID',
+        defaultValue: '',
       ),
-      firebaseProjectId: String.fromEnvironment(
-        'FIREBASE_PROJECT_ID',
-        defaultValue: 'keepwell-demo',
+      firebaseAuthDomain: const String.fromEnvironment(
+        'FIREBASE_AUTH_DOMAIN',
+        defaultValue: '',
       ),
-      firestoreEmulatorHost: String.fromEnvironment(
+      firebaseMessagingSenderId: const String.fromEnvironment(
+        'FIREBASE_MESSAGING_SENDER_ID',
+        defaultValue: '',
+      ),
+      firestoreEmulatorHost: const String.fromEnvironment(
         'FIRESTORE_EMULATOR_HOST',
         defaultValue: '',
       ),
-      firebaseAuthEmulatorHost: String.fromEnvironment(
+      firebaseAuthEmulatorHost: const String.fromEnvironment(
         'FIREBASE_AUTH_EMULATOR_HOST',
         defaultValue: '',
       ),
-      demoMode: bool.fromEnvironment(
-        'DEMO_MODE',
-        defaultValue: true,
-      ),
-      paymentMode: String.fromEnvironment(
+      demoMode: isDemo,
+      paymentMode: const String.fromEnvironment(
         'PAYMENT_MODE',
         defaultValue: 'sandbox',
       ),
-      googleMapsApiKey: String.fromEnvironment(
+      googleMapsApiKey: const String.fromEnvironment(
         'GOOGLE_MAPS_API_KEY',
         defaultValue: '',
       ),
-      lookerStudioUrl: String.fromEnvironment(
+      lookerStudioUrl: const String.fromEnvironment(
         'LOOKER_STUDIO_URL',
         defaultValue: '',
       ),
@@ -60,6 +85,10 @@ class KwConfig {
   final String apiBaseUrl;
   final String liveWsUrl;
   final String firebaseProjectId;
+  final String firebaseApiKey;
+  final String firebaseAppId;
+  final String firebaseAuthDomain;
+  final String firebaseMessagingSenderId;
   final String firestoreEmulatorHost;
   final String firebaseAuthEmulatorHost;
   final bool demoMode;

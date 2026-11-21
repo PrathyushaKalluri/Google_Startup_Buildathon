@@ -1,7 +1,8 @@
 *.pyc
 .DS_Store
 .env
-.env.local
+.env.*
+!.env.example
 .pytest_cache/
 .venv/
 __pycache__/
@@ -9,3 +10,14 @@ dist/
 node_modules/
 storage/
 venv/
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+*.log
+firestore-debug.log
+firebase-debug.log
+*.secret
+*.secret.*
+service-account*.json

@@ -345,24 +345,43 @@ class _CompactDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<String?>(
+    return ActionChip(
+      avatar: const Icon(Icons.filter_list_rounded, size: 16),
+      label: Text(value == null ? label : '$label: $value'),
       tooltip: 'Filter by $label',
-      onSelected: onChanged,
-      itemBuilder: (context) => [
-        PopupMenuItem<String?>(
-          value: null,
-          child: Text('All $label'),
-        ),
-        for (final opt in options)
-          PopupMenuItem<String?>(
-            value: opt,
-            child: Text(opt),
+      onPressed: () async {
+        final box = context.findRenderObject() as RenderBox?;
+        final overlay =
+            Overlay.of(context).context.findRenderObject() as RenderBox?;
+        if (box == null || overlay == null) return;
+        final pos = RelativeRect.fromRect(
+          Rect.fromPoints(
+            box.localToGlobal(Offset.zero, ancestor: overlay),
+            box.localToGlobal(
+              box.size.bottomRight(Offset.zero),
+              ancestor: overlay,
+            ),
           ),
-      ],
-      child: Chip(
-        avatar: const Icon(Icons.filter_list_rounded, size: 16),
-        label: Text(value == null ? label : '$label: $value'),
-      ),
+          Offset.zero & overlay.size,
+        );
+        final selected = await showMenu<String>(
+          context: context,
+          position: pos,
+          items: [
+            PopupMenuItem<String>(
+              value: '__all__',
+              child: Text('All $label'),
+            ),
+            for (final opt in options)
+              PopupMenuItem<String>(
+                value: opt,
+                child: Text(opt),
+              ),
+          ],
+        );
+        if (selected == null) return;
+        onChanged(selected == '__all__' ? null : selected);
+      },
     );
   }
 }

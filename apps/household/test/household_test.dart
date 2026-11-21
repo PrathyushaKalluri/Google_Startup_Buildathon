@@ -9,6 +9,7 @@ import 'package:kw_client/kw_client.dart';
 import 'package:kw_household/src/call_dialer_screen.dart';
 import 'package:kw_household/src/home_memory_screen.dart';
 import 'package:kw_household/src/household_app.dart';
+import 'package:kw_household/src/media/kw_media_bridge.dart';
 import 'package:kw_household/src/quote_approval_screen.dart';
 import 'package:kw_household/src/video_link_screen.dart';
 import 'package:kw_ui/kw_ui.dart';
@@ -269,6 +270,9 @@ void main() {
           liveCallClient: live,
           activeCentre: KwAuthHelper.demoCentres[2],
           onStopVideoToVoice: () => stoppedToVoice = true,
+          mediaBridge: KwMediaBridge(
+            onTestCaptureFrame: () => 'QUJDREVGRw==',
+          ),
         ),
       ),
     );
@@ -276,7 +280,7 @@ void main() {
 
     // Grant camera permission.
     await tester.tap(find.text('Allow camera'));
-    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
     expect(live.sentVideoFrames.length, greaterThanOrEqualTo(1));
     expect(find.text('Frame model sticker'), findsOneWidget);
 
@@ -331,6 +335,9 @@ void main() {
           liveCallClient: live,
           activeCentre: KwAuthHelper.demoCentres[2],
           initialCameraDenied: true,
+          mediaBridge: KwMediaBridge(
+            onTestCaptureFrame: () => 'QUJDREVGRw==',
+          ),
         ),
       ),
     );

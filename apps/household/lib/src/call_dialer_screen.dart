@@ -5,6 +5,7 @@ import 'package:kw_client/kw_client.dart';
 import 'package:kw_ui/kw_ui.dart';
 
 import 'household_l10n.dart';
+import 'media/kw_media_bridge.dart';
 
 class _CaptionEntry {
   const _CaptionEntry({
@@ -38,6 +39,7 @@ class CallDialerScreen extends StatefulWidget {
     this.languageHint = 'en',
     this.autoConnect = false,
     this.onSwitchToVideoToken,
+    this.mediaBridge,
   });
 
   final LiveCallClient liveCallClient;
@@ -46,6 +48,7 @@ class CallDialerScreen extends StatefulWidget {
   final String languageHint;
   final bool autoConnect;
   final ValueChanged<String>? onSwitchToVideoToken;
+  final KwMediaBridge? mediaBridge;
 
   @override
   State<CallDialerScreen> createState() => _CallDialerScreenState();
@@ -53,6 +56,7 @@ class CallDialerScreen extends StatefulWidget {
 
 class _CallDialerScreenState extends State<CallDialerScreen> {
   StreamSubscription<LiveServerMessage>? _sub;
+  late final KwMediaBridge _media;
 
   bool _micAllowed = false;
   bool _micBannerDismissed = false;
@@ -74,6 +78,7 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
   @override
   void initState() {
     super.initState();
+    _media = widget.mediaBridge ?? KwMediaBridge();
     _centreName = widget.activeCentre.name;
     _sub = widget.liveCallClient.messages.listen(_onServerMessage);
     if (widget.autoConnect) {
@@ -92,6 +97,8 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
 
   @override
   void dispose() {
+    _media.stopAudioCapture();
+    _media.flushPlayback();
     unawaited(_sub?.cancel());
     super.dispose();
   }
@@ -109,6 +116,28 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
         callerNumber: widget.callerNumber,
         languageHint: widget.languageHint,
       );
+      try {
+        _media.setMuted(_isMuted);
+        _media.setSpeaker(_isSpeakerOn);
+        await _media.startAudioCapture(
+          onChunk: (pcm16Chunk) {
+            if (_inCall && !_isMuted) {
+              widget.liveCallClient.sendAudioPcm16(pcm16Chunk);
+            }
+          },
+          onRms: (rms) {
+            if (!mounted) return;
+            if ((rms - _audioLevel).abs() > 0.06) {
+              setState(() => _audioLevel = rms.clamp(0.05, 1.0));
+            }
+          },
+          onBargeIn: () {
+            _media.flushPlayback();
+          },
+        );
+      } catch (_) {
+        // Keep WebSocket call active even if browser mic capture is denied.
+      }
       if (!mounted) return;
       setState(() {
         _connecting = false;
@@ -142,6 +171,10 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
           _audioLevel = 0.45;
         });
       case LiveTranscriptMessage():
+        if (msg.speaker.toLowerCase() == 'household' ||
+            msg.speaker.toLowerCase() == 'caller') {
+          _media.flushPlayback();
+        }
         setState(() {
           final speaker = msg.speaker.toLowerCase() == 'household' ||
                   msg.speaker.toLowerCase() == 'caller'
@@ -179,6 +212,8 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
           _errorNotice = '${msg.code}: ${msg.message}';
         });
       case LiveEndedMessage():
+        _media.stopAudioCapture();
+        _media.flushPlayback();
         setState(() {
           _inCall = false;
           _connecting = false;
@@ -187,13 +222,22 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
           _endedMessage = msg;
         });
       case LiveAudioChunkMessage():
+        _media.playPcm24k(msg.pcm16Bytes);
         setState(() {
           _audioLevel = 0.78;
         });
+      case LiveEventMessage():
+        final t = msg.event.type.toLowerCase();
+        if (t.contains('interrupt') || t.contains('barge')) {
+          _media.flushPlayback();
+        }
+      case LiveUnknownMessage():
+        final t = msg.type.toLowerCase();
+        if (t == 'interrupted' || t == 'barge_in' || msg.raw['interrupted'] == true) {
+          _media.flushPlayback();
+        }
       case LiveModalityMessage():
       case LiveUiHintMessage():
-      case LiveEventMessage():
-      case LiveUnknownMessage():
         break;
     }
   }
@@ -212,6 +256,7 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
     setState(() {
       _isMuted = !_isMuted;
     });
+    _media.setMuted(_isMuted);
     widget.liveCallClient.sendClientState(
       modality: 'voice',
       muted: _isMuted,
@@ -222,6 +267,7 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
     setState(() {
       _isSpeakerOn = !_isSpeakerOn;
     });
+    _media.setSpeaker(_isSpeakerOn);
   }
 
   void _handleSwitchToVideoTap() {
@@ -236,6 +282,8 @@ class _CallDialerScreenState extends State<CallDialerScreen> {
   }
 
   Future<void> _endCall() async {
+    _media.stopAudioCapture();
+    _media.flushPlayback();
     await widget.liveCallClient.end();
     if (!mounted) return;
     setState(() {

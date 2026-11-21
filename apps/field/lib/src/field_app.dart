@@ -192,18 +192,12 @@ class _ChromeActions extends StatelessWidget {
           tooltip: 'Language',
           initialValue: languageCode,
           onSelected: onLanguageChanged,
+          icon: const Icon(Icons.translate_rounded),
           itemBuilder: (_) => const [
             PopupMenuItem(value: 'en', child: Text('English (EN)')),
             PopupMenuItem(value: 'hi', child: Text('हिन्दी (HI)')),
             PopupMenuItem(value: 'te', child: Text('తెలుగు (TE)')),
           ],
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: KwSpacing.xs),
-            child: Chip(
-              label: Text(languageCode.toUpperCase()),
-              visualDensity: VisualDensity.compact,
-            ),
-          ),
         ),
         IconButton(
           key: const Key('kw_theme_button'),

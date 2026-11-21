@@ -71,11 +71,71 @@ class _StageViewScreenState extends State<StageViewScreen> {
   final List<LiveEvent> _events = [];
 
   @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_onControllerUpdated);
+    _syncFromFirestoreFeed();
+  }
+
+  @override
   void dispose() {
+    widget.controller.removeListener(_onControllerUpdated);
     _fallbackBeatTimer?.cancel();
     _wsSub?.cancel();
     unawaited(_liveClient?.dispose());
     super.dispose();
+  }
+
+  void _onControllerUpdated() {
+    if (!mounted) return;
+    _syncFromFirestoreFeed();
+  }
+
+  void _syncFromFirestoreFeed() {
+    // Live data path: Firestore `centres/{id}/feed` via kw_client LiveFeedRepository.
+    if (!widget.controller.liveFeedRepository.shouldUseFirestore) return;
+    final feed = widget.controller.liveFeed;
+    if (feed.isEmpty) return;
+    final existingIds = _events.map((e) => e.id).toSet();
+    final incoming = feed.where((e) => !existingIds.contains(e.id)).toList();
+    if (incoming.isEmpty) return;
+    setState(() {
+      _isActive = true;
+      for (final ev in incoming.reversed) {
+        _events.insert(0, ev);
+        _applyLiveEventToStage(ev);
+      }
+    });
+  }
+
+  void _applyLiveEventToStage(LiveEvent ev) {
+    final type = ev.type.toLowerCase();
+    if (type == 'video_stream_started' || type == 'video_link_sent') {
+      _modality = 'video';
+    } else if (type == 'urgency_assessed') {
+      final cls = ev.payload['urgency_class']?.toString();
+      if (cls != null && cls.isNotEmpty) {
+        _urgency = KwUrgencyClass.fromWire(cls);
+      }
+    } else if (type == 'consent_captured') {
+      final gate = ev.payload['gate'] == 2 ? 2 : 1;
+      final ans = ev.payload['answer']?.toString() ?? 'yes';
+      final state = KwConsentGateState(
+        gate: gate,
+        answer: ans == 'no' ? KwConsentAnswer.no : KwConsentAnswer.yes,
+      );
+      if (gate == 1) {
+        _gate1 = state;
+      } else {
+        _gate2 = state;
+      }
+    } else if (type == 'quote_approved') {
+      _quoteStatus = 'Approved';
+    } else if (type == 'payment_confirmed') {
+      _paymentStatus = 'Paid (awaiting OTP)';
+    } else if (type == 'otp_verified' || type == 'visit_closed') {
+      _otpStatus = 'Verified · Closed';
+    }
   }
 
   Future<void> _playC03StageCall() async {

@@ -5,6 +5,7 @@ import 'package:kw_client/kw_client.dart';
 import 'package:kw_ui/kw_ui.dart';
 
 import 'household_l10n.dart';
+import 'media/kw_media_bridge.dart';
 
 enum _CameraPermissionState { prompting, granted, denied }
 
@@ -25,6 +26,7 @@ class VideoLinkScreen extends StatefulWidget {
     required this.activeCentre,
     this.onStopVideoToVoice,
     this.initialCameraDenied = false,
+    this.mediaBridge,
   });
 
   final String token;
@@ -32,18 +34,16 @@ class VideoLinkScreen extends StatefulWidget {
   final KwCentreIdentity activeCentre;
   final VoidCallback? onStopVideoToVoice;
   final bool initialCameraDenied;
+  final KwMediaBridge? mediaBridge;
 
   @override
   State<VideoLinkScreen> createState() => _VideoLinkScreenState();
 }
 
 class _VideoLinkScreenState extends State<VideoLinkScreen> {
-  // Minimal valid 1x1 JPEG base64 payload for deterministic 1 fps web/test frames.
-  static const String _sampleJpegBase64 =
-      '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=';
-
   StreamSubscription<LiveServerMessage>? _sub;
   Timer? _frameTimer;
+  late final KwMediaBridge _media;
 
   late _CameraPermissionState _cameraState;
   LiveUiHintMessage _activeHint = const LiveUiHintMessage(
@@ -61,6 +61,7 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
   @override
   void initState() {
     super.initState();
+    _media = widget.mediaBridge ?? KwMediaBridge();
     _cameraState = widget.initialCameraDenied
         ? _CameraPermissionState.denied
         : _CameraPermissionState.prompting;
@@ -70,6 +71,7 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
   @override
   void dispose() {
     _frameTimer?.cancel();
+    _media.stopVideoPreview();
     unawaited(_sub?.cancel());
     super.dispose();
   }
@@ -100,17 +102,29 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
     }
   }
 
-  void _grantCamera() {
+  Future<void> _grantCamera() async {
     setState(() {
       _cameraState = _CameraPermissionState.granted;
       _stoppedToVoice = false;
     });
+    try {
+      final started = await _media.startVideoPreview();
+      if (!started) {
+        if (mounted) _denyCamera();
+        return;
+      }
+    } catch (_) {
+      if (mounted) _denyCamera();
+      return;
+    }
+    if (!mounted) return;
     widget.liveCallClient.sendClientState(modality: 'video', muted: false);
     _startFrameStreaming();
   }
 
   void _denyCamera() {
     _frameTimer?.cancel();
+    _media.stopVideoPreview();
     setState(() {
       _cameraState = _CameraPermissionState.denied;
     });
@@ -118,7 +132,11 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
 
   void _startFrameStreaming() {
     _frameTimer?.cancel();
-    _sendSingleVideoFrame();
+    // Wait briefly for the <video> element to paint its first frame, then send at <= 1 fps.
+    Future<void>.delayed(const Duration(milliseconds: 350), () {
+      if (!mounted || _cameraState != _CameraPermissionState.granted) return;
+      _sendSingleVideoFrame();
+    });
     _frameTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted || _cameraState != _CameraPermissionState.granted) return;
       _sendSingleVideoFrame();
@@ -126,8 +144,10 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
   }
 
   void _sendSingleVideoFrame() {
+    final jpeg = _media.captureVideoFrameJpeg(maxLongEdge: 640);
+    if (jpeg == null || jpeg.isEmpty) return;
     final ts = DateTime.now().millisecondsSinceEpoch;
-    widget.liveCallClient.sendVideoFrame(_sampleJpegBase64, ts);
+    widget.liveCallClient.sendVideoFrame(jpeg, ts);
     if (!mounted) return;
     setState(() {
       _framesSent += 1;
@@ -135,7 +155,10 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
   }
 
   void _sendStillPhoto(String caption) {
-    widget.liveCallClient.sendImage(_sampleJpegBase64, caption: caption);
+    final jpeg = _media.captureVideoFrameJpeg(maxLongEdge: 640, quality: 0.85);
+    if (jpeg != null && jpeg.isNotEmpty) {
+      widget.liveCallClient.sendImage(jpeg, caption: caption);
+    }
     setState(() {
       _stillPhotosSent += 1;
     });
@@ -143,6 +166,7 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
 
   void _stopVideoAndContinueVoice() {
     _frameTimer?.cancel();
+    _media.stopVideoPreview();
     widget.liveCallClient.sendClientState(modality: 'voice', muted: false);
     setState(() {
       _stoppedToVoice = true;
@@ -460,11 +484,15 @@ class _VideoLinkScreenState extends State<VideoLinkScreen> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Subtle simulated rear-camera grid surface.
-              CustomPaint(
-                painter: _FramingGuidePainter(
-                  kind: _activeHint.kind,
-                  accentColor: kw.liveVideo.accent,
+              // Real MediaStream <video> preview bound via HtmlElementView on web.
+              _media.buildVideoPreview(),
+              // Dynamic ui_hint framing guide overlay on top of live video.
+              IgnorePointer(
+                child: CustomPaint(
+                  painter: _FramingGuidePainter(
+                    kind: _activeHint.kind,
+                    accentColor: kw.liveVideo.accent,
+                  ),
                 ),
               ),
               Positioned(
