@@ -1,0 +1,5 @@
+# Keepwell Known Issues & Mitigations (`docs/KNOWN_ISSUES.md`)
+
+1. **Local Homebrew PostgreSQL 18.7 vs Cloud SQL PostgreSQL 16.15:** Homebrew's arm64 `postgis` and `pgvector` bottles target PostgreSQL 18/19, while Cloud SQL runs PostgreSQL 16.15. *Mitigation:* `input/docs/keepwell_schema.sql` and `db/migrations/001_part_a_additions.sql` were verified unmodified on both local PostgreSQL 18.7 and Cloud SQL PostgreSQL 16.15 (`kw-pg-verify` in `asia-south1-c`).
+2. **Cloud Run Cold Start with `min-instances=0`:** Cost guardrails mandate `--min-instances=0 --max-instances=2` on `kw-api` and `kw-worker`. *Mitigation:* Run `make smoke` 60 seconds before the live stage demo to warm `kw-api`.
+3. **Live API Preview Network Jitter:** `gemini-3.1-flash-live-preview` WebSockets can rotate or drop on venue Wi-Fi. *Mitigation:* `services/live/bridge.py` handles `go_away` and session resumption handles transparently, and `POST /v1/admin/demo/replay-call` provides an instant zero-network recorded C03 fallback.

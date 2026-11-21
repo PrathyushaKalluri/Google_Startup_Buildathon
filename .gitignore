@@ -12,6 +12,7 @@
 .packages
 .pytest_cache/
 .venv/
+.venv312/
 __pycache__/
 build/
 dist/

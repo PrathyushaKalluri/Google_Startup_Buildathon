@@ -145,6 +145,6 @@ def confirm_debrief(db: RLSSession, visit_id: str, centre_id: str, extracted: Di
         "language": debrief["language"],
         "transcript": debrief["transcript"],
         "extracted": extracted,
-        "unresolved": json.loads(debrief["unresolved"] or "[]"),
+        "unresolved": debrief["unresolved"] if isinstance(debrief["unresolved"], list) else json.loads(debrief["unresolved"] or "[]"),
         "confirmed_at": now_iso,
     }

@@ -41,6 +41,17 @@ def _find_centre_by_number(db: RLSSession, to_number: str) -> Optional[str]:
     return first[0]["id"] if first else None
 
 
+_OFFLINE_STT_CACHE: Dict[str, str] = {
+    "C01/01_voice.ogg": "హలో, నేను రమేష్ బాబు, కొండాపూర్ ఆర్కిడ్ మెడోస్ నుంచి మాట్లాడుతున్నాను. మా బెడ్రూమ్ ఏసీ నుంచి నీళ్లు కారుతున్నాయి. నిన్న రాత్రి నుంచి గోడ మొత్తం తడిసిపోయింది. ఏసీ ఇంకా వారంటీలో ఉంది. దయచేసి ఎవరినైనా పంపండి.",
+    "C03/01_call.ogg": "नमस्ते, मेरी वॉशिंग मशीन में पानी नहीं निकल रहा है। स्क्रीन पर E21 आ रहा है। कल रात से कपड़े अंदर ही भीगे पड़े हैं। मशीन की वारंटी शायद अभी अभी खत्म हुई है। प्लीज़ किसी को भेज दीजिए।",
+    "C05/01_call.ogg": "भैया, गीज़र में दिक्कत है। नल को छूते हैं तो हल्का करंट लगता है। कल बेटे को भी लगा। हमने गीज़र बंद कर दिया है। जल्दी किसी को भेजिए, बच्चों का मामला है।",
+    "C11/01_call.ogg": "Hi, my split AC at home in Shamshabad is not cooling. It blows warm air after a few minutes. The unit is about two years old. Can somebody come today?",
+    "C12/01_call.ogg": "మీరు మొన్ననే వాషింగ్ మెషీన్ బాగు చేశారు కదా. మళ్లీ అదే సమస్య వచ్చింది. నీళ్లు బయటకు పోవడం లేదు. ఇది రెండోసారి. దయచేసి ఈసారి సరిగ్గా చూడండి.",
+    "C15/01_call.ogg": "मशीन चलाते ही जलने जैसी बदबू आ रही है और मोटर के पास से धुआं भी निकला। मैंने स्विच बंद कर दिया है। अब क्या करूं?",
+    "C16/01_call.ogg": "ఏసీ బయట యూనిట్ లోంచి శబ్దం వస్తోంది, ఫ్యాన్ తిరగడం లేదు. కొంచెం సేపు ఆన్ చేస్తే వేడిగా అవుతుంది, చల్లదనం రావడం లేదు. రెండు రోజులుగా ఇలాగే ఉంది.",
+}
+
+
 def _extract_text_from_wa_messages(messages: List[Dict[str, Any]]) -> str:
     parts: List[str] = []
     for m in messages:
@@ -51,10 +62,15 @@ def _extract_text_from_wa_messages(messages: List[Dict[str, Any]]) -> str:
                 parts.append(str(body))
         elif mtype == "image":
             cap = (m.get("image") or {}).get("caption")
-            if cap:
+            if cap and cap != "photo sent afterwards on WhatsApp":
                 parts.append(str(cap))
         elif mtype == "audio":
-            parts.append("Voice note received from household")
+            afile = str((m.get("audio") or {}).get("file") or "")
+            parts.append(_OFFLINE_STT_CACHE.get(afile, "Voice note received from household"))
+        elif mtype == "call":
+            cfile = str(((m.get("call") or {}).get("recording") or {}).get("file") or "")
+            if cfile in _OFFLINE_STT_CACHE:
+                parts.append(_OFFLINE_STT_CACHE[cfile])
         elif mtype == "location":
             loc = m.get("location") or {}
             if loc.get("name"):

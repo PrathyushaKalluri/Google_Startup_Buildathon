@@ -1,4 +1,6 @@
-# KEEPWELL SHARED CONTRACT v1 (frozen)
+# KEEPWELL SHARED CONTRACT v1.1 (merged)
+
+> **Changelog v1.1 (Integrator):** Accepted **CR-A-1** — added optional test-only client-to-server WebSocket frames `{"type":"text_in","text":"..."}` and `{"type":"simulate_go_away","seconds":30}` to Section 7 (`WS /v1/live/call`), active strictly when `DEMO_MODE=true` so scripted E2E and smoke tests can drive C03 deterministically without consuming live microphone audio. All v1 endpoints, models, Firestore paths, and Section 8 events remain unchanged.
 
 This file is part of every Keepwell system prompt (Part A, Part B and the Integrator). It is the only thing the two halves share at build time. It is frozen: nobody edits it during the parallel build. If something in it is wrong or missing, write the request in `contract/CHANGE_REQUESTS.md` on your own branch (one entry: what, why, proposed text) and carry on with the most reasonable reading. The Integrator resolves every request.
 

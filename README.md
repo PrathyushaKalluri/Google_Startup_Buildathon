@@ -1,121 +1,44 @@
-# KeepWell — Google Startup Buildathon
+# Keepwell — Service-Centre & Brand After-Sales Agent Platform
 
-Monorepo for our Google DeepMind & Google Cloud Startup Buildathon (India 2026) entry. Three apps plus the research and pitch material.
+Keepwell is an agentic platform that appliance service centres and brands deploy across India. It speaks in the name of the receiving service centre or brand (never as a consumer marketplace), handling four triggers (`household_call`, `household_message`, `brand_forward`, `retailer_handover`) across five appliance categories (`air_conditioner`, `refrigerator`, `washing_machine`, `water_purifier`, `water_heater`) in **English, Hindi, and Telugu**.
 
-| Folder | What it is | Stack | Port |
-|---|---|---|---|
-| `keepwell/` | Main backend: AI repair desk + Home Memory | Python, FastAPI, SQLite, Gemini | 8000 |
-| `circuit_app/` | Round 3 simulation (Gnani STT + one LLM making decisions) | Python, Claude or Gemini | 8000 |
-| `GharSaathi/` | Clickable household-maintenance prototype | React, TypeScript, Vite, Tailwind | 5173 |
+---
 
-Docs at the root (`Keepwell *.md`, pitch decks, `research_notes/`, `spec_parts/`, `reports/`) are reference material, not code.
+## Architecture Overview
 
-`keepwell/` and `circuit_app/` both use port 8000, so don't run them at the same time.
-
-## Prerequisites
-
-- Python 3.10+
-- Node.js 18+ and npm (only for `GharSaathi`)
-- Git
-- API keys (ask the owner; never commit them or paste them in chat):
-  - `GEMINI_API_KEY` for `keepwell/` (and `circuit_app/` if using Gemini)
-  - `ANTHROPIC_API_KEY` for `circuit_app/` if using Claude
-  - `GNANI_STT_API_KEY` for `circuit_app/`
-
-## Get the code
-
-```bash
-git clone https://github.com/PrathyushaKalluri/Google_Startup_Buildathon.git
-cd Google_Startup_Buildathon
+```mermaid
+flowchart LR
+    HH["Household (Voice / Video / WhatsApp / Web)"] -->|"WS /v1/live/call & REST /v1"| API["kw-api (FastAPI + MCP /mcp)"]
+    BR["Brand & Retailer Webhooks"] -->|"X-Keepwell-Key"| API
+    CON["Centre Console & Live Stage View (Flutter Web Wasm)"] -->|"REST + Firestore Live Feed"| API
+    FLD["Technician & Parts Centre App (Flutter Web Wasm)"] -->|"REST + Offline Outbox"| API
+    API -->|"Model Armor (asia-south1)"| MA["GCP Model Armor + Regex Guard"]
+    API -->|"Bidi Audio/Video + 16 Tools"| LIVE["Gemini 3.1 Flash Live Preview"]
+    API -->|"ADK Agents + File Search + Embeddings"| GEM["Gemini 3.8 Flash & gemini-embedding-2"]
+    API -->|"psycopg 3 + SET LOCAL kw.centre_id (kw_app)"| PG[("PostgreSQL 16/18 + PostGIS + pgvector + RLS")]
+    API -->|"Batched Projections"| FS[("Firestore Native (asia-south1)")]
+    API -->|"48h Retention"| GCS[("Cloud Storage (asia-south1)")]
 ```
 
-## 1. keepwell (main backend)
+---
+
+## Quickstart (Local Merged Stack)
 
 ```bash
-cd keepwell
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env               # then edit .env
+# 1. Seed PostgreSQL (unmodified keepwell_schema.sql + 55 CSVs = 15,465 rows + kw_app RLS)
+make seed
+
+# 2. Run all backend, mock, Dart, and Flutter unit/widget tests
+make test
+
+# 3. Run C2 contract conformance + C3 12 end-to-end journeys
+make e2e
+
+# 4. Run 20-case + 100-case evaluation harness (all 5 release gates)
+make eval
+
+# 5. Run production smoke suite
+make smoke
 ```
 
-In `.env`, set at least `GEMINI_API_KEY`. WhatsApp (`WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`) is optional and only needed to test the live webhook. Payments run in sandbox mode (`UPI_SANDBOX_MODE=true`) by default.
-
-Run it:
-
-```bash
-python3 run.py                     # or: make dev
-```
-
-Open http://localhost:8000.
-
-Other commands (`make help` lists them):
-
-```bash
-make seed      # repopulate the DB from fixtures
-make test      # pytest
-make eval      # 100-case evaluation harness
-make clean     # delete keepwell.db and caches
-```
-
-**About `keepwell.db`:** a seeded SQLite file is committed so everyone starts with the same demo data. If it causes merge conflicts, delete it (`make clean`) and run `make seed`. Don't commit local changes to it.
-
-## 2. circuit_app (Round 3 simulation)
-
-```bash
-cd circuit_app
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env               # then edit .env
-```
-
-In `.env`:
-
-- `LLM_PROVIDER=claude` or `gemini`, plus the matching API key
-- `GNANI_STT_API_KEY` — use the **new** key; the old one was shared in chat and must be revoked
-- `LLM_MODEL` — run the check below and copy a model id it lists
-
-Verify before recording:
-
-```bash
-python check_setup.py                    # lists models your key can use
-python check_setup.py my_test_clip.ogg   # also makes one real Gnani call (uses 1 credit)
-```
-
-Run it:
-
-```bash
-python run.py                      # http://localhost:8000
-python -m pytest -q                # 11 offline tests, no keys needed
-```
-
-Also see `circuit_app/README.md` and `circuit_app/TEAM_PLAN_START_HERE.md` for the recording flow and role assignments. Still to do before recording:
-
-- Add 1–3 real AC troubleshooting excerpts to `circuit_app/knowledge/` (it only has a generic seed).
-- Keep the real sample JSON responses from the Pine Labs and Delhivery docs in a notes file for the "wizard" to paste.
-- Have a 15–30 s voice note (Telugu, Hindi or English) ready.
-
-## 3. GharSaathi (frontend prototype)
-
-```bash
-cd GharSaathi
-npm install
-npm run dev                        # http://localhost:5173
-npm run build                      # typecheck + production build
-```
-
-No API keys needed.
-
-## What is NOT in git (set up locally)
-
-- `.env` files — copy from each folder's `.env.example`
-- `.venv/` — create per the steps above
-- `node_modules/`, `GharSaathi/dist/` — from `npm install` / `npm run build`
-- `keepwell/storage/` — local media uploads, created at runtime
-
-## Working together
-
-- Pull before you start: `git pull --rebase origin main`
-- Never commit `.env`, API keys or tokens. `.gitignore` already excludes them.
-- Commit small and push often to avoid conflicts, especially on the same files.
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/TEST_REPORT.md](docs/TEST_REPORT.md), [docs/RUBRIC_AUDIT.md](docs/RUBRIC_AUDIT.md), [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md), and [docs/SUBMISSION.md](docs/SUBMISSION.md).

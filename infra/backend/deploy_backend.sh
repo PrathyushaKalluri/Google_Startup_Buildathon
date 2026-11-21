@@ -21,7 +21,7 @@ COMMON_ENV="GCP_PROJECT_ID=${PROJECT_ID},GCP_REGION=${REGION},FIREBASE_PROJECT_I
 
 COMMON_SECRETS="DATABASE_URL=DATABASE_URL:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest,GOOGLE_MAPS_API_KEY=GOOGLE_MAPS_API_KEY:latest,WHATSAPP_VERIFY_TOKEN=WHATSAPP_VERIFY_TOKEN:latest,WHATSAPP_APP_SECRET=WHATSAPP_APP_SECRET:latest,WHATSAPP_ACCESS_TOKEN=WHATSAPP_ACCESS_TOKEN:latest,MAGIC_LINK_SIGNING_KEY=MAGIC_LINK_SIGNING_KEY:latest,PHONE_HASH_KEY=PHONE_HASH_KEY:latest,PAYMENT_WEBHOOK_SECRET=PAYMENT_WEBHOOK_SECRET:latest"
 
-echo "==> 1. Deploying kw-api to Cloud Run (${REGION}, min-instances=1 for demo)..."
+echo "==> 1. Deploying kw-api to Cloud Run (${REGION}, min-instances=0, max-instances=2)..."
 gcloud run deploy kw-api \
   --image="${IMAGE_URI}" \
   --region="${REGION}" \
@@ -30,15 +30,15 @@ gcloud run deploy kw-api \
   --add-cloudsql-instances="${SQL_CONN}" \
   --set-env-vars="${COMMON_ENV},SERVICE_ROLE=api" \
   --set-secrets="${COMMON_SECRETS}" \
-  --min-instances=1 \
-  --max-instances=5 \
-  --cpu=2 \
-  --memory=2Gi \
+  --min-instances=0 \
+  --max-instances=2 \
+  --cpu=1 \
+  --memory=1Gi \
   --timeout=3600 \
   --session-affinity \
   --allow-unauthenticated
 
-echo "==> 2. Deploying kw-worker to Cloud Run (${REGION}, min-instances=0)..."
+echo "==> 2. Deploying kw-worker to Cloud Run (${REGION}, min-instances=0, max-instances=2)..."
 gcloud run deploy kw-worker \
   --image="${IMAGE_URI}" \
   --region="${REGION}" \
@@ -48,9 +48,9 @@ gcloud run deploy kw-worker \
   --set-env-vars="${COMMON_ENV},SERVICE_ROLE=worker" \
   --set-secrets="${COMMON_SECRETS}" \
   --min-instances=0 \
-  --max-instances=5 \
+  --max-instances=2 \
   --cpu=1 \
-  --memory=1Gi \
+  --memory=512Mi \
   --timeout=600 \
   --no-allow-unauthenticated
 

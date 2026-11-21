@@ -1,0 +1,16 @@
+# Keepwell Architecture & C03 Data Flow (`docs/ARCHITECTURE.md`)
+
+## 1. Component Map
+- **Data & Security Layer (`db/`, `services/common/`):** PostgreSQL (`keepwell_schema.sql` v0.2 unmodified + `001_part_a_additions.sql`) with `postgis`, `vector` (`pgvector`), `pgcrypto`, `btree_gist`. Every request connects as non-superuser `kw_app` (`NOSUPERUSER NOBYPASSRLS`) and sets `SET LOCAL kw.centre_id` or `SET LOCAL kw.role = 'platform'`.
+- **10 Deterministic Engines (`services/agents/engines/`):** Pure Python engines dispose of every hard invariant: `authority.py`, `urgency.py` (100% safety recall), `safefix.py`, `gates.py` (2-gate consent state machine enforced in Python + DB trigger), `assignment.py` (30/25/20/15/5/5 weights; price not scored), `planner.py`, `parts.py` (hard catalogue + compatibility check; 0 invented parts), `pricing.py` (18% GST split), `payments.py` (UPI + Google Pay TEST + HMAC webhook; payment never closes a job), `otp.py` (OTP-only closure).
+- **ADK Agents, MCP Server & Knowledge (`services/agents/`, `services/mcp/`, `kb/`):** 24-tool MCP server at `/mcp`, 21 KB PDFs in GCS + Gemini Files API, 674 `experience_case` embeddings (768-d `gemini-embedding-2`) in `pgvector`.
+- **Gemini Live Bridge (`services/live/`):** `WS /v1/live/call` connected to `gemini-3.1-flash-live-preview` with 16 Live tools, context-window compression, transparent `go_away` session resumption, and `/v1/admin/demo/replay-call` recorded fallback.
+- **Four Flutter 3.50 Web (`--wasm`) Surfaces (`apps/`):** Shared Material 3 Expressive design system (`apps/kw_ui`) and typed client (`apps/kw_client`) powering `apps/console` (with Projector Stage View), `apps/field` (Technician & Parts Centre), `apps/household` (WhatsApp simulator, Live dialer, `/v/:token` camera link, Home Memory, quote & Google Pay), and `apps/brand` (Brand & Retailer portal + FVR-14 analytics).
+
+## 2. C03 Stage Scenario Hop-by-Hop Data Flow
+1. **Call Start (`WS /v1/live/call`):** Household caller (`+91 50971 16577`) dials Frost and Wave (`c_fw`). Server emits `ready`, `conversation_started`, and `recording_notice_logged` in Hindi.
+2. **Model Armor Screen:** Transcript chunk passes `ModelArmorGuard.screen_inbound` (`keepwell-guard-v1` in `asia-south1`).
+3. **Identity, Authority & Urgency:** MCP tools `identify_household`, `lookup_appliance`, `check_authority` (`c_fw` is authorised for Wavecrest), and `assess_urgency` (`standard`) execute under `kw_app` RLS and project events to `centres/{cid}/feed`.
+4. **Gates 1 & 2 -> Video Switch:** `record_gate(1, yes)` then `record_gate(2, switch_to_video)` mints `/v/<token>`; household switches to video (`modality_changed`) and shows E21 display & drain filter (`ui_hint`).
+5. **Safe Fix (`SF-WM-DRAINFILTER-WC`) -> Failure -> Re-run:** Guided drain-filter clean fails (`fix_result: not_worked`); `run_diagnosis` re-runs with `already_tried`, `build_visit_plan` verifies drain pump `WC-PUMP-E21` in `parts.py`, `score_and_assign` scores top 3 technicians (30/25/20/15/5/5), and `issue_quote` issues the estimate.
+6. **Console Reassign, Quote Approval, Debrief & OTP Close:** Console reassigns technician (10s Undo snackbar + override logged); household approves quote and pays via Google Pay TEST; technician submits spoken debrief and closes visit strictly via household OTP.

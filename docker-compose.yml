@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: keepwell
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d keepwell"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  kw-api:
+    build:
+      context: .
+      dockerfile: infra/backend/Dockerfile
+    environment:
+      SERVICE_ROLE: api
+      PORT: "8000"
+      DATABASE_URL: postgresql://kw_app:kw_app_dev@postgres:5432/keepwell
+      DEMO_MODE: "true"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  kw-worker:
+    build:
+      context: .
+      dockerfile: infra/backend/Dockerfile
+    environment:
+      SERVICE_ROLE: worker
+      PORT: "8001"
+      DATABASE_URL: postgresql://kw_app:kw_app_dev@postgres:5432/keepwell
+      DEMO_MODE: "true"
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy

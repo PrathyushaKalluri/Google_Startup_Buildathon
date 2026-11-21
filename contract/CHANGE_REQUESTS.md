@@ -1,8 +1,6 @@
-# Contract Change Requests (`contract/CHANGE_REQUESTS.md`)
-
-No breaking changes required by Part A (`part-a/agent-core`). All endpoints, Firestore paths, live events, and WebSocket frames match `contract/SHARED_CONTRACT.md` verbatim.
+# Contract Change Requests (`contract/CHANGE_REQUESTS.md`) — Triaged by Integrator (v1.1)
 
 ## CR-A-1 Test-only `text_in` WebSocket frame in `DEMO_MODE=true`
-- **Why:** Section 6.2 A4 requires a scripted WebSocket test harness (`services/live/tools/scripted_client.py`) that drives C03 deterministically without requiring live microphone audio.
-- **Proposed text:** Add optional client-to-server frame `{"type":"text_in","text":"..."}` to Section C7, enabled strictly when `DEMO_MODE=true`.
-- **What I assumed meanwhile:** Implemented as an additive frame gated behind `settings.demo_mode`, ignored/rejected with `403`/`forbidden` error frame when `DEMO_MODE=false`.
+- **Status:** **ACCEPTED (Contract v1.1)**
+- **Why:** Section 6.2 A4 requires a scripted WebSocket test harness (`services/live/tools/scripted_client.py`) that drives C03 deterministically without requiring live microphone audio on every CI run.
+- **Resolution:** Added optional client-to-server frame `{"type":"text_in","text":"..."}` and `{"type":"simulate_go_away","seconds":30}` to Section C7 of `contract/SHARED_CONTRACT.md` (v1.1), enabled strictly when `DEMO_MODE=true` and rejected when `DEMO_MODE=false`. Both Part A (`services/live/bridge.py`) and Part B (`apps/kw_client/lib/src/live/live_call_client.dart`) support this frame.

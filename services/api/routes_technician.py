@@ -570,6 +570,7 @@ def register_device(
             """
             INSERT INTO device_token (id, centre_id, user_id, role, token, platform, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (token) DO UPDATE SET updated_at = EXCLUDED.updated_at
             """,
             (dev_id, auth.centre_id, auth.user_id, auth.role, body.token, body.platform, now_iso),
         )
