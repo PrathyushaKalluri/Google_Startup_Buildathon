@@ -142,19 +142,19 @@ We completed Part C Milestone C6 (Cloud Build image build, Cloud Run `kw-api` & 
 
 **Exact Next Three Actions in Order (when resuming for a live demo or Part D / Part E):**
 
-1. **Start Cloud SQL on demand before a live cloud demo (`deploy/tools/demo_up.sh`):**
+1. **Open the single unified 4-in-1 prototype link (`http://localhost:8000`) against local PostgreSQL 18 ($0 credits):**
    ```bash
    cd /Users/klprathyusha/google_startup_keepwell/Google_Startup_Buildathon
-   ./deploy/tools/demo_up.sh
+   PYTHONPATH=. .venv312/bin/uvicorn services.api.main:app --host 0.0.0.0 --port 8000
+   # Open http://localhost:8000 in Chrome (Split View: Household on left + Agent Console on right, plus tabs for all 4 surfaces)
    ```
-2. **Open the 4 deployed web apps and follow `docs/DEMO_LINKS.md` / `docs/DEMO_SCRIPT.md`:**
+2. **Or open the 4 deployed Firebase Hosting web apps (wired to `http://localhost:8000/v1` with embedded PostgreSQL snapshot fallback when offline):**
    - Centre Console & Stage View: `https://kw-console-0527.web.app` (`console.c_fw@keepwell.demo`)
    - Field App (Technician & Parts Centre): `https://kw-field-0527.web.app` (`tech1.c_fw@keepwell.demo`, `parts.demo@keepwell.demo`)
    - Household Companion & Simulator: `https://kw-household-0527.web.app`
    - Brand & Retailer Portal: `https://kw-brand-0527.web.app` (`brand.aerovane@keepwell.demo`)
-3. **Stop Cloud SQL immediately after the demo (`deploy/tools/demo_down.sh`):**
+3. **If using Cloud SQL on demand (`demo_up.sh` / `demo_down.sh`), stop Cloud SQL immediately after the demo:**
    ```bash
-   cd /Users/klprathyusha/google_startup_keepwell/Google_Startup_Buildathon
    ./deploy/tools/demo_down.sh
    ```
 

@@ -173,7 +173,7 @@ class ConsoleController extends ChangeNotifier {
 
   void _startTicketsWatch() {
     _ticketsSub?.cancel();
-    if (_session == null || !liveFeedRepository.shouldUseFirestore) return;
+    if (_session == null) return;
     final isPlatform = _session?.role == KwRole.platform;
     _ticketsSub = liveFeedRepository
         .watchTickets(
@@ -184,9 +184,13 @@ class ConsoleController extends ChangeNotifier {
         .listen(
           (cards) {
             if (cards.isNotEmpty) {
+              final prevCount = _tickets.length;
               _tickets = sortTickets(cards);
               _loadingTickets = false;
               _ticketsError = null;
+              if (_selectedTicketId == null || cards.length > prevCount) {
+                unawaited(selectTicket(_tickets.first.id));
+              }
               notifyListeners();
             }
           },

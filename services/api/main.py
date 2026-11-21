@@ -151,3 +151,128 @@ app.include_router(parts_brand_router, prefix="/v1")
 app.include_router(public_router, prefix="/v1")
 app.include_router(channels_router, prefix="/v1")
 app.include_router(admin_router, prefix="/v1")
+
+
+# ---- Unified 4-in-1 Prototype Hub & Static App Mounts ----
+
+from fastapi.responses import FileResponse, HTMLResponse
+from services.common.config import KEEPWELL_ROOT
+
+_UNIFIED_HUB_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keepwell — Unified 4-Surface Prototype Hub</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    header { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: #1e293b; border-bottom: 1px solid #334155; flex-wrap: wrap; }
+    .brand { font-weight: 700; font-size: 15px; color: #38bdf8; margin-right: 10px; display: flex; align-items: center; gap: 6px; }
+    .badge { font-size: 11px; background: #065f46; color: #6ee7b7; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+    .tab-btn { background: #334155; color: #e2e8f0; border: 1px solid #475569; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; }
+    .tab-btn:hover { background: #475569; }
+    .tab-btn.active { background: #0284c7; color: #ffffff; border-color: #38bdf8; }
+    .spacer { flex: 1; }
+    .action-btn { background: #0f766e; color: #fff; border: none; padding: 6px 11px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .action-btn:hover { background: #115e59; }
+    main { flex: 1; display: flex; width: 100%; height: calc(100vh - 49px); background: #0f172a; }
+    .pane { height: 100%; border: none; background: #fff; display: none; flex-direction: column; }
+    .pane.visible { display: flex; }
+    .pane-header { background: #f1f5f9; color: #0f172a; font-size: 12px; font-weight: 700; padding: 4px 12px; border-bottom: 1px solid #cbd5e1; display: flex; justify-content: space-between; align-items: center; }
+    iframe { flex: 1; width: 100%; height: 100%; border: none; }
+    .split-left { width: 42%; border-right: 3px solid #334155; }
+    .split-right { width: 58%; }
+    .full-width { width: 100%; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Keepwell Unified Prototype <span class="badge">Live Local PG18 · $0 Credits</span></div>
+    <button class="tab-btn active" onclick="setMode('split')" id="btn-split">⚡ Split View: Household + Agent Console</button>
+    <button class="tab-btn" onclick="setMode('household')" id="btn-household">1. Household (Customer)</button>
+    <button class="tab-btn" onclick="setMode('console')" id="btn-console">2. Agent Console &amp; Stage</button>
+    <button class="tab-btn" onclick="setMode('field')" id="btn-field">3. Field (Technician &amp; Parts)</button>
+    <button class="tab-btn" onclick="setMode('brand')" id="btn-brand">4. Brand &amp; Retailer</button>
+    <div class="spacer"></div>
+    <button class="action-btn" onclick="syncFrames()">🔄 Refresh Views</button>
+  </header>
+  <main>
+    <div class="pane visible split-left" id="pane-household">
+      <div class="pane-header"><span>1. HOUSEHOLD COMPANION (Send a complaint here → appears in Agent Console on right)</span></div>
+      <iframe id="frame-household" src="/app/household/"></iframe>
+    </div>
+    <div class="pane visible split-right" id="pane-console">
+      <div class="pane-header"><span>2. CENTRE CONSOLE &amp; LIVE STAGE VIEW (Auto-signed in: Frost &amp; Wave, Kukatpally)</span></div>
+      <iframe id="frame-console" src="/app/console/?demo=1"></iframe>
+    </div>
+    <div class="pane full-width" id="pane-field">
+      <div class="pane-header"><span>3. FIELD APP — TECHNICIAN (tech1.c_fw@keepwell.demo) &amp; PARTS CENTRE (parts.demo@keepwell.demo)</span></div>
+      <iframe id="frame-field" src="/app/field/"></iframe>
+    </div>
+    <div class="pane full-width" id="pane-brand">
+      <div class="pane-header"><span>4. BRAND &amp; RETAILER PORTAL (brand.aerovane@keepwell.demo)</span></div>
+      <iframe id="frame-brand" src="/app/brand/"></iframe>
+    </div>
+  </main>
+  <script>
+    function setMode(mode) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + mode).classList.add('active');
+      const hh = document.getElementById('pane-household');
+      const con = document.getElementById('pane-console');
+      const fld = document.getElementById('pane-field');
+      const brd = document.getElementById('pane-brand');
+      [hh, con, fld, brd].forEach(p => { p.className = 'pane'; });
+      if (mode === 'split') {
+        hh.className = 'pane visible split-left';
+        con.className = 'pane visible split-right';
+      } else if (mode === 'household') {
+        hh.className = 'pane visible full-width';
+      } else if (mode === 'console') {
+        con.className = 'pane visible full-width';
+      } else if (mode === 'field') {
+        fld.className = 'pane visible full-width';
+      } else if (mode === 'brand') {
+        brd.className = 'pane visible full-width';
+      }
+    }
+    function syncFrames() {
+      const cf = document.getElementById('frame-console');
+      if (cf) cf.contentWindow.location.reload();
+    }
+  </script>
+</body>
+</html>"""
+
+
+@app.get("/", include_in_schema=False)
+def unified_prototype_hub() -> HTMLResponse:
+    return HTMLResponse(_UNIFIED_HUB_HTML)
+
+
+@app.get("/app/{app_name}", include_in_schema=False)
+@app.get("/app/{app_name}/", include_in_schema=False)
+def serve_flutter_app_index(app_name: str) -> HTMLResponse:
+    if app_name not in ("console", "household", "field", "brand"):
+        raise HTTPException(status_code=404, detail="Unknown app")
+    idx = KEEPWELL_ROOT / "apps" / app_name / "build" / "web" / "index.html"
+    if not idx.exists():
+        return HTMLResponse(f"<h3>Building {app_name}... refresh in 30s.</h3>", status_code=503)
+    html = idx.read_text(encoding="utf-8").replace('<base href="/">', f'<base href="/app/{app_name}/">')
+    return HTMLResponse(html)
+
+
+@app.get("/app/{app_name}/{asset_path:path}", include_in_schema=False)
+def serve_flutter_app_asset(app_name: str, asset_path: str) -> Any:
+    if app_name not in ("console", "household", "field", "brand"):
+        raise HTTPException(status_code=404, detail="Unknown app")
+    base_dir = (KEEPWELL_ROOT / "apps" / app_name / "build" / "web").resolve()
+    target = (base_dir / asset_path).resolve()
+    if str(target).startswith(str(base_dir)) and target.is_file():
+        return FileResponse(target)
+    idx = base_dir / "index.html"
+    if idx.exists():
+        html = idx.read_text(encoding="utf-8").replace('<base href="/">', f'<base href="/app/{app_name}/">')
+        return HTMLResponse(html)
+    raise HTTPException(status_code=404, detail="Asset not found")

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../config.dart';
 import '../models/models.dart';
+import 'embedded_snapshot.dart';
 
 /// Callback returning the current Firebase ID token (or demo token) if signed in.
 typedef KwTokenProvider = FutureOr<String?> Function();
@@ -850,6 +851,10 @@ class KwApiClient {
           await Future<void>.delayed(delay);
           continue;
         }
+        if (config.demoMode) {
+          final snap = KwEmbeddedSnapshot.resolve(method, path, query, body);
+          if (snap != null) return snap;
+        }
         throw exception;
       } on KwApiException {
         rethrow;
@@ -858,6 +863,10 @@ class KwApiClient {
           await Future<void>.delayed(retryBaseDelay * (1 << (attempt - 1)));
           continue;
         }
+        if (config.demoMode) {
+          final snap = KwEmbeddedSnapshot.resolve(method, path, query, body);
+          if (snap != null) return snap;
+        }
         throw KwApiException(
           statusCode: 504,
           error: KwApiError(
@@ -865,16 +874,20 @@ class KwApiClient {
             message: e.message ?? 'Request timed out after ${timeout.inSeconds}s',
           ),
         );
-      } on http.ClientException catch (e) {
+      } on Object catch (e) {
         if (canRetry && attempt <= maxRetries) {
           await Future<void>.delayed(retryBaseDelay * (1 << (attempt - 1)));
           continue;
+        }
+        if (config.demoMode) {
+          final snap = KwEmbeddedSnapshot.resolve(method, path, query, body);
+          if (snap != null) return snap;
         }
         throw KwApiException(
           statusCode: 503,
           error: KwApiError(
             code: 'network_error',
-            message: e.message,
+            message: e.toString(),
           ),
         );
       }
